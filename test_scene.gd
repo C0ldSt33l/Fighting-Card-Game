@@ -1,9 +1,13 @@
 extends Node2D
 
 @onready var logger := $Logger as RichTextLabel 
+@onready var card_factory := preload("res://card/card.tscn")
+@onready var timer := $Timer as Timer
+
+var cards: Array[Card] = []
+var cur_card := 0
 
 func _ready() -> void:
-	var card_factory := preload("res://card/card.tscn")
 	var configs := [
 		{
 			'action_name': 'fist',
@@ -21,23 +25,57 @@ func _ready() -> void:
 			'dmg': 5
 		},
 	]
+	var spawn_pos := Vector2(300, 100)
 
-	var pos = 200
 	for config in configs:
-		var node := card_factory.instantiate() as Card
-		node.position.x = pos
-		node.created.connect(self.add_text)
-		for key in config:
-			node[key] = config[key]
-		self.add_child(node)
-		pos += 150
-
-
-
-func _process(delta: float) -> void:
-	pass
+		self.spawn_card(config, spawn_pos)
+		spawn_pos.x += 150
 
 
 func add_text(text: String) -> void:
 	text += "\n"
 	self.logger.text += text
+
+
+func create_log(name: String) -> void:
+	self.add_text(name + ' has created')
+
+
+func action_log(name: String, dmg: int) -> void:
+	self.add_text(name + ' has dealed dmg: ' + str(dmg))
+
+
+func destroy_log(name: String) -> void:
+	self.add_text(name + ' has destroyed')
+
+
+func start_round() -> void:
+	self.timer.start()
+
+
+func end_round() -> void:
+	self.timer.stop()
+
+	self.cur_card = 0
+	for card in self.cards:
+		card.queue_free()
+	self.cards.clear()
+
+
+func play_card() -> void:
+	self.cards[self.cur_card].play()
+	self.cur_card += 1
+	if self.cur_card == self.cards.size():
+		self.end_round()
+
+
+func spawn_card(config: Dictionary, pos: Vector2) -> void:
+	var card := self.card_factory.instantiate() as Card
+	card.created.connect(self.create_log)
+	card.played.connect(self.action_log)
+	card.destroyed.connect(self.destroy_log)
+	card.position = pos
+	for prop in config:
+		card[prop] = config[prop]
+	self.cards.append(card)
+	self.add_child(card)
