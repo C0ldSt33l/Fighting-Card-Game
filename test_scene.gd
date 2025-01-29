@@ -9,17 +9,17 @@ var cur_card := 0
 func _ready() -> void:
 	var configs := [
 		{
-			'card name': 'fist',
+			'card_name': 'fist',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
 			'dmg': 2
 		},
 		{
-			'card name': 'kick',
+			'card_name': 'kick',
 			'type': Card.ACTION_TYPE.LEG_STRIKE,
 			'dmg': 3
 		},
 		{
-			'card name': 'elbow',
+			'card_name': 'elbow',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
 			'dmg': 5
 		},
@@ -69,10 +69,14 @@ func play_card() -> void:
 
 
 func spawn_card(config: Dictionary, pos: Vector2) -> void:
-	var card := CardFactory.create_with_binding(config, self)
-	card.created.connect(self.create_log)
-	card.played.connect(self.action_log)
-	card.destroyed.connect(self.destroy_log)
-	card.position = pos
-	
+	var card := CardFactory.create_with_binding(
+		self,
+		func (c: Card) -> void:
+			for prop in config:
+				c.set_tag_val(prop, config[prop])
+			c.created.connect(self.create_log)
+			c.played.connect(self.action_log)
+			c.destroyed.connect(self.destroy_log)
+			c.position = pos
+	)
 	self.cards.append(card)

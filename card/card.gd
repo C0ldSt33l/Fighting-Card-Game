@@ -39,7 +39,7 @@ var dir: DIRECTION :
 	get(): return self.get_tag_val('direction')
 
 # Base tags:
-# - card name
+# - card_name
 # - dmg
 # - type
 # - rarity
