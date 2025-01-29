@@ -1,7 +1,6 @@
 extends Node2D
 
 @onready var logger := $Logger as RichTextLabel 
-@onready var card_factory := preload("res://card/card.tscn")
 @onready var timer := $Timer as Timer
 
 var cards: Array[Card] = []
@@ -10,17 +9,17 @@ var cur_card := 0
 func _ready() -> void:
 	var configs := [
 		{
-			'action_name': 'fist',
+			'card name': 'fist',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
 			'dmg': 2
 		},
 		{
-			'action_name': 'kick',
+			'card name': 'kick',
 			'type': Card.ACTION_TYPE.LEG_STRIKE,
 			'dmg': 3
 		},
 		{
-			'action_name': 'elbow',
+			'card name': 'elbow',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
 			'dmg': 5
 		},
@@ -70,12 +69,10 @@ func play_card() -> void:
 
 
 func spawn_card(config: Dictionary, pos: Vector2) -> void:
-	var card := self.card_factory.instantiate() as Card
+	var card := CardFactory.create_with_binding(config, self)
 	card.created.connect(self.create_log)
 	card.played.connect(self.action_log)
 	card.destroyed.connect(self.destroy_log)
 	card.position = pos
-	for prop in config:
-		card[prop] = config[prop]
+	
 	self.cards.append(card)
-	self.add_child(card)
