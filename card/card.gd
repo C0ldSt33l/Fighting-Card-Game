@@ -22,9 +22,20 @@ enum DIRECTION {
 	LEGS,
 }
 
+#Tags:
+# - card_name
+# - dmg
+# - type
+# - rarity
+# - direction
+# - martial art
+# - has aura
+@export var tags: Dictionary
+
+# Short cuts for base tags
 var card_name: String :
-	set(val): self.set_tag_val('card name', val)
-	get(): return self.get_tag_val('card name')
+	set(val): self.set_tag_val('card_name', val)
+	get(): return self.get_tag_val('card_name')
 
 var type: ACTION_TYPE :
 	set(val): self.set_tag_val('type', val)
@@ -37,16 +48,6 @@ var dmg: int :
 var dir: DIRECTION :
 	set(val): self.set_tag_val('direction', val)
 	get(): return self.get_tag_val('direction')
-
-# Base tags:
-# - card_name
-# - dmg
-# - type
-# - rarity
-# - direction
-# - martial art
-# - has aura
-@export var tags: Dictionary
 
 # NOTE:
 #- Think about func signature(`(dmg: int) -> void` or `() -> int`)
