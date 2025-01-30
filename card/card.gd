@@ -30,22 +30,22 @@ enum DIRECTION {
 # - direction
 # - martial art
 # - has aura
-@export var tags: Dictionary
+@export var tags: Dictionary = {}
 
 # Short cuts for base tags
-var card_name: String :
+@export var card_name: String :
 	set(val): self.set_tag_val('card_name', val)
 	get(): return self.get_tag_val('card_name')
 
-var type: ACTION_TYPE :
+@export var type: ACTION_TYPE :
 	set(val): self.set_tag_val('type', val)
 	get(): return self.get_tag_val('type')
 
-var dmg: int :
+@export var dmg: int :
 	set(val): self.set_tag_val('dmg', val)
 	get(): return self.get_tag_val('dmg')
 
-var dir: DIRECTION :
+@export var dir: DIRECTION :
 	set(val): self.set_tag_val('direction', val)
 	get(): return self.get_tag_val('direction')
 
