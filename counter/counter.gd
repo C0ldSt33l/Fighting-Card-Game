@@ -1,4 +1,5 @@
 extends Node2D
+class_name Counter
 
 
 var Panel_points: Panel

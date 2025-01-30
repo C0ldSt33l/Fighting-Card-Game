@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var logger := $Logger as RichTextLabel 
 @onready var timer := $Timer as Timer
+@onready var counter := $Counter as Counter
 
 var cards: Array[Card] = []
 var cur_card := 0
@@ -24,7 +25,7 @@ func _ready() -> void:
 			'dmg': 5
 		},
 	]
-	var spawn_pos := Vector2(300, 100)
+	var spawn_pos := Vector2(300, 200)
 
 	for config in configs:
 		self.spawn_card(config, spawn_pos)
@@ -37,15 +38,15 @@ func add_text(text: String) -> void:
 
 
 func create_log(name: String) -> void:
-	self.add_text(name + ' has created')
+	self.add_text('[color=white]%s[/color] has created' % [name])
 
 
 func action_log(name: String, dmg: int) -> void:
-	self.add_text(name + ' has dealed dmg: ' + str(dmg))
+	self.add_text('[color=white]%s[/color] has dealed dmg: [color=red]%d[/color]' % [name, dmg])
 
 
 func destroy_log(name: String) -> void:
-	self.add_text(name + ' has destroyed')
+	self.add_text('[color=white]%s[/color] has destroyed' % [name])
 
 
 func start_round() -> void:

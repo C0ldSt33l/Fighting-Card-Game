@@ -65,7 +65,7 @@ func _ready() -> void:
 	self.name_label.text += str(self.card_name)
 	self.type_label.text += str(ACTION_TYPE.keys()[self.type])
 	self.dmg_label.text += str(self.dmg)
-	self.created.emit(self.card_name + ' has created')
+	self.created.emit(self.card_name)
 
 
 func play() -> void:
