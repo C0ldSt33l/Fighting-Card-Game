@@ -1,5 +1,6 @@
-class_name CardFactory
-static var spawner := preload("res://card/card.tscn")
+extends Node
+
+var spawner := preload("res://card/card.tscn")
 
 
 # static func create(
@@ -28,14 +29,14 @@ static var spawner := preload("res://card/card.tscn")
 # 	return card
 
 ## require func with signature `(Card) -> void
-static func create(modifier: Callable) -> Card:
+func create(modifier: Callable) -> Card:
 	var card := spawner.instantiate() as Card
 	modifier.call(card)
 	return card
 
 
 ## require func with signature `(Card) -> void
-static func create_with_binding(parent: Node, modifier: Callable) -> Card:
+func create_with_binding(parent: Node, modifier: Callable) -> Card:
 	var card := create(modifier)
 	parent.add_child(card)
 	return card

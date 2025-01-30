@@ -72,11 +72,11 @@ func spawn_card(config: Dictionary, pos: Vector2) -> void:
 	var card := CardFactory.create_with_binding(
 		self,
 		func (c: Card) -> void:
-			for prop in config:
-				c.set_tag_val(prop, config[prop])
+			c.add_tags(config)
+			c.position = pos
 			c.created.connect(self.create_log)
 			c.played.connect(self.action_log)
 			c.destroyed.connect(self.destroy_log)
-			c.position = pos
 	)
+
 	self.cards.append(card)
