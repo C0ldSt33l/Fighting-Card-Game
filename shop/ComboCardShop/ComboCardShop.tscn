@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm1la1g05stsh"]
+
+[ext_resource type="Script" path="res://shop/ComboCardShop/combo_card_shop.gd" id="1_1tmp3"]
+
+[node name="ComboCardShop" type="Node2D"]
+script = ExtResource("1_1tmp3")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 62.0
+offset_top = 87.0
+offset_right = 1085.0
+offset_bottom = 587.0
+
+[node name="Button" type="Button" parent="."]
+offset_left = 1002.0
+offset_top = 503.0
+offset_right = 1063.0
+offset_bottom = 563.0
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
