@@ -7,7 +7,7 @@ var COMBOS:= {
 		'Price': 15,
 		'points':10,
 		'multipliter':2,
-		'check': func()-> void: print('big combo')
+		'effect': func()-> void: print('big combo')
 	},
 	'Big Combo':
 	{
@@ -15,6 +15,6 @@ var COMBOS:= {
 		'Price': 25,
 		'points':10,
 		'multipliter':2,
-		'check': func()-> void: print('big combo')
+		'effect': func()-> void: print('big combo')
 	}
 }

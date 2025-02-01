@@ -56,16 +56,16 @@ enum DIRECTION {
 var effects: Array[Callable] = []
 
 
-signal created(name: String)
-signal played(name: String, dealed_dmg: int)
-signal destroyed(name: String)
+signal created(c: Card)
+signal played(c: Card)
+signal destroyed(c: Card)
 
 
 func _ready() -> void:
 	self.name_label.text += str(self.card_name)
 	self.type_label.text += str(ACTION_TYPE.keys()[self.type])
 	self.dmg_label.text += str(self.dmg)
-	self.created.emit(self.card_name)
+	self.created.emit(self)
 
 
 func play() -> void:
@@ -74,7 +74,7 @@ func play() -> void:
 	for effect in self.effects:
 		dmg += effect.call()
 
-	self.played.emit(self.card_name, dmg)
+	self.played.emit(self)
 
 
 func add_tags(new_tags: Dictionary) -> void:
@@ -94,4 +94,4 @@ func set_tag_val(tag: String, val: Variant) -> void:
 
 
 func _exit_tree() -> void:
-	self.destroyed.emit(self.card_name)
+	self.destroyed.emit(self)

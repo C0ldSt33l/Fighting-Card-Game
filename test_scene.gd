@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var logger := $Logger as RichTextLabel 
+@onready var logger := $Logger as Logger 
 @onready var timer := $Timer as Timer
 @onready var counter := $Counter as Counter
 
@@ -8,6 +8,10 @@ var cards: Array[Card] = []
 var cur_card := 0
 
 func _ready() -> void:
+	self.counter.points_changed.connect(self.logger.change_points_log)
+	self.counter.points_changed.connect(self.logger.change_multiplier_log)
+	self.counter.points_changed.connect(self.logger.change_total_score_log)
+
 	var configs := [
 		{
 			'card_name': 'fist',
@@ -42,7 +46,7 @@ func create_log(name: String) -> void:
 
 
 func action_log(name: String, dmg: int) -> void:
-	self.add_text('[color=white]%s[/color] has dealed dmg: [color=red]%d[/color]' % [name, dmg])
+	self.add_text('[color=white]%s[/color] has dealed dmg: [color=red]%s[/color]' % [name, dmg])
 
 
 func destroy_log(name: String) -> void:
@@ -75,9 +79,9 @@ func spawn_card(config: Dictionary, pos: Vector2) -> void:
 		func (c: Card) -> void:
 			c.add_tags(config)
 			c.position = pos
-			c.created.connect(self.create_log)
-			c.played.connect(self.action_log)
-			c.destroyed.connect(self.destroy_log)
+			c.created.connect(self.logger.obj_has_created_log)
+			c.played.connect(self.logger.card_has_played_log)
+			c.destroyed.connect(self.logger.obj_has_destroyed_log)
 	)
 
 	self.cards.append(card)
