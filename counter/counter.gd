@@ -47,16 +47,6 @@ func _ready() -> void:
 	
 	
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	for i in range(1000):
-		await get_tree().create_timer(0.01).timeout
-		point= point + 2
-		if(point>=1000 && not is_result_calculated):
-			final_result()
-		return
-
 func set_points(value: int)-> void:
 	self.points_changed.emit(self.point, value, value - self.point)
 	point = value

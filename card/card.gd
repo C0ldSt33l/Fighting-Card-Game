@@ -49,6 +49,10 @@ enum DIRECTION {
 	set(val): self.set_tag_val('direction', val)
 	get(): return self.get_tag_val('direction')
 
+@export var rarity: RARITY :
+	set(val): self.set_tag_val('rarity', val)
+	get(): return self.get_tag_val('rarity')
+
 # NOTE:
 #- Think about func signature(`(dmg: int) -> void` or `() -> int`)
 #- When apply (during action or before card spawn) 

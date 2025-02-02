@@ -52,6 +52,11 @@ func card_has_played_log(card: Card) -> void:
 	self.put_text(placeholder % [card.card_name, card.dmg])
 
 
+func combo_has_activated(combo: Combo) -> void:
+	var placeholder := 'Combo' + colorful(' %s ', Color.WHITE) + 'has activated'
+	self.put_text(placeholder % [combo.name])
+
+
 func obj_has_destroyed_log(obj: Variant) -> void:
 	var name_and_type := self.get_obj_name_and_type(obj)
 	self.put_text((OBJ_PLACEHOLDER + ' has destroyed') % name_and_type)

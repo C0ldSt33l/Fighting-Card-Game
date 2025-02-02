@@ -1,20 +1,18 @@
 extends Node
 
-var COMBOS:= {
-	'Standrat Combo':
-	{
-		'description': 'Started combo',
-		'Price': 15,
-		'points':10,
-		'multipliter':2,
-		'effect': func()-> void: print('big combo')
-	},
-	'Big Combo':
-	{
-		'description': 'big Started combo',
-		'Price': 25,
-		'points':10,
-		'multipliter':2,
-		'effect': func()-> void: print('big combo')
-	}
-}
+var COMBOS: Array[Combo] = [
+	Combo.new(
+		'Standrat Combo',
+		'Started combo',
+		15, 10, 2,
+		{},
+		func()-> void: print('big combo')
+	),
+	Combo.new(	
+		'Big Combo',
+		'big Started combo',
+		25, 10, 2,
+		{},
+		func()-> void: print('big combo')
+	)
+]
