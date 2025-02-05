@@ -53,6 +53,8 @@ var dir: DIRECTION :
 #- Think about func signature(`(dmg: int) -> void` or `() -> int`)
 #- When apply (during action or before card spawn) 
 # if second case => make copy of it in `BattleArena` class
+var Background:Panel
+
 var effects: Array[Callable] = []
 
 
@@ -62,6 +64,7 @@ signal destroyed(name: String)
 
 
 func _ready() -> void:
+	Background = get_node("Background")
 	self.name_label.text += str(self.card_name)
 	self.type_label.text += str(ACTION_TYPE.keys()[self.type])
 	self.dmg_label.text += str(self.dmg)
