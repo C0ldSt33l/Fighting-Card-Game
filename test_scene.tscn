@@ -28,12 +28,5 @@ offset_right = 313.0
 offset_bottom = 647.0
 grow_vertical = 2
 
-[node name="CardContainer" type="HBoxContainer" parent="."]
-offset_left = 322.0
-offset_top = 209.0
-offset_right = 1137.0
-offset_bottom = 494.0
-theme_override_constants/separation = 100
-
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Button" to="." method="start_round"]

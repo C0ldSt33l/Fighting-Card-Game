@@ -53,10 +53,10 @@ enum DIRECTION {
 	set(val): self.set_tag_val('rarity', val)
 	get(): return self.get_tag_val('rarity')
 
-# NOTE:
-#- Think about func signature(`(dmg: int) -> void` or `() -> int`)
-#- When apply (during action or before card spawn) 
-# if second case => make copy of it in `BattleArena` class
+# TODO:
+# - Think about func signature(`(dmg: int) -> void` or `() -> int`)
+# - When apply (during action or before card spawn) 
+#   if second case => make copy of it in `BattleArena` class
 var effects: Array[Callable] = []
 
 
@@ -66,7 +66,7 @@ signal destroyed(c: Card)
 
 
 func _ready() -> void:
-	self.name_label.text += str(self.card_name)
+	self.name_label.text += str(self.card_name).capitalize()
 	self.type_label.text += str(ACTION_TYPE.keys()[self.type])
 	self.dmg_label.text += str(self.dmg)
 	self.created.emit(self)
@@ -95,6 +95,10 @@ func get_tag_val(tag: String) -> Variant:
 
 func set_tag_val(tag: String, val: Variant) -> void:
 	self.tags[tag] = val
+
+
+func set_name_label_text(text: String) -> void:
+	self.name_label.text = text
 
 
 func _exit_tree() -> void:

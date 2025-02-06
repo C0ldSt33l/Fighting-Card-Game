@@ -1,6 +1,8 @@
 
 class_name Combo
 
+# TODO: remake combo config and combo creation in test scene
+
 var name: String
 var description: String
 
@@ -8,16 +10,21 @@ var price: int
 var points: int
 var multiplier: int
 
-var pattern: Dictionary
-var length: int :
-	get():
-		return self.pattern.size() 
+# # TODO: think about another names
+# var patterns: Array[Dictionary] 
+# var length: int :
+# 	set(val): return
+# 	get(): return self.patterns.size() 
 var cards: Array[Card] = []
+# BUG: always return `null`
 var activation_card: Card :
 	set(val): return
 	get(): return null if self.cards.size() == 0 else self.cards[-1]
+var lenght: int :
+	set(val): return
+	get(): return self.cards.size()
 
-# NOTE: Maybe need to make it as seperate class `Effect`
+# TODO: Maybe need to make it as seperate class `Effect`
 var effect: Callable
 
 
@@ -26,46 +33,27 @@ signal played(c: Combo)
 signal destroyed(c: Combo)
 
 
-
 func _init(
 	name: String,
-	description: String,
-	price: int,
-	points: int,
-	multiplier: int,
-	pattern: Dictionary,
-	effect: Callable
+	cards: Array[Card],
+	config: Dictionary,
 ) -> void:
 	self.name = name
-	self.description = description
-	self.price = price
-	self.points = points
-	self.multiplier = multiplier
-	self.pattern = pattern
-	self.effect = effect
+	self.cards = cards
+	for prop in config:
+		self[prop] = config[prop]
+
+	self.created.emit(self)
 
 
-# NOTE: Maybe will need to create simple parser for combo pattern
-# to expend its variations
-func check(cards: Array[Card]) -> bool:
-	var i := 0
-	for prop in self.pattern:
-		if cards[i] == null: return false
-		if cards[i][prop] != self.pattern[prop]:
-			return false
-		i += 1
-
-	self.cards = cards.slice(0, i)
-	return true
-	
-
-# NOTE: which signature is more suitable:
-	# - (score: int, multiply: int) -> void
-	# - (score: Vector2i) -> void
-	# - (cards: Array[Card], cur_pos: int) -> void
-	# - (score: Vector2i, cards: Array[Card], cur_pos: int) -> void
+# TODO: which signature is more suitable:
+# - (score: int, multiply: int) -> void
+# - (score: Vector2i) -> void
+# - (cards: Array[Card], cur_pos: int) -> void
+# - (score: Vector2i, cards: Array[Card], cur_pos: int) -> void
 func apply_effect() -> void:
 	self.effect.call()
+	self.played.emit(self)
 
 
 func count_card_by_tag(tag: String, val, match: Callable) -> int:
@@ -76,7 +64,7 @@ func count_card_by_tag(tag: String, val, match: Callable) -> int:
 	return count
 
 
-# Maybe will come in useful for creating combo pattern
+# Maybe will come in useful for creating combo patterns
 static func equal(target, cur) -> bool:
 	return target == cur
 
@@ -95,3 +83,7 @@ static func greate_or_equal(target, cur) -> bool:
 
 static func less_or_equal(target, cur) -> bool:
 	return cur == target or cur < target
+
+
+func _exit_tree() -> void:
+	self.destroyed.emit(self)

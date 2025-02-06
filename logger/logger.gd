@@ -5,13 +5,13 @@ var OBJ_PLACEHOLDER := 'Obj %s type of %s' % [colorful('%s', Color.WHITE), color
 
 '''
 Possible colorful log elements:
-	- log type
-	- obj name
-	- obj type
-	- Score:
-		- old val
-		- new val
-		- diff
+- log type
+- obj name
+- obj type
+- Score:
+	- old val
+	- new val
+	- diff
 '''
 
 

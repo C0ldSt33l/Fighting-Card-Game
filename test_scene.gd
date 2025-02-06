@@ -3,12 +3,11 @@ extends Node2D
 @onready var logger := $Logger as Logger 
 @onready var timer := $Timer as Timer
 @onready var counter := $Counter as Counter
-@onready var card_container := $CardContainer as HBoxContainer
 
 var cards_on_table: Array[Card] = []
 var cur_card := 0
 
-var available_combos: Array[Combo] = Combos.COMBOS
+var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
 
 
@@ -24,7 +23,7 @@ func _ready() -> void:
 			'dmg': 2
 		},
 		{
-			'card_name': 'kick',
+			'card_name': 'knee strike',
 			'type': Card.ACTION_TYPE.LEG_STRIKE,
 			'dmg': 3
 		},
@@ -57,7 +56,7 @@ func end_round() -> void:
 	self.cards_on_table.clear()
 
 
-#! NOTE: Will cause errors if 1+ cards,
+#! CRITICAL: Will cause errors if 1+ cards,
 #! that not binded to a combo, stay at the end 
 func play_card() -> void:
 	var card := self.cards_on_table[self.cur_card]
@@ -101,20 +100,27 @@ func check_combos() -> void:
 	var step: int
 	while i < self.cards_on_table.size():
 		step = 1
-		for combo in self.available_combos:
-			var combo_len := combo.length
-			var cards := self.cards_on_table.slice(i, i + combo_len)
-			if combo.check(cards):
-				step = combo_len
-				self.combos_on_table.append(self.create_combo(combo))
+		for combo_name in self.available_combos:
+			var combo := self.create_combo(
+				combo_name,
+				self.cards_on_table.slice(i)
+			)
+			if combo != null:
+				self.combos_on_table.append(combo)
+				step = combo.lenght
 				break
 
 		i += step
+	
+	print('combo size: ', )
 
 
-func create_combo(c: Combo) -> Combo:
-	var copy := c.duplicate() as Combo
-	copy.created.connect(self.logger.obj_has_created_log)
-	copy.played.connect(self.logger.combo_has_activated)
-	copy.destroyed.connect(self.logger.obj_has_destroyed_log)
-	return copy
+func create_combo(name: StringName, cards: Array[Card]) -> Combo:
+	var combo := ComboFactory.create(name, cards)
+	if combo == null: return null
+
+	combo.played.connect(self.logger.combo_has_activated)
+	combo.created.connect(self.logger.obj_has_created_log)
+	combo.destroyed.connect(self.logger.obj_has_destroyed_log)
+
+	return combo
