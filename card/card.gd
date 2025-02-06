@@ -30,42 +30,47 @@ enum DIRECTION {
 # - direction
 # - martial art
 # - has aura
-@export var tags: Dictionary
+@export var tags: Dictionary = {}
 
 # Short cuts for base tags
-var card_name: String :
+@export var card_name: String :
 	set(val): self.set_tag_val('card_name', val)
 	get(): return self.get_tag_val('card_name')
 
-var type: ACTION_TYPE :
+@export var type: ACTION_TYPE :
 	set(val): self.set_tag_val('type', val)
 	get(): return self.get_tag_val('type')
 
-var dmg: int :
+@export var dmg: int :
 	set(val): self.set_tag_val('dmg', val)
 	get(): return self.get_tag_val('dmg')
 
-var dir: DIRECTION :
+@export var dir: DIRECTION :
 	set(val): self.set_tag_val('direction', val)
 	get(): return self.get_tag_val('direction')
 
-# NOTE:
-#- Think about func signature(`(dmg: int) -> void` or `() -> int`)
-#- When apply (during action or before card spawn) 
-# if second case => make copy of it in `BattleArena` class
+@export var rarity: RARITY :
+	set(val): self.set_tag_val('rarity', val)
+	get(): return self.get_tag_val('rarity')
+
+# TODO:
+# - Think about func signature(`(dmg: int) -> void` or `() -> int`)
+# - When apply (during action or before card spawn) 
+#   if second case => make copy of it in `BattleArena` class
+
 var effects: Array[Callable] = []
 
 
-signal created(name: String)
-signal played(name: String, dealed_dmg: int)
-signal destroyed(name: String)
+signal created(c: Card)
+signal played(c: Card)
+signal destroyed(c: Card)
 
 
 func _ready() -> void:
-	self.name_label.text += str(self.card_name)
+	self.name_label.text += str(self.card_name).capitalize()
 	self.type_label.text += str(ACTION_TYPE.keys()[self.type])
 	self.dmg_label.text += str(self.dmg)
-	self.created.emit(self.card_name + ' has created')
+	self.created.emit(self)
 
 
 func play() -> void:
@@ -74,7 +79,7 @@ func play() -> void:
 	for effect in self.effects:
 		dmg += effect.call()
 
-	self.played.emit(self.card_name, dmg)
+	self.played.emit(self)
 
 
 func add_tags(new_tags: Dictionary) -> void:
@@ -93,5 +98,9 @@ func set_tag_val(tag: String, val: Variant) -> void:
 	self.tags[tag] = val
 
 
+func set_name_label_text(text: String) -> void:
+	self.name_label.text = text
+
+
 func _exit_tree() -> void:
-	self.destroyed.emit(self.card_name)
+	self.destroyed.emit(self)

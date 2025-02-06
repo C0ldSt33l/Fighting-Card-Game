@@ -1,4 +1,5 @@
 extends Node2D
+class_name Counter
 
 
 var Panel_points: Panel
@@ -13,10 +14,18 @@ var final_points_panel: Panel
 var final_points_label:Label
 
 var final_points = 0
-var point :int = 1 
-var multipliter :int = 1 
+var point :int = 1  :
+	set = set_points
+var multipliter :int = 1 :
+	set = set_multipliter
 
 var is_result_calculated: bool = false
+
+
+signal points_changed(old: int, new: int, diff: int)
+signal multiplier_changed(old: int, new: int, diff: int)
+signal total_score_changed(old: int, new: int, diff: int)
+
 
 func _ready() -> void:
 	Label_x = get_node("X")
@@ -37,26 +46,18 @@ func _ready() -> void:
 	final_points_label.visible = false
 	
 	
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	for i in range(1000):
-		await get_tree().create_timer(0.01).timeout
-		point= point + 2
-		if(point>=1000 && not is_result_calculated):
-			final_result()
-		return
-
 func set_points(value: int)-> void:
+	self.points_changed.emit(self.point, value, value - self.point)
 	point = value
 	
 func get_points()-> int:
 	return point
 	
+
 func set_multipliter(value: int)-> void:
+	self.multiplier_changed.emit(self.multipliter, value, value - self.multipliter)
 	multipliter = value
-	
+
 func get_multipliter()-> int:
 	return multipliter
 	

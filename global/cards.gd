@@ -3,20 +3,20 @@ extends Node
 const CARDS := {
     'fist':
     	{
-			'card_name': 'fist',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
-			'dmg': 2
+			'dmg': 2,
+			'rarity': Card.RARITY.REGULAR,
 		},
     'kick':
 		{
-			'card_name': 'kick',
 			'type': Card.ACTION_TYPE.LEG_STRIKE,
-			'dmg': 3
+			'dmg': 3,
+			'rarity': Card.RARITY.REGULAR,
 		},
     'elbow':
 		{
-			'card_name': 'elbow',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
-			'dmg': 5
+			'dmg': 5,
+			'rarity': Card.RARITY.RARE,
 		},
 }
