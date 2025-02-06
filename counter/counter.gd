@@ -46,7 +46,6 @@ func _ready() -> void:
 	final_points_label.visible = false
 	
 	
-
 func set_points(value: int)-> void:
 	self.points_changed.emit(self.point, value, value - self.point)
 	point = value
@@ -58,8 +57,7 @@ func get_points()-> int:
 func set_multipliter(value: int)-> void:
 	self.multiplier_changed.emit(self.multipliter, value, value - self.multipliter)
 	multipliter = value
-	
-	
+
 func get_multipliter()-> int:
 	return multipliter
 	
