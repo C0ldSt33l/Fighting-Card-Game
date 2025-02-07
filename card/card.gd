@@ -57,6 +57,7 @@ enum DIRECTION {
 # - Think about func signature(`(dmg: int) -> void` or `() -> int`)
 # - When apply (during action or before card spawn) 
 #   if second case => make copy of it in `BattleArena` class
+
 var effects: Array[Callable] = []
 
 

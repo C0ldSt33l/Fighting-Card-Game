@@ -28,6 +28,7 @@ var spawner := preload("res://card/card.tscn")
 # 	parent.add_child(card)
 # 	return card
 
+
 ## require func with signature `(Card) -> void`
 func create(modifier: Callable) -> Card:
 	var card := spawner.instantiate() as Card
