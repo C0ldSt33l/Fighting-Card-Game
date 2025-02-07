@@ -2,22 +2,22 @@ extends Node2D
 class_name Counter
 
 
-var Panel_points: Panel
-var Label_points :Label
+@onready var Panel_points := $Panel/Panel_point as Panel
+@onready var Label_points := $Panel/Panel_point/points as Label
 
-var Panel_mult: Panel
-var Label_multipliter :Label
+@onready var Panel_mult := $Panel/panel_mult as Panel
+@onready var Label_multipliter := $Panel/panel_mult/multiplier as Label
 
-var Label_x : Label
+@onready var Label_x := $X as Label
 
-var final_points_panel: Panel
-var final_points_label:Label
+@onready var final_points_panel := $final_points as Panel
+@onready var final_points_label := $final_points/final_point as Label
 
 var final_points = 0
-var point :int = 1  :
+@onready var points: int = 0 :
 	set = set_points
-var multipliter :int = 1 :
-	set = set_multipliter
+@onready var multiplier: int = 0 :
+	set = set_multiplier
 
 var is_result_calculated: bool = false
 
@@ -28,40 +28,30 @@ signal total_score_changed(old: int, new: int, diff: int)
 
 
 func _ready() -> void:
-	Label_x = get_node("X")
-	
-	Panel_points = get_node("Panel/Panel_point")
-	Panel_mult = get_node("Panel/panel_mult")
-	
-	Label_points = get_node("Panel/Panel_point/points")
-	Label_multipliter = get_node("Panel/panel_mult/multiplier")
-	
-	final_points_panel = get_node("final_points")
-	final_points_label = get_node("final_points/final_point")
-	
-	Label_points.text = str(point)
-	Label_multipliter.text = str(multipliter)
+	self.points = 0
+	self.multiplier = 1
 	
 	final_points_panel.visible = false
 	final_points_label.visible = false
 	
-	
 
 func set_points(value: int)-> void:
-	self.points_changed.emit(self.point, value, value - self.point)
-	point = value
+	self.points_changed.emit(self.points, value, value - self.points)
+	points = value
+	Label_points.text = str(points)
 	
 func get_points()-> int:
-	return point
+	return points
 	
 
-func set_multipliter(value: int)-> void:
-	self.multiplier_changed.emit(self.multipliter, value, value - self.multipliter)
-	multipliter = value
+func set_multiplier(value: int)-> void:
+	self.multiplier_changed.emit(self.multiplier, value, value - self.multiplier)
+	multiplier = value
+	Label_multipliter.text = str(multiplier)
 	
 	
 func get_multipliter()-> int:
-	return multipliter
+	return multiplier
 	
 func final_result()-> void:
 	is_result_calculated = true #хрень которую надо соркатить
@@ -76,7 +66,7 @@ func final_result()-> void:
 	while(final_points_panel.size.x<=520):
 		await get_tree().create_timer(0.01).timeout
 		final_points_panel.size.x =final_points_panel.size.x + 4 
-	final_points = point * multipliter
+	final_points = points * multiplier
 	final_points_label.text = str(final_points)
 	
 	

@@ -9,12 +9,17 @@ var cur_card := 0
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
+var cur_combo: Combo :
+	set(val): return
+	get(): return null if self.combos_on_table.size() == 0 else self.combos_on_table[0]
 
 
 func _ready() -> void:
-	self.counter.points_changed.connect(self.logger.change_points_log)
-	self.counter.points_changed.connect(self.logger.change_multiplier_log)
-	self.counter.points_changed.connect(self.logger.change_total_score_log)
+	self.connect_sygnals(self.counter, {
+		'points_changed': self.logger.change_points_log,
+		'multiplier_changed': self.logger.change_multiplier_log,
+		'total_score_changed': self.logger.change_total_score_log,
+	})
 
 	var configs := [
 		{
@@ -31,6 +36,11 @@ func _ready() -> void:
 			'card_name': 'elbow',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
 			'dmg': 5
+		},
+		{
+			'card_name': 'fist',
+			'type': Card.ACTION_TYPE.ARM_STRIKE,
+			'dmg': 2
 		},
 	]
 	var spawn_pos := Vector2(350, 200)
@@ -56,15 +66,17 @@ func end_round() -> void:
 	self.cards_on_table.clear()
 
 
-#! CRITICAL: Will cause errors if 1+ cards,
-#! that not binded to a combo, stay at the end 
 func play_card() -> void:
 	var card := self.cards_on_table[self.cur_card]
-	var combo := self.combos_on_table[0]
+	var combo := self.cur_combo
 
-	if card == combo.activation_card:
-		combo.apply_effect()	
 	card.play()
+	self.counter.points += card.dmg
+	print('points: ' + str(self.counter.points))
+	print('multilier: : ' + str(self.counter.multiplier))
+	if combo and card == combo.activation_card:
+		combo.apply_effect()	
+		self.combos_on_table.erase(combo)
 
 	self.cur_card += 1
 	if self.cur_card == self.cards_on_table.size():
@@ -77,9 +89,11 @@ func spawn_card(config: Dictionary, pos: Vector2) -> void:
 		func (c: Card) -> void:
 			c.add_tags(config)
 			c.position = pos
-			c.created.connect(self.logger.obj_has_created_log)
-			c.played.connect(self.logger.card_has_played_log)
-			c.destroyed.connect(self.logger.obj_has_destroyed_log)
+			c = self.connect_sygnals(c, {
+				'created': self.logger.obj_has_created_log,
+				'played': self.logger.card_has_played_log,
+				'destroyed': self.logger.obj_has_destroyed_log,
+			})
 	)
 
 	self.cards_on_table.append(card)
@@ -111,16 +125,23 @@ func check_combos() -> void:
 				break
 
 		i += step
-	
-	print('combo size: ', )
 
 
 func create_combo(name: StringName, cards: Array[Card]) -> Combo:
 	var combo := ComboFactory.create(name, cards)
 	if combo == null: return null
 
-	combo.played.connect(self.logger.combo_has_activated)
-	combo.created.connect(self.logger.obj_has_created_log)
-	combo.destroyed.connect(self.logger.obj_has_destroyed_log)
+	self.connect_sygnals(combo, {
+		'created': self.logger.obj_has_created_log,
+		'played': self.logger.combo_has_activated,
+		'destroyed': self.logger.obj_has_destroyed_log,
+	})
 
 	return combo
+
+
+func connect_sygnals(obj: Variant, what_to_what: Dictionary) -> Variant:
+	for s in what_to_what:
+		obj[s].connect(what_to_what[s])
+	
+	return obj

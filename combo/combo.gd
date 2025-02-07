@@ -1,7 +1,6 @@
 
 class_name Combo
-
-# TODO: remake combo config and combo creation in test scene
+extends Resource
 
 var name: String
 var description: String
@@ -25,6 +24,10 @@ var lenght: int :
 	get(): return self.cards.size()
 
 # TODO: Maybe need to make it as seperate class `Effect`
+# TODO: Add `activation time`:
+# - Before card playing
+# - While card playing
+# - After card playing
 var effect: Callable
 
 
@@ -56,10 +59,18 @@ func apply_effect() -> void:
 	self.played.emit(self)
 
 
-func count_card_by_tag(tag: String, val, match: Callable) -> int:
+func count_card_by_tag(tag: String) -> int:
 	var count := 0
 	for c in self.cards:
-		if !match.call(val, c.get_tag_val(tag)): continue
+		if !c.has_tag(tag): continue
+		count += 1
+	return count
+
+
+func count_card_by_tag_val(tag: String, match: Callable) -> int:
+	var count := 0
+	for c in self.cards:
+		if !match.call(c.get_tag_val(tag)): continue
 		count += 1
 	return count
 

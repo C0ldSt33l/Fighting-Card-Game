@@ -1,23 +1,36 @@
 class_name Logger
 extends RichTextLabel 
 
-var OBJ_PLACEHOLDER := 'Obj %s type of %s' % [colorful('%s', Color.WHITE), colorful('%s', Color.WHITE)]
+@export_category('Text Colors')
+@export var TEXT_DEFAULT_COLOR := Color.GRAY
+@export var TYPE_COLOR := Color.YELLOW
+@export var OBJ_NAME_COLOR := Color.WHITE
+@export var SCORE_OLD_VAL_COLOR := Color.WHITE
+@export var SCORE_NEW_VAL_COLOR := Color.WHITE
+@export var SCORE_DIFF_COLOR := Color.GREEN
+@export var SCORE_NEGATIVE_DIFF_COLOR := Color.RED
+@export var EFFECT_NAME_COLOR := Color.ORANGE
+@export var DMG_COLOR := Color.RED
+
+var OBJ_PLACEHOLDER := 'Obj %s type of %s' % [colorful('%s', OBJ_NAME_COLOR), colorful('%s', TYPE_COLOR)]
 
 '''
 Possible colorful log elements:
-- log type
-- obj name
-- obj type
+- log type: ?
+- obj name: white
+- obj type: ? (maybe yellow)
 - Score:
-	- old val
-	- new val
-	- diff
+	- old val: white
+	- new val: white
+	- diff: green
+	- negative diff: red
+- effect name: orange
 '''
 
 
 func _ready() -> void:
 	self.bbcode_enabled = true
-	self.add_theme_color_override('default_color', Color.GRAY)
+	self.add_theme_color_override('default_color', TEXT_DEFAULT_COLOR)
 
 
 func put_text(text: String) -> void:
@@ -30,30 +43,30 @@ func obj_has_created_log(obj: Variant) -> void:
 
 
 func change_points_log(old: int, new: int, diff: int) -> void:
-	var diff_color := Color.RED if diff < 0 else Color.GREEN
-	var placeholder := 'Score change: points %s -> %s: %s' % [colorful('%d', Color.WHITE), colorful('%d', Color.WHITE), colorful('%d', diff_color)]
+	var diff_color := SCORE_NEGATIVE_DIFF_COLOR if diff < 0 else SCORE_DIFF_COLOR
+	var placeholder := 'Score change: points %s -> %s: %s' % [colorful('%d', SCORE_OLD_VAL_COLOR), colorful('%d', SCORE_NEW_VAL_COLOR), colorful('%d', diff_color)]
 	self.put_text(placeholder % [old, new, diff])
 
 
 func change_multiplier_log(old: int, new: int, diff: int) -> void:
 	var diff_color := Color.RED if diff < 0 else Color.GREEN
-	var placeholder := 'Score change: multiplier %s -> %s: %s' % [colorful('%d', Color.WHITE), colorful('%d', Color.WHITE), colorful('%d', diff_color)]
+	var placeholder := 'Score change: multiplier %s -> %s: %s' % [colorful('%d', SCORE_OLD_VAL_COLOR), colorful('%d', SCORE_NEW_VAL_COLOR), colorful('%d', diff_color)]
 	self.put_text(placeholder % [old, new, diff])
 
 
 func change_total_score_log(old: int, new: int, diff: int) -> void:
 	var diff_color := Color.RED if diff < 0 else Color.GREEN
-	var placeholder := 'Score change: total score %s -> %s: %s' % [colorful('%d', Color.WHITE), colorful('%d', Color.WHITE), colorful('%d', diff_color)]
+	var placeholder := 'Score change: total score %s -> %s: %s' % [colorful('%d', SCORE_OLD_VAL_COLOR), colorful('%d', SCORE_NEW_VAL_COLOR), colorful('%d', diff_color)]
 	self.put_text(placeholder % [old, new, diff])
 
 
 func card_has_played_log(card: Card) -> void:
-	var placeholder := 'Card ' + colorful('%s', Color.WHITE) + ' has dealed dmg: ' + colorful('%d', Color.RED)
+	var placeholder := colorful('Card ', TYPE_COLOR) + colorful('%s', OBJ_NAME_COLOR) + ' has dealed dmg: ' + colorful('%d', DMG_COLOR)
 	self.put_text(placeholder % [card.card_name, card.dmg])
 
 
 func combo_has_activated(combo: Combo) -> void:
-	var placeholder := 'Combo' + colorful(' %s ', Color.WHITE) + 'has activated'
+	var placeholder := colorful('Combo', TYPE_COLOR) + colorful(' %s ', OBJ_NAME_COLOR) + 'has activated'
 	self.put_text(placeholder % [combo.name])
 
 
