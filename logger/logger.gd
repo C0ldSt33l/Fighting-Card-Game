@@ -61,7 +61,7 @@ func change_total_score_log(old: int, new: int, diff: int) -> void:
 
 
 func card_has_played_log(card: Card) -> void:
-	var placeholder := colorful('Card ', TYPE_COLOR) + colorful('%s', OBJ_NAME_COLOR) + ' has dealed dmg: ' + colorful('%d', DMG_COLOR)
+	var placeholder := colorful('Card ', TYPE_COLOR) + colorful('%s', OBJ_NAME_COLOR) + ' has dealt dmg: ' + colorful('%d', DMG_COLOR)
 	self.put_text(placeholder % [card.card_name, card.dmg])
 
 

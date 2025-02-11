@@ -74,6 +74,7 @@ func _ready() -> void:
 
 
 func play() -> void:
+	self.scale += Vector2(0.2, 0.2)
 	# This is test
 	var dmg = self.dmg
 	for effect in self.effects:

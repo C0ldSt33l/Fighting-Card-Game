@@ -39,4 +39,3 @@ func get_combo_patterns(name: String) -> Array[Dictionary]:
 	var patterns: Array[Dictionary]
 	patterns.assign(self.COMBOS[name]['patterns'])
 	return patterns
-
