@@ -19,6 +19,7 @@ offset_right = 1001.0
 offset_bottom = 476.0
 
 [node name="Button2" type="Button" parent="Panel"]
+layout_mode = 0
 offset_left = 86.0
 offset_top = -84.0
 offset_right = 183.0
@@ -40,3 +41,4 @@ offset_bottom = -50.0
 [node name="hide_price_timer" type="Timer" parent="."]
 
 [connection signal="pressed" from="Panel/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/Button2" to="." method="_on_button_2_pressed"]

@@ -49,6 +49,9 @@ var dir: DIRECTION :
 	set(val): self.set_tag_val('direction', val)
 	get(): return self.get_tag_val('direction')
 
+var price: int:
+	set(val):self.set_tag_val('price',val)
+	get(): return self.get_tag_val("price") 
 # NOTE:
 #- Think about func signature(`(dmg: int) -> void` or `() -> int`)
 #- When apply (during action or before card spawn) 

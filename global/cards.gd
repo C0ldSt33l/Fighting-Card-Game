@@ -5,18 +5,21 @@ const CARDS := {
 		{
 			'card_name': 'fist',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
-			'dmg': 2
+			'dmg': 2,
+			'price': 2
 		},
 	'kick':
 		{
 			'card_name': 'kick',
 			'type': Card.ACTION_TYPE.LEG_STRIKE,
-			'dmg': 3
+			'dmg': 3,
+			'price': 1
 		},
 	'elbow':
 		{
 			'card_name': 'elbow',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
-			'dmg': 5
+			'dmg': 5,
+			'price': 3
 		},
 }

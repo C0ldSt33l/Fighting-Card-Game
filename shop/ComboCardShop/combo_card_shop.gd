@@ -4,8 +4,8 @@ extends Node2D
 
 
 var cards = preload("res://card/card.tscn") 
-var AllCards = preload("res://global/cards.gd")
-var AllCombos = preload("res://global/combos.gd")
+
+
 var LabelMoney:Label 
 var money : int = 10
 
@@ -16,6 +16,7 @@ var spawn_pos
 var Hide_price_timer: Timer
 var rng
 var PriceButton:Button
+var ChosenCard:Card
 
 func _ready() -> void:
 	LabelMoney = get_node("Panel/Label")
@@ -27,18 +28,16 @@ func _ready() -> void:
 	
 	
 	PriceButton.visible = false
-	
-	
 	PriceButton.set_size(Price.size)
+	
 	rng = RandomNumberGenerator.new()
 	rng.randomize()
 	
 	spawn_pos = BackgroundPanel.position + Vector2(10,10)
-	
-	var cards = AllCards.CARDS.keys().duplicate()
+	var cards = Cards.CARDS.keys().duplicate()
 	var n:Vector2
 	for i in range(7):
-		self.spawn_card(AllCards.CARDS[cards[rng.randi_range(0,cards.size() - 1)]], spawn_pos + n)
+		self.spawn_card(Cards.CARDS[cards[rng.randi_range(0,cards.size() - 1)]], spawn_pos + n)
 		n.x += 150
 
 
@@ -48,17 +47,24 @@ func _process(delta: float) -> void:
 	
 	var mouse_pos = get_global_mouse_position()
 	var hovered = false
-	
+	Hide_price_timer.one_shot = true
 	for obj in objects:		
 		if obj is Card:
 			if obj.Background.get_global_rect().has_point(mouse_pos):
 				PriceButton.visible = true
-				Price.text = "price = 5"
+				Price.text = str("price = ",obj.price)
 				PriceButton.position = obj.Background.global_position + Vector2(-30, 100)
 				hovered = true
-				Hide_price_timer.start(5)
 				
+				Hide_price_timer.start(0.5)
+				ChosenCard = obj
 				break
+	if PriceButton.get_global_rect().has_point(mouse_pos):
+		hovered = true
+				
+	if PriceButton.get_global_rect().has_point(mouse_pos):
+		hovered = true
+		
 	if not hovered and Hide_price_timer.is_stopped():
 		PriceButton.visible = false
 	
@@ -78,10 +84,29 @@ func _on_button_pressed() -> void:
 			object.queue_free()
 		objects.clear()
 	
-		var cards = AllCards.CARDS.keys().duplicate()
+		var cards = Cards.CARDS.keys().duplicate()
 		var n:Vector2
 		for i in range(7):
-			self.spawn_card(AllCards.CARDS[cards[rng.randi_range(0,cards.size() - 1)]], spawn_pos + n)
+			self.spawn_card(Cards.CARDS[cards[rng.randi_range(0,cards.size() - 1)]], spawn_pos + n)
 			n.x += 150
 		money=money-1
+	pass # Replace with function body.
+
+	
+func _on_button_2_pressed() -> void:#buy button
+	if (money-ChosenCard.price >= 0): 
+		PlayerConfig.available_cards.append(ChosenCard)
+		money -= ChosenCard.price 
+		
+		var new_object :Array[Node2D] = []
+		
+		for object in objects:
+			if object is Card:
+				if object != ChosenCard:
+					new_object.append(object)
+				else:
+					object.queue_free()
+					
+		objects = new_object
+		print(PlayerConfig.available_cards.size())
 	pass # Replace with function body.
