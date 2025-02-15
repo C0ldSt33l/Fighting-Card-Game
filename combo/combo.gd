@@ -28,6 +28,7 @@ var lenght: int :
 # - Before card playing
 # - While card playing
 # - After card playing
+# TODO: make upgradable
 var effect: Callable
 
 

@@ -49,48 +49,9 @@ func _ready() -> void:
 		self.spawn_card(config, spawn_pos)
 		spawn_pos.x += 150
 
-	# var combo_config := Combos.get_combo_config('Big Combo')
-	# var combo_card := ComboCard.create(
-	# 	self,
-	# 	'Big Combo',
-	# 	combo_config['description'],
-	# 	Combos.get_combo_patterns('Big Combo')
-	# )
-	# combo_card.position = Vector2(600, 200)
-	# self.add_child(combo_card)
-
 
 func start_round() -> void:
-	if self.cards_on_table.size() == 0:
-		var configs := [
-			{
-				'card_name': 'fist',
-				'type': Card.ACTION_TYPE.ARM_STRIKE,
-				'dmg': 2
-			},
-			{
-				'card_name': 'knee strike',
-				'type': Card.ACTION_TYPE.LEG_STRIKE,
-				'dmg': 3
-			},
-			{
-				'card_name': 'elbow',
-				'type': Card.ACTION_TYPE.ARM_STRIKE,
-				'dmg': 5
-			},
-			{
-				'card_name': 'fist',
-				'type': Card.ACTION_TYPE.ARM_STRIKE,
-				'dmg': 2
-			},
-		]
-		var spawn_pos := Vector2(350, 200)
-
-		for config in configs:
-			self.spawn_card(config, spawn_pos)
-			spawn_pos.x += 150
-		return
-
+	if self.cards_on_table.size() == 0: return
 	self.timer.start()
 	self.check_combos()
 
@@ -138,15 +99,6 @@ func spawn_card(config: Dictionary, pos: Vector2) -> void:
 	)
 
 	self.cards_on_table.append(card)
-
-
-func select_first_combo() -> void:
-	self.selected_combo = self.available_combos[0]
-
-
-func select_second_combo() -> void:
-	self.selected_combo = self.available_combos[1]
-
 
 # NOTE: If there're 2 combos, one of them extends another,
 # then the one, that goes before, will be activated

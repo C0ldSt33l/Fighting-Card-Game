@@ -22,6 +22,11 @@ enum DIRECTION {
 	LEGS,
 }
 
+enum ENERGY {
+	PRANA,
+	KI,
+}
+
 #Tags:
 # - card_name
 # - dmg
@@ -52,6 +57,11 @@ enum DIRECTION {
 @export var rarity: RARITY :
 	set(val): self.set_tag_val('rarity', val)
 	get(): return self.get_tag_val('rarity')
+
+# TODO: add visual effect while changing this field
+@export var energy: ENERGY :
+	set(val): self.set_tag_val('energy', val)
+	get(): return self.get_tag_val('energy')
 
 # TODO:
 # - Think about func signature(`(dmg: int) -> void` or `() -> int`)
