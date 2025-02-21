@@ -21,6 +21,7 @@ Cards="*res://global/cards.gd"
 Combos="*res://global/combos.gd"
 CardFactory="*res://global/card_factory.gd"
 PlayerConfig="*res://global/player_config.gd"
+Sql="*res://global/sql.gd"
 
 [dotnet]
 

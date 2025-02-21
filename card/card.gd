@@ -32,24 +32,32 @@ enum DIRECTION {
 # - has aura
 @export var tags: Dictionary
 
+
+var id: int :
+	set(val): self.set_tag_val('id', val)
+	get(): return self.get_tag_val('id')
 # Short cuts for base tags
-var card_name: String :
-	set(val): self.set_tag_val('card_name', val)
-	get(): return self.get_tag_val('card_name')
+var Name: String :
+	set(val): self.set_tag_val('Name', val)
+	get(): return self.get_tag_val('Name')
 
-var type: ACTION_TYPE :
-	set(val): self.set_tag_val('type', val)
-	get(): return self.get_tag_val('type')
+#var type: ACTION_TYPE :
+	#set(val): self.set_tag_val('type', val)
+	#get(): return self.get_tag_val('type')
 
-var dmg: int :
-	set(val): self.set_tag_val('dmg', val)
-	get(): return self.get_tag_val('dmg')
+var Point: int :
+	set(val): self.set_tag_val('Point', val)
+	get(): return self.get_tag_val('Point')
+
+var Factor: int :
+	set(val): self.set_tag_val('Factor', val)
+	get(): return self.get_tag_val('Factor')
 
 var dir: DIRECTION :
 	set(val): self.set_tag_val('direction', val)
 	get(): return self.get_tag_val('direction')
 
-var price: int:
+var Price: int:
 	set(val):self.set_tag_val('price',val)
 	get(): return self.get_tag_val("price") 
 # NOTE:
@@ -68,10 +76,10 @@ signal destroyed(name: String)
 
 func _ready() -> void:
 	Background = get_node("Background")
-	self.name_label.text += str(self.card_name)
-	self.type_label.text += str(ACTION_TYPE.keys()[self.type])
-	self.dmg_label.text += str(self.dmg)
-	self.created.emit(self.card_name + ' has created')
+	self.name_label.text += str(self.Name)
+	#self.type_label.text += str(ACTION_TYPE.keys()[self.type])
+	self.dmg_label.text += str(self.Point)
+	self.created.emit(self.Name + ' has created')
 
 
 func play() -> void:
@@ -100,4 +108,4 @@ func set_tag_val(tag: String, val: Variant) -> void:
 
 
 func _exit_tree() -> void:
-	self.destroyed.emit(self.card_name)
+	self.destroyed.emit(self.Name)
