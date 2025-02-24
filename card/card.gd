@@ -29,7 +29,7 @@ enum ENERGY {
 
 #Tags:
 # - card_name
-# - dmg
+# - points
 # - type
 # - rarity
 # - direction
@@ -46,9 +46,13 @@ enum ENERGY {
 	set(val): self.set_tag_val('type', val)
 	get(): return self.get_tag_val('type')
 
-@export var dmg: int :
-	set(val): self.set_tag_val('dmg', val)
-	get(): return self.get_tag_val('dmg')
+@export var points: int :
+	set(val): self.set_tag_val('points', val)
+	get(): return self.get_tag_val('points')
+
+@export var multiplier: int :
+	set(val): self.set_tag_val('multiplier', val)
+	get(): return self.get_tag_val('multiplier')
 
 @export var dir: DIRECTION :
 	set(val): self.set_tag_val('direction', val)
@@ -63,12 +67,8 @@ enum ENERGY {
 	set(val): self.set_tag_val('energy', val)
 	get(): return self.get_tag_val('energy')
 
-# TODO:
-# - Think about func signature(`(dmg: int) -> void` or `() -> int`)
-# - When apply (during action or before card spawn) 
-#   if second case => make copy of it in `BattleArena` class
-
-var effects: Array[Callable] = []
+## `Effect.action` should be func with signatoure `(Card) -> void`
+var effects: Array[Effect] = []
 
 
 signal created(c: Card)
@@ -79,16 +79,15 @@ signal destroyed(c: Card)
 func _ready() -> void:
 	self.name_label.text += str(self.card_name).capitalize()
 	self.type_label.text += str(ACTION_TYPE.keys()[self.type])
-	self.dmg_label.text += str(self.dmg)
+	self.dmg_label.text += str(self.points)
 	self.created.emit(self)
 
 
 func play() -> void:
+	print(self.effects)
 	self.scale += Vector2(0.2, 0.2)
-	# This is test
-	var dmg = self.dmg
-	for effect in self.effects:
-		dmg += effect.call()
+	for e in self.effects:
+		e.activate()
 
 	self.played.emit(self)
 
@@ -111,6 +110,10 @@ func set_tag_val(tag: String, val: Variant) -> void:
 
 func set_name_label_text(text: String) -> void:
 	self.name_label.text = text
+
+
+func add_effect(e: Effect) -> void:
+	self.effects.append(e)
 
 
 func _exit_tree() -> void:

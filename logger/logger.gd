@@ -16,7 +16,7 @@ const OBJ_PLACEHOLDER := "%s '%s'"
 const OBJ_HAS_CREATED_PLACEHOLDER := OBJ_PLACEHOLDER + ' has created'
 const OBJ_HAS_DESTROYED_PLACEHOLDER := OBJ_PLACEHOLDER + ' has destroyed'
 
-const CARD_HAS_PLAYED_PLACEHOLDER := "%s '%s' has played with effects:"
+const CARD_HAS_PLAYED_PLACEHOLDER := "%s '%s' has played with score(%s, %s)"
 const COMBO_HAS_ACTIVATED_PLACEHOLDER := "%s '%s' has activated with effects:"
 const APPLYED_EFFECT_PLACEHOLDER := '%s'
 
@@ -88,10 +88,12 @@ func card_has_played_log(c: Card) -> void:
 	self.put_text(CARD_HAS_PLAYED_PLACEHOLDER % [
 		colorful(type_and_name[0], OBJ_TYPE_COLOR),
 		colorful(type_and_name[1], OBJ_NAME_COLOR),
-		colorful(str(c.dmg), DMG_COLOR),
+		colorful(str(c.points), DMG_COLOR),
+		colorful(str(c.multiplier), DMG_COLOR),
 	])
+	self.put_text('Effects:')
 	for e in c.effects:
-		self.put_text(APPLYED_EFFECT_PLACEHOLDER % [colorful(e.name, EFFECT_NAME_COLOR)])
+		self.put_text('\t' + (APPLYED_EFFECT_PLACEHOLDER % [colorful(e.name, EFFECT_NAME_COLOR)]))
 
 
 func combo_has_activated(c: Combo) -> void:
@@ -100,10 +102,9 @@ func combo_has_activated(c: Combo) -> void:
 		colorful(type_and_name[0], OBJ_TYPE_COLOR),
 		colorful(type_and_name[1], OBJ_NAME_COLOR),
 	])
-	self.put_text(('Main ' + APPLYED_EFFECT_PLACEHOLDER) % [colorful(c.main_effect.name, EFFECT_NAME_COLOR)])
-	for e in c.effects:
+	self.put_text(('Main ' + APPLYED_EFFECT_PLACEHOLDER) % [colorful(c.effect.name, EFFECT_NAME_COLOR)])
+	for e in c.effects_from_upgrades:
 		self.put_text(APPLYED_EFFECT_PLACEHOLDER % [colorful(e.name, EFFECT_NAME_COLOR)])
-
 
 
 func obj_has_destroyed_log(obj: Variant) -> void:
@@ -123,7 +124,8 @@ func get_obj_type_and_name(obj: Variant) -> Array[String]:
 		_:
 			obj_name = obj.name
 
-	return [obj_type, obj_name]
+	var type_and_name: Array[String] = [obj_type, obj_name]
+	return type_and_name
 
 
 static func colorful(text: String, c: Color) -> String:

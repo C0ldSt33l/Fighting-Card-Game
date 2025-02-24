@@ -1,3 +1,4 @@
+class_name BattleScene
 extends Node2D
 
 @onready var logger := $Logger as Logger 
@@ -15,7 +16,7 @@ var cur_combo: Combo :
 
 
 func _ready() -> void:
-	self.connect_sygnals(self.counter, {
+	self.connect_signals(self.counter, {
 		'points_changed': self.logger.change_points_log,
 		'multiplier_changed': self.logger.change_multiplier_log,
 		'total_score_changed': self.logger.change_total_score_log,
@@ -25,22 +26,26 @@ func _ready() -> void:
 		{
 			'card_name': 'fist',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
-			'dmg': 2
+			'points': 2,
+			'multiplier': 1,
 		},
 		{
 			'card_name': 'knee strike',
 			'type': Card.ACTION_TYPE.LEG_STRIKE,
-			'dmg': 3
+			'points': 3,
+			'multiplier': 1,
 		},
 		{
 			'card_name': 'elbow',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
-			'dmg': 5
+			'points': 5,
+			'multiplier': 1,
 		},
 		{
 			'card_name': 'fist',
 			'type': Card.ACTION_TYPE.ARM_STRIKE,
-			'dmg': 2
+			'points': 2,
+			'multiplier': 1,
 		},
 	]
 	var spawn_pos := Vector2(350, 200)
@@ -59,10 +64,12 @@ func start_round() -> void:
 func end_round() -> void:
 	self.timer.stop()
 
-	self.counter.final_result()
+	self.counter.update_round_score()
+	for c in self.combos_on_table:
+		c.free()
 	self.combos_on_table.clear()
 	self.cur_card = 0
-	
+
 	for card in self.cards_on_table:
 		card.queue_free()
 	self.cards_on_table.clear()
@@ -73,11 +80,9 @@ func play_card() -> void:
 	var combo := self.cur_combo
 
 	card.play()
-	self.counter.points += card.dmg
-	print('points: ' + str(self.counter.points))
-	print('multilier: : ' + str(self.counter.multiplier))
-	if combo and card == combo.activation_card:
-		combo.apply_effect()	
+	self.counter.points += card.points
+	if combo and card == combo.last_card:
+		# combo.apply_effect()	
 		self.combos_on_table.erase(combo)
 
 	self.cur_card += 1
@@ -91,7 +96,7 @@ func spawn_card(config: Dictionary, pos: Vector2) -> void:
 		func (c: Card) -> void:
 			c.add_tags(config)
 			c.position = pos
-			c = self.connect_sygnals(c, {
+			c = self.connect_signals(c, {
 				'created': self.logger.obj_has_created_log,
 				'played': self.logger.card_has_played_log,
 				'destroyed': self.logger.obj_has_destroyed_log,
@@ -100,8 +105,7 @@ func spawn_card(config: Dictionary, pos: Vector2) -> void:
 
 	self.cards_on_table.append(card)
 
-# NOTE: If there're 2 combos, one of them extends another,
-# then the one, that goes before, will be activated
+
 func check_combos() -> void:
 	var i := 0
 	var step: int
@@ -114,17 +118,20 @@ func check_combos() -> void:
 			)
 			if combo != null:
 				self.combos_on_table.append(combo)
-				step = combo.lenght
+				step = combo.length
 				break
 
 		i += step
+
+	for c in self.combos_on_table:
+		c.apply_effect()	
 
 
 func create_combo(name: StringName, cards: Array[Card]) -> Combo:
 	var combo := ComboFactory.create(name, cards)
 	if combo == null: return null
 
-	self.connect_sygnals(combo, {
+	self.connect_signals(combo, {
 		'created': self.logger.obj_has_created_log,
 		'played': self.logger.combo_has_activated,
 		'destroyed': self.logger.obj_has_destroyed_log,
@@ -133,8 +140,8 @@ func create_combo(name: StringName, cards: Array[Card]) -> Combo:
 	return combo
 
 
-func connect_sygnals(obj: Variant, what_to_what: Dictionary) -> Variant:
+func connect_signals(obj: Variant, what_to_what: Dictionary) -> Variant:
 	for s in what_to_what:
 		obj[s].connect(what_to_what[s])
-	
+		
 	return obj

@@ -8,7 +8,7 @@ static func create(
 ) -> Combo:
 	var i := 0
 	var patterns := Combos.get_combo_patterns(name)
-	if cards.size() < patterns.size(): return null # change if combo will has variant length
+	if cards.size() < patterns.size(): return null
 	for card_pattern in patterns:
 		var card := cards[i]
 		for prop in card_pattern:
@@ -16,6 +16,6 @@ static func create(
 				return null
 		i += 1
 
-	var config := Combos.get_combo_config(name).duplicate(true)
-	config.erase('patterns')
-	return Combo.new(name, cards.slice(0, i), config)
+	var config := Combos.get_combo_props(name).duplicate()
+	var effect := Combos.get_combo_effect(name).clone()
+	return Combo.new(name, config, effect, cards.slice(0, i))

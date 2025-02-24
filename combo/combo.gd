@@ -1,6 +1,6 @@
-
 class_name Combo
-extends Resource
+
+const MAX_LVL := 2
 
 var name: String
 var description: String
@@ -9,27 +9,21 @@ var price: int
 var points: int
 var multiplier: int
 
-# # TODO: think about another names
-# var patterns: Array[Dictionary] 
-# var length: int :
-# 	set(val): return
-# 	get(): return self.patterns.size() 
+var upgrade_lvl := 1
+
 var cards: Array[Card] = []
-# BUG: always return `null`
-var activation_card: Card :
+var first_card: Card :
+	set(val): return
+	get(): return null if self.cards.size() == 0 else self.cards[0]
+var last_card: Card :
 	set(val): return
 	get(): return null if self.cards.size() == 0 else self.cards[-1]
-var lenght: int :
+var length: int :
 	set(val): return
 	get(): return self.cards.size()
 
-# TODO: Maybe need to make it as seperate class `Effect`
-# TODO: Add `activation time`:
-# - Before card playing
-# - While card playing
-# - After card playing
-# TODO: make upgradable
-var effect: Callable
+var effect: Effect = null
+var effects_from_upgrades: Array[Effect] = []
 
 
 signal created(c: Combo)
@@ -39,24 +33,23 @@ signal destroyed(c: Combo)
 
 func _init(
 	name: String,
+	props: Dictionary,
+	effect: Effect,
 	cards: Array[Card],
-	config: Dictionary,
 ) -> void:
 	self.name = name
-	self.cards = cards
-	for prop in config:
-		self[prop] = config[prop]
+	for p in props:
+		self[p] = props[p]
+	effect.bind_to(self)
+	self.effect = effect 
+	self.cards.append_array(cards)
 
 	self.created.emit(self)
 
 
-# TODO: which signature is more suitable:
-# - (score: int, multiply: int) -> void
-# - (score: Vector2i) -> void
-# - (cards: Array[Card], cur_pos: int) -> void
-# - (score: Vector2i, cards: Array[Card], cur_pos: int) -> void
 func apply_effect() -> void:
-	self.effect.call()
+	for c in self.cards:
+		self.effect.set_target(c)
 	self.played.emit(self)
 
 
@@ -76,6 +69,12 @@ func count_card_by_tag_val(tag: String, match: Callable) -> int:
 	return count
 
 
+func upgrade(e: Effect) -> void:
+	if self.upgrade_lvl + 1 > self.MAX_LVL: return
+	self.upgrade_lvl += 1
+	self.effects_from_upgrades.append(e)
+
+
 # Maybe will come in useful for creating combo patterns
 static func equal(target, cur) -> bool:
 	return target == cur
@@ -89,13 +88,9 @@ static func less(target, cur) -> bool:
 	return cur < target
 
 
-static func greate_or_equal(target, cur) -> bool:
+static func greater_or_equal(target, cur) -> bool:
 	return cur == target or cur > target
 
 
 static func less_or_equal(target, cur) -> bool:
 	return cur == target or cur < target
-
-
-func _exit_tree() -> void:
-	self.destroyed.emit(self)
