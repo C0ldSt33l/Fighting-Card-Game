@@ -1,25 +1,25 @@
 extends Node2D
 class_name Counter
 
+@onready var score_panel := $Panel as Panel
 
-@onready var Panel_points := $Panel/Panel_point as Panel
-@onready var Label_points := $Panel/Panel_point/points as Label
+@onready var panel_points := $Panel/Panel_point as Panel
+@onready var label_points := $Panel/Panel_point/points as Label
 
-@onready var Panel_mult := $Panel/panel_mult as Panel
-@onready var Label_multipliter := $Panel/panel_mult/multiplier as Label
+@onready var panel_mult := $Panel/panel_mult as Panel
+@onready var label_multiplier := $Panel/panel_mult/multiplier as Label
 
-@onready var Label_x := $X as Label
+@onready var label_x := $X as Label
 
 @onready var final_points_panel := $final_points as Panel
 @onready var final_points_label := $final_points/final_point as Label
 
-var final_points = 0
 @onready var points: int = 0 :
 	set = set_points
 @onready var multiplier: int = 0 :
 	set = set_multiplier
-
-var is_result_calculated: bool = false
+@onready var total_score: int = 0 :
+	set = set_total_score
 
 
 signal points_changed(old: int, new: int, diff: int)
@@ -35,38 +35,45 @@ func _ready() -> void:
 	final_points_label.visible = false
 	
 
-func set_points(value: int)-> void:
-	self.points_changed.emit(self.points, value, value - self.points)
-	points = value
-	Label_points.text = str(points)
-	
-func get_points()-> int:
-	return points
-	
+func set_points(val: int) -> void:
+	self.points_changed.emit(self.points, val, val - self.points)
+	points = val
+	self.label_points.text = str(val)
 
-func set_multiplier(value: int)-> void:
-	self.multiplier_changed.emit(self.multiplier, value, value - self.multiplier)
-	multiplier = value
-	Label_multipliter.text = str(multiplier)
-	
-	
-func get_multipliter()-> int:
-	return multiplier
-	
-func final_result()-> void:
-	is_result_calculated = true #хрень которую надо соркатить
-	Panel_mult.visible = false
-	Panel_points.visible = false
-	Label_points.visible = false
-	Label_multipliter.visible = false
-	Label_x.visible = false
-	
-	final_points_panel.visible = true
-	final_points_label.visible = true
-	while(final_points_panel.size.x<=520):
+
+func set_multiplier(val: int) -> void:
+	self.multiplier_changed.emit(self.multiplier, val, val - self.multiplier)
+	multiplier = val
+	self.label_multiplier.text = str(val)
+
+
+func set_total_score(val: int) -> void:
+	self.total_score_changed.emit(self.total_score, val, val - self.total_score)
+	total_score = val
+	self.final_points_label.text = str(val)
+
+
+func show_score_panel() -> void:
+	self.score_panel.show()
+	self.label_x.show()
+
+
+func hide_score_panel() -> void:
+	self.score_panel.hide()
+	self.label_x.hide()
+
+
+func show_final_score_panel() -> void:
+	self.final_points_panel.show()
+	while(self.final_points_panel.size.x<=520):
 		await get_tree().create_timer(0.01).timeout
-		final_points_panel.size.x =final_points_panel.size.x + 4 
-	final_points = points * multiplier
-	final_points_label.text = str(final_points)
+		final_points_panel.size.x =final_points_panel.size.x + 4
+	self.final_points_label.show()
+
+
+func update_round_score()-> void:
+	self.hide_score_panel()
+	self.show_final_score_panel()	
+	self.total_score = self.points * self.multiplier
 	
 	
