@@ -23,20 +23,6 @@ func select_tag_cards(CardID: int) -> Array: #return all tags card by id
 	
 	return database.query_result
 
-func select_cards_from_db_by_tag_list(TagList:Array) -> Array: #return all cards with tag 
-	var tag_list = ""
-	for tag in TagList:
-		tag_list +="'" + tag + "',"
-		tag_list = tag_list.substr(0,tag_list.length() - 1)
-	 
-	database.query("
-	SELECT c.*, t.name,t.value 
-	FROM CARDS c 
-	JOIN CARD_TAG ct ON c.id = ct.id_card
-	JOIN TAGS t ON t.id = ct.id_tag 
-	WHERE t.name IN ('" + tag_list + "')")
-	return database.query_result
-
 func select_cards_with_tags() -> Array:
 	var tmp = []
 	var cards_with_tags = []
@@ -53,6 +39,13 @@ func select_cards_with_tags() -> Array:
 
 func select_card_dy_id(id:int)->Array:
 	database.query("select * from CARDS where CARDS.id = "+str(id))
+	if !database.query_result.is_empty():
+		return database.query_result
+	database.query("
+	SELECT c.* 
+	from CARDS c
+	join PLAYERS_CARD pl on pl.old_id_card = c.id
+	where new_id_card ="+str(id))
 	return database.query_result
 
 func select_players_cards()->Array:
@@ -68,6 +61,32 @@ func select_players_cards()->Array:
 			"tags":oldTag + newTag
 		})
 	return cards_with_tags
+
+func select_combo_by_id(id:int)->Array:
+	database.query("select * from COMBO where COMBO.id = "+str(id))
+	return database.query_result
+
+func select_combos_tag(ComboID:int)->Array:
+	database.query("
+	SELECT t.name,t.value 
+	from tags t
+	join COMBO_TAG ct on ct.id_tag = t.id
+	WHERE ct.id_card = " + str(ComboID))
+	return database.query_result
+
+func select_players_combo()->Array:
+	var result = []
+	database.query("select * from PLAYERS_COMBO")
+	var tmp = database.query_result
+	for i in tmp:
+		var combo = select_combo_by_id(i.old_id_combo)
+		var oldTag = select_combos_tag(i.old_id_combo)
+		var newTag = select_combos_tag(i.new_id_combo)
+		result.append({
+			"combo":combo,
+			"tags":oldTag + newTag
+		})
+	return result
 
 func insert_new_card(NameCard:String,Point:int,Factor:int,Price:int)->void:
 	var data ={
@@ -116,3 +135,10 @@ func insert_card_to_playerCollection(newIDCard:int,oldCardID:int)->void:
 	}
 	database.insert_row("PLAYERS_CARD",data)
 	pass
+
+func insert_combo_to_playerCollection(newIDCOmbo:int,oldIDcombo:int)->void:
+	var data={
+		"new_id_combo":newIDCOmbo,
+		"old_id_combo":oldIDcombo
+	}
+	database.insert_row("PLAYER_COMBO",data)
