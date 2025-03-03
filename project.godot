@@ -22,6 +22,7 @@ Combos="*res://global/combos.gd"
 CardFactory="*res://global/card_factory.gd"
 PlayerConfig="*res://global/player_config.gd"
 Effects="*res://global/effects.gd"
+Game="*res://global/game.gd"
 
 [dotnet]
 

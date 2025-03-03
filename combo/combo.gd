@@ -49,7 +49,8 @@ func _init(
 
 func apply_effect() -> void:
 	for c in self.cards:
-		self.effect.set_target(c)
+		var e := self.effect.clone()
+		e.set_target(c)
 	self.played.emit(self)
 
 

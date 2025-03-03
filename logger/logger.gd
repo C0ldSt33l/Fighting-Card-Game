@@ -19,6 +19,7 @@ const OBJ_HAS_DESTROYED_PLACEHOLDER := OBJ_PLACEHOLDER + ' has destroyed'
 const CARD_HAS_PLAYED_PLACEHOLDER := "%s '%s' has played with score(%s, %s)"
 const COMBO_HAS_ACTIVATED_PLACEHOLDER := "%s '%s' has activated with effects:"
 const APPLYED_EFFECT_PLACEHOLDER := '%s'
+const EFFECT_HAS_ACTIVATED := OBJ_PLACEHOLDER + ' has been applyed to ' + OBJ_PLACEHOLDER + ' by ' + OBJ_PLACEHOLDER
 
 const NUMBER_CHANGE_PLACEHOLDER := '%s -> %s: %s'
 const SCORE_POINTS_CHANGE_PLACEHOLDER := 'Score: points ' + NUMBER_CHANGE_PLACEHOLDER
@@ -105,6 +106,31 @@ func combo_has_activated(c: Combo) -> void:
 	self.put_text(('Main ' + APPLYED_EFFECT_PLACEHOLDER) % [colorful(c.effect.name, EFFECT_NAME_COLOR)])
 	for e in c.effects_from_upgrades:
 		self.put_text(APPLYED_EFFECT_PLACEHOLDER % [colorful(e.name, EFFECT_NAME_COLOR)])
+
+
+func effect_activated(e: Effect) -> void:
+	var type_and_name := self.get_obj_type_and_name(e)
+	var caster_type_and_name := self.get_obj_type_and_name(e.caster)
+	var target_type_and_name := self.get_obj_type_and_name(e.target)
+	self.put_text(EFFECT_HAS_ACTIVATED % [
+		colorful(type_and_name[0], OBJ_TYPE_COLOR), 
+		colorful(type_and_name[1], OBJ_NAME_COLOR), 
+		colorful(target_type_and_name[0], OBJ_TYPE_COLOR), 
+		colorful(target_type_and_name[1], OBJ_NAME_COLOR), 
+		colorful(caster_type_and_name[0], OBJ_TYPE_COLOR), 
+		colorful(caster_type_and_name[1], OBJ_NAME_COLOR), 
+	])
+
+
+func obj_prop_changed(obj: Variant, prop: StringName, old: Variant, new: Variant) -> void:
+	const placeholder := '%s.%s changed: %s -> %s'
+	var type := self.get_obj_type_and_name(obj)[0]
+	self.put_text(placeholder % [
+		colorful(type, OBJ_TYPE_COLOR),
+		colorful(prop, Color.WHITE),
+		colorful(str(old), SCORE_OLD_VAL_COLOR),
+		colorful(str(new), SCORE_NEW_VAL_COLOR),
+	])
 
 
 func obj_has_destroyed_log(obj: Variant) -> void:

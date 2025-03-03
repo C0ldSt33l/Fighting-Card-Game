@@ -1,19 +1,14 @@
 class_name Effect
+extends RefCounted
 
 var name: String
 var description: String
 var action: Callable
 
 enum ACTIVATION_TIME {
-	BEFORE_CARD_PLAYED,
-	BEFORE_COMBO,
-	BEFORE_ROUND,
-
-	WHILE_COMBO,
-
-	AFTER_CARD_PLAYED,
-	AFTER_COMBO,
-	AFTER_ROUND,
+	ROUND_START,
+	ROUND_END,
+	ROUND_IN_PROGRESS,
 }
 enum TYPE {
 	BUFF,
@@ -53,9 +48,10 @@ func bind_to(caster):
 
 
 func set_target(target):
-	var c := self.clone()
-	target.add_effect(c)
-	c.target = target
+	target.add_effect(self)
+	self.target = target
+
+	Game.battle.add_effect(self)
 
 
 func activate():

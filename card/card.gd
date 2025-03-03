@@ -39,18 +39,18 @@ enum ENERGY {
 
 # Short cuts for base tags
 @export var card_name: String :
-	set(val): self.set_tag_val('card_name', val)
+	set(val): self.set_tag_val('card_name', val.capitalize())
 	get(): return self.get_tag_val('card_name')
 
 @export var type: ACTION_TYPE :
 	set(val): self.set_tag_val('type', val)
 	get(): return self.get_tag_val('type')
 
-@export var points: int :
+@export var points: int = 1:
 	set(val): self.set_tag_val('points', val)
 	get(): return self.get_tag_val('points')
 
-@export var multiplier: int :
+@export var multiplier: int = 1 :
 	set(val): self.set_tag_val('multiplier', val)
 	get(): return self.get_tag_val('multiplier')
 
@@ -58,11 +58,11 @@ enum ENERGY {
 	set(val): self.set_tag_val('direction', val)
 	get(): return self.get_tag_val('direction')
 
-@export var rarity: RARITY :
+@export var rarity: RARITY = RARITY.REGULAR :
 	set(val): self.set_tag_val('rarity', val)
 	get(): return self.get_tag_val('rarity')
 
-# TODO: add visual effect while changing this field
+# TODO: add visual effect during changing this field
 @export var energy: ENERGY :
 	set(val): self.set_tag_val('energy', val)
 	get(): return self.get_tag_val('energy')
@@ -74,13 +74,16 @@ var effects: Array[Effect] = []
 signal created(c: Card)
 signal played(c: Card)
 signal destroyed(c: Card)
+signal prop_changed(c: Card, prop: StringName, old: Variant, new: Variant)
 
 
 func _ready() -> void:
-	self.name_label.text += str(self.card_name).capitalize()
+	self.name_label.text += str(self.card_name)
 	self.type_label.text += str(ACTION_TYPE.keys()[self.type])
 	self.dmg_label.text += str(self.points)
 	self.created.emit(self)
+
+	self.rarity = RARITY.REGULAR
 
 
 func play() -> void:
@@ -105,6 +108,7 @@ func get_tag_val(tag: String) -> Variant:
 
 
 func set_tag_val(tag: String, val: Variant) -> void:
+	self.prop_changed.emit(self, tag, self.get_tag_val(tag), val)
 	self.tags[tag] = val
 
 

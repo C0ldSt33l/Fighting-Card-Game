@@ -1,5 +1,5 @@
-extends Node2D
 class_name Counter
+extends Node2D
 
 @onready var score_panel := $Panel as Panel
 
@@ -9,17 +9,18 @@ class_name Counter
 @onready var panel_mult := $Panel/panel_mult as Panel
 @onready var label_multiplier := $Panel/panel_mult/multiplier as Label
 
-@onready var label_x := $X as Label
+@onready var label_x := $Panel/X as Label
 
-@onready var final_points_panel := $final_points as Panel
-@onready var final_points_label := $final_points/final_point as Label
+@onready var round_score_panel := $final_points as Panel
+@onready var round_score_label := $final_points/final_point as Label
 
 @onready var points: int = 0 :
 	set = set_points
 @onready var multiplier: int = 0 :
 	set = set_multiplier
-@onready var total_score: int = 0 :
-	set = set_total_score
+@onready var round_score: int = 0 :
+	set = set_round_score
+@onready var total_score: int = 0
 
 
 signal points_changed(old: int, new: int, diff: int)
@@ -31,8 +32,8 @@ func _ready() -> void:
 	self.points = 0
 	self.multiplier = 1
 	
-	final_points_panel.visible = false
-	final_points_label.visible = false
+	round_score_panel.visible = false
+	round_score_label.visible = false
 	
 
 func set_points(val: int) -> void:
@@ -47,33 +48,31 @@ func set_multiplier(val: int) -> void:
 	self.label_multiplier.text = str(val)
 
 
-func set_total_score(val: int) -> void:
-	self.total_score_changed.emit(self.total_score, val, val - self.total_score)
-	total_score = val
-	self.final_points_label.text = str(val)
+func set_round_score(val: int) -> void:
+	self.total_score_changed.emit(self.round_score, val, val - self.round_score)
+	round_score = val
+	self.round_score_label.text = str(val)
 
 
 func show_score_panel() -> void:
 	self.score_panel.show()
-	self.label_x.show()
 
 
 func hide_score_panel() -> void:
 	self.score_panel.hide()
-	self.label_x.hide()
 
 
 func show_final_score_panel() -> void:
-	self.final_points_panel.show()
-	while(self.final_points_panel.size.x<=520):
+	self.round_score_panel.show()
+	while(self.round_score_panel.size.x < self.score_panel.size.x):
 		await get_tree().create_timer(0.01).timeout
-		final_points_panel.size.x =final_points_panel.size.x + 4
-	self.final_points_label.show()
+		round_score_panel.size.x =round_score_panel.size.x + 4
+	self.round_score_label.show()
 
 
 func update_round_score()-> void:
 	self.hide_score_panel()
-	self.show_final_score_panel()	
-	self.total_score = self.points * self.multiplier
+	await self.show_final_score_panel()	
+	self.round_score = self.points * self.multiplier
 	
 	

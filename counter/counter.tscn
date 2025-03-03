@@ -49,12 +49,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="X" type="Label" parent="."]
+[node name="X" type="Label" parent="Panel"]
 z_index = 1
-offset_left = 244.0
-offset_top = 38.0
-offset_right = 284.0
-offset_bottom = 116.0
+offset_left = 243.0
+offset_top = 39.0
+offset_right = 283.0
+offset_bottom = 117.0
 text = "X"
 horizontal_alignment = 1
 vertical_alignment = 1
