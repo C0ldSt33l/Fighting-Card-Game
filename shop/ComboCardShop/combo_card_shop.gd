@@ -43,7 +43,6 @@ func _ready() -> void:
 		print()
 	print("-------Players cards--------")
 	
-		 
 	
 	PriceButton.visible = false
 	PriceButton.set_size(Price.size)
