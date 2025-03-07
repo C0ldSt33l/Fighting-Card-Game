@@ -11,3 +11,5 @@ var available_totems: Array
 var deck: Array[Card]
 
 var player_power: int
+
+var effects: Array[Effect]

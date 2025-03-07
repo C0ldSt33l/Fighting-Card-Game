@@ -76,13 +76,27 @@ func _ready() -> void:
 	if arr is Array:
 		print('arr is array')
 
+	var e := Effects.EFFECTS['Multiplier+'] as Effect
+	e.bind_to(self)
+	e.set_target(self.cards_on_table[0])
+	Game.battle.add_effect(e)
+
+	var post_round_effect := Effects.EFFECTS['Double Score'] as Effect
+	post_round_effect.bind_to(self)
+	post_round_effect.set_target(self.counter)
+	Game.battle.add_effect(post_round_effect)
+
+	# print(inst_to_dict(self))
 
 
 func start_round() -> void:
 	self.logger.put_text('------ROUND START------')
 	if self.cards_on_table.size() == 0: return
-	self.timer.start()
 	self.check_combos()
+	for e in self.effects:
+		if e.activation_time == Effect.ACTIVATION_TIME.ROUND_START:
+			e.activate()
+	self.timer.start()
 
 
 func end_round() -> void:
@@ -90,6 +104,11 @@ func end_round() -> void:
 	self.timer.stop()
 
 	await self.counter.update_round_score()
+	await get_tree().create_timer(1).timeout
+	for e in self.effects:
+		if e.activation_time == Effect.ACTIVATION_TIME.ROUND_END:
+			e.activate()
+
 	for c in self.combos_on_table:
 		c.free()
 	self.combos_on_table.clear()
@@ -100,8 +119,6 @@ func end_round() -> void:
 	self.cards_on_table.clear()
 	self.effects.clear()
 
-	await get_tree().create_timer(1).timeout
-	Effects.EFFECTS['Double Score'].activate()
 
 
 func play_card() -> void:

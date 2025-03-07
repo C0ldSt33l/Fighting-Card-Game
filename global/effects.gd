@@ -4,14 +4,14 @@ var EFFECTS := {
     'Damage+': Effect.new(
         'Damage+',
         'Increase card points by `2`',
-        Effect.ACTIVATION_TIME.ROUND_START,
+        Effect.ACTIVATION_TIME.ROUND_IN_PROGRESS,
         Effect.TYPE.BUFF,
         self.increase_card_points
     ),
     'Multiplier+': Effect.new(
         'Multiplier+',
         'Increase card mulitpier by `1`',
-        Effect.ACTIVATION_TIME.ROUND_IN_PROGRESS,
+        Effect.ACTIVATION_TIME.ROUND_START,
         Effect.TYPE.BUFF,
         self.increase_card_mult
     ),
@@ -21,7 +21,7 @@ var EFFECTS := {
         Effect.ACTIVATION_TIME.ROUND_END,
         Effect.TYPE.BUFF,
         self.double_score
-    )  
+    ),
 }
 
 
@@ -34,4 +34,4 @@ func increase_card_mult(c: Card, bonus: int = 1) -> void:
 
 
 func double_score(c: Counter) -> void:
-    Game.battle.counter.round_score *= 2
+    c.round_score *= 2

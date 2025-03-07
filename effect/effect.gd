@@ -48,10 +48,9 @@ func bind_to(caster):
 
 
 func set_target(target):
-	target.add_effect(self)
+	if 'add_effect' in target:
+		target.add_effect(self)
 	self.target = target
-
-	Game.battle.add_effect(self)
 
 
 func activate():

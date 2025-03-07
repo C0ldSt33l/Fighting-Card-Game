@@ -23,6 +23,7 @@ enum DIRECTION {
 }
 
 enum ENERGY {
+	CHAKRA,
 	PRANA,
 	KI,
 }
@@ -90,7 +91,8 @@ func play() -> void:
 	print(self.effects)
 	self.scale += Vector2(0.2, 0.2)
 	for e in self.effects:
-		e.activate()
+		if e.activation_time == Effect.ACTIVATION_TIME.ROUND_IN_PROGRESS:
+			e.activate()
 
 	self.played.emit(self)
 

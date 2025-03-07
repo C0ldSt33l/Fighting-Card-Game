@@ -51,6 +51,7 @@ func apply_effect() -> void:
 	for c in self.cards:
 		var e := self.effect.clone()
 		e.set_target(c)
+		Game.battle.add_effect(e)
 	self.played.emit(self)
 
 
