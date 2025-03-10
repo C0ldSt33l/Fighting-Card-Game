@@ -107,3 +107,16 @@ func select_combos_tag(ComboID:int)->Array:
 	join COMBO_TAG ct on ct.id_tag = t.id
 	WHERE ct.id_card = " + str(ComboID))
 	return database.query_result
+
+func select_objects_in_pack_by_id(id:int)->Array:
+	database.query("SELECT c.id_object, c.Object_type, c.Count 
+	FROM OBJECT_IN_PACK 
+	WHERE id_pack = " + str(id))
+	return database.query_result
+
+func select_count_of_records(TableName:String)->int:
+	database.query("SELECT COUNT(*) AS total_records FROM " + TableName) 
+	var result = database.query_result
+	if result and result.size() > 0:
+		return result[0]["COUNT(*)"]
+	return 0

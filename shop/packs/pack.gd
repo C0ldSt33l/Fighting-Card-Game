@@ -1,34 +1,37 @@
 extends Node2D
 
-var PackName:String
-var price:int
-var PackCards: Array
-var ENERGY_TYPES = ["KI","PRANA","CHAKRA"]
-var rng
-var Name:Label
+var generateable = []
+var count_of_types_pack:int
+var rnd
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Name = get_node("Name")
-	rng = RandomNumberGenerator.new()
-	rng.randomize()
+	rnd = RandomNumberGenerator.new()
 	
-	PackName = ENERGY_TYPES[rng.randf_range(0,ENERGY_TYPES.size())]
-	Name.text = PackName
-	var id_cards = Sql.select_card_ids_by_tag_value([PackName])
+	count_of_types_pack = Sql.select_count_of_records('PACK')
+	generateable = Sql.select_objects_in_pack_by_id(rnd.randf_range(0,count_of_types_pack))
 	var tmp = []
-	for i in id_cards:
-		tmp.append(Sql.select_card_dy_id(i))
-	for i in range(6):
-		PackCards.append(tmp[rng.randf_range(0,tmp.size())])
-		
-	tmp.clear()	
-	
-	#var id_combo = Sql.select_combo_ids_by_tag('ENERGY',[PackName])
-	#for i in id_combo:
-		#tmp.append(Sql.select_combo_by_id(i))
-	#for i in range(2):
-		#PackCards.append(tmp[rng.randf_range(0,tmp.size())])
+	for object in generateable:
+		match object['Object_type']:
+			'BATTLE':
+				for i in range(object['Count']):
+					tmp.append(Sql.select_battle_card_dy_id(object['id_object']))
+			'UPGRADE':
+				for i in range(object['Count']):
+					tmp.append(Sql.select_upgrade_card_dy_id(object['id_object']))
+			'CONSUMABLE':
+				for i in range(object['Count']):
+					tmp.append(Sql.select_consumable_card_dy_id(object['id_object']))
+			'COMBO':
+				for i in range(object['Count']):
+					tmp.append(Sql.select_combo_by_id(object['id_object']))
+			'TOTEM':
+				for i in range(object['Count']):
+					tmp.append(Sql.select_combo_by_id(object['id_object']))
+					
+	var result = []
+	for i in range(10):
+		result.append(rnd.randf_range(0,tmp.size()))
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
 func _process(delta: float) -> void:
 	pass

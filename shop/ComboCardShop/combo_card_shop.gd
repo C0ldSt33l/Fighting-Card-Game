@@ -19,6 +19,7 @@ var rng
 var PriceButton:Button
 var ChosenCard:Card
 var ALL_cards_with_tags
+
 func _ready() -> void:
 	LabelMoney = get_node("Panel/Label")
 	LabelMoney.text = str(money)
