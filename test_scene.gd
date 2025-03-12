@@ -31,7 +31,7 @@ func _ready() -> void:
 	# 	round_ended = null,
 	# 	round_tick = null,
 	# })
-	self.connect_signals(self.counter, {
+	Utils.connect_signals(self.counter, {
 		'points_changed': self.logger.change_points_log,
 		'multiplier_changed': self.logger.change_multiplier_log,
 		'total_score_changed': self.logger.change_total_score_log,
@@ -148,7 +148,7 @@ func spawn_card(config: Dictionary, pos: Vector2) -> void:
 		func (c: Card) -> void:
 			c.add_tags(config)
 			c.position = pos
-			c = self.connect_signals(c, {
+			c = Utils.connect_signals(c, {
 				created = self.logger.obj_has_created_log,
 				played = self.logger.card_has_played_log,
 				destroyed = self.logger.obj_has_destroyed_log,
@@ -184,7 +184,7 @@ func create_combo(name: StringName, cards: Array[Card]) -> Combo:
 	var combo := ComboFactory.create(name, cards)
 	if combo == null: return null
 
-	self.connect_signals(combo, {
+	Utils.connect_signals(combo, {
 		created = self.logger.obj_has_created_log,
 		played = self.logger.combo_has_activated,
 		destroyed = self.logger.obj_has_destroyed_log,
@@ -193,11 +193,6 @@ func create_combo(name: StringName, cards: Array[Card]) -> Combo:
 	return combo
 
 
-func connect_signals(obj: Variant, what_to_what: Dictionary) -> Variant:
-	for s in what_to_what:
-		obj[s].connect(what_to_what[s])
-		
-	return obj
 
 
 func add_effect(e: Effect) -> void:

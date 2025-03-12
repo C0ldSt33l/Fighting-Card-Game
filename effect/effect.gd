@@ -1,6 +1,9 @@
 class_name Effect
 extends RefCounted
 
+# TODO: Create system of sub-effect for effects
+# with multiple target types
+
 var name: String
 var description: String
 var action: Callable
@@ -14,11 +17,20 @@ enum TYPE {
 	BUFF,
 	DEBUFF,
 }
+enum TARGET_TYPE {
+	BATTLE_CARD,
+	COMBO,
+	STANCE,
+	DECK, # or HAND?
+	SCORE,
+}
 
 var activation_time: ACTIVATION_TIME
 var type: TYPE
 
 var caster
+
+var target_type: TARGET_TYPE
 var target
 
 
