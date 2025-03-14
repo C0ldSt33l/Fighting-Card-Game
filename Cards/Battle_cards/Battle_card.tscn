@@ -6,20 +6,21 @@
 script = ExtResource("1_n7gdo")
 
 [node name="Panel" type="Panel" parent="."]
-offset_right = 190.0
-offset_bottom = 262.0
+offset_left = 3.0
+offset_top = 2.0
+offset_right = 133.0
+offset_bottom = 202.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Description" type="Label" parent="Panel"]
 layout_mode = 0
-offset_left = 4.0
-offset_top = 157.0
-offset_right = 184.0
-offset_bottom = 258.0
-metadata/_edit_lock_ = true
+offset_top = 114.0
+offset_right = 131.0
+offset_bottom = 198.0
 
 [node name="Name" type="Label" parent="Panel"]
-offset_left = 4.0
-offset_top = 138.0
-offset_right = 186.0
-offset_bottom = 161.0
-metadata/_edit_lock_ = true
+layout_mode = 0
+offset_left = 2.0
+offset_top = 94.0
+offset_right = 128.0
+offset_bottom = 117.0

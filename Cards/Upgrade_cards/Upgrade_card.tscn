@@ -6,8 +6,8 @@
 script = ExtResource("1_mysl0")
 
 [node name="Panel" type="Panel" parent="."]
-offset_right = 191.0
-offset_bottom = 279.0
+offset_right = 130.0
+offset_bottom = 200.0
 
 [node name="Label" type="Label" parent="Panel"]
 layout_mode = 0

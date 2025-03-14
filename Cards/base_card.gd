@@ -6,16 +6,20 @@ var id: int:
 	get(): return self.get_tag_val('id')
 
 var Name: String:
-	set(val): self.set_tag_val('Name',val)
-	get(): return self.get_tag_val('Name')
+	set(val): self.set_tag_val('Name',"" if val == null else val)
+	get(): return self.get_tag_val('Name') if self.get_tag_val('Name') != null else ""
 
 var Description: String:
-	set(val): self.set_tag_val('Description',val)
-	get():return self.get_tag_val('Description')
+	set(val): self.set_tag_val('Description',"" if val == null else val)
+	get():return self.get_tag_val('Description') if self.get_tag_val('Description') != null else ""
+
+var Target: String:
+	set(val):self.set_tag_val('Target',"" if val == null else val)
+	get():return self.get_tag_val('Target') if self.get_tag_val('Target') != null else ""
 
 var Picture: String:
 	set(val):self.set_tag_val('Picture',"" if val == null else val)
-	get():return self.get_tag_val('Picture')
+	get():return self.get_tag_val('Picture') if self.get_tag_val('Picture') != null else ""
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.

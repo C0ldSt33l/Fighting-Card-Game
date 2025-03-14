@@ -6,10 +6,10 @@
 script = ExtResource("1_ltpoj")
 
 [node name="Panel" type="Panel" parent="."]
-offset_right = 207.0
-offset_bottom = 303.0
+offset_right = 130.0
+offset_bottom = 200.0
 
 [node name="Name" type="Label" parent="."]
-offset_right = 205.0
-offset_bottom = 55.0
+offset_right = 128.0
+offset_bottom = 40.0
 metadata/_edit_lock_ = true

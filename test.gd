@@ -36,4 +36,5 @@ func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 			#for tag in CardInfo.tags:
 				#c.add_tags(tag)
 			c.position = pos
+			c
 	)

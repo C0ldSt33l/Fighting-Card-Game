@@ -16,8 +16,8 @@ var BackgroundPanel : Panel
 var spawn_pos 
 var Hide_price_timer: Timer
 var rng
-var PriceButton:Button
-var ChosenCard:Card
+var PriceButton:Button	
+var ChosenCard:_Card_
 var ALL_cards_with_tags
 
 func _ready() -> void:
@@ -28,7 +28,11 @@ func _ready() -> void:
 	Price = get_node("Panel/Button2/Price")
 	BackgroundPanel = get_node("Panel")
 	
-	ALL_cards_with_tags = Sql.select_cards_with_tags()
+	var tmp = []
+	tmp = Sql.select_all_type_cards_with_tags('BATTLE')
+	ALL_cards_with_tags = tmp
+	tmp = Sql.select_all_type_cards_with_tags('UPGRADE')
+	ALL_cards_with_tags.append_array(tmp)
 	#print(ALL_cards_with_tags)
 	print("-------config cards--------")
 	for cardName in ALL_cards_with_tags:
@@ -36,29 +40,17 @@ func _ready() -> void:
 		print(cardName.tags)
 	print("-------config cards--------")
 	print()
-	print("-------Players cards--------")
-	var ALL_player_card = Sql.select_players_cards()
-	for CardName in ALL_player_card:
-		print(CardName.card)
-		print(CardName.tags)
-		print()
-	print("-------Players cards--------")
-	
-	
+
 	PriceButton.visible = false
 	PriceButton.set_size(Price.size)
-	
 	rng = RandomNumberGenerator.new()
 	rng.randomize()
-	
 	spawn_pos = BackgroundPanel.position + Vector2(10,10)
-	
 	var n:Vector2
 	for i in range(7):
 		self.spawn_card(ALL_cards_with_tags[rng.randf_range(0,3)], spawn_pos + n)
 		n.x += 150
-
-
+	pass
 
 func _process(delta: float) -> void:
 	LabelMoney.text = str(money)
@@ -67,7 +59,7 @@ func _process(delta: float) -> void:
 	var hovered = false
 	Hide_price_timer.one_shot = true
 	for obj in objects:		
-		if obj is Card:
+		if obj is _Card_:
 			if obj.Background.get_global_rect().has_point(mouse_pos):
 				PriceButton.visible = true
 				Price.text = str("price = ",obj.Price)
@@ -85,24 +77,15 @@ func _process(delta: float) -> void:
 		
 	if not hovered and Hide_price_timer.is_stopped():
 		PriceButton.visible = false
-	
-	
-	
-#func spawn_card(config: Dictionary, pos: Vector2) -> void:
-	#var card := CardFactory.create_with_binding(
-		#self,
-		#func (c: Card) -> void:
-			#c.add_tags(config)
-			#c.position = pos
-	#)
-	#self.objects.append(card)
+	pass
 
 func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
-	var card := CardFactory.create_with_binding(
-		self,
-		func (c:Card)-> void:
+	var card := CardCreator.create_with_binding(
+		self, CardInfo.card['TypeCard'],
+		func (c:_Card_)-> void:
 			for i in CardInfo.card:
-				c[i] = CardInfo.card[i]
+				if i != 'TypeCard':
+					c[i] = CardInfo.card[i]
 			#for tag in CardInfo.tags:
 				#c.add_tags(tag)
 			c.position = pos
@@ -118,7 +101,7 @@ func _on_button_pressed() -> void: #reroll button
 		var cards = Cards.CARDS.keys().duplicate()
 		var n:Vector2
 		for i in range(7):
-			self.spawn_card(ALL_cards_with_tags[rng.randf_range(0,3)], spawn_pos + n)
+			self.spawn_card(ALL_cards_with_tags[rng.randf_range(0,ALL_cards_with_tags.size())], spawn_pos + n)
 			n.x += 150
 		money=money-1
 	pass # Replace with function body.
@@ -134,7 +117,7 @@ func _on_button_2_pressed() -> void:#buy button
 		var new_object :Array[Node2D] = []
 		
 		for object in objects:
-			if object is Card:
+			if object is _Card_:
 				if object != ChosenCard:
 					new_object.append(object)
 				else:
