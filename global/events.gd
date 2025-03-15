@@ -1,11 +1,6 @@
 extends Node
 
 # BATTLE EVENTS
-signal round_prepare_started()
-signal round_started()
-signal round_ended()
-signal round_exit()
-
 signal obj_created(obj: Variant)
 signal obj_prop_changed(
 	obj: Variant,
@@ -14,6 +9,11 @@ signal obj_prop_changed(
 	new: int
 )
 signal obj_destroyed(obj: Variant)
+
+signal round_preparation_started()
+signal round_started()
+signal round_ended()
+signal round_exit()
 
 signal card_started(c: Card)
 signal card_ended(c: Card)

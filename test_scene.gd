@@ -22,16 +22,7 @@ var effects: Array[Effect] = []
 
 func _ready() -> void:
 	Game.battle = self
-	# self.connect_signals(self, {
-	# 	round_started = null,
-	# 	round_ended = null,
-	# 	round_tick = null,
-	# })
-	# Utils.connect_signals(self.counter, {
-	# 	'points_changed': self.logger.change_points_log,
-	# 	'multiplier_changed': self.logger.change_multiplier_log,
-	# 	'total_score_changed': self.logger.change_total_score_log,
-	# })
+	self.logger.connect_battle_signals()
 
 	var configs := [
 		{
@@ -79,7 +70,7 @@ func _ready() -> void:
 	Game.battle.add_effect(post_round_effect)
 
 	# print(inst_to_dict(self))
-	Events.round_prepare_started.emit()
+	Events.round_preparation_started.emit()
 
 
 func start_round() -> void:
@@ -112,7 +103,7 @@ func end_round() -> void:
 	self.cards_on_table.clear()
 	self.effects.clear()
 
-	Events.round_prepare_started.emit()
+	Events.round_preparation_started.emit()
 
 
 func play_card() -> void:
@@ -146,12 +137,6 @@ func spawn_card(config: Dictionary, pos: Vector2) -> void:
 		func (c: Card) -> void:
 			c.add_tags(config)
 			c.position = pos
-			#c = Utils.connect_signals(c, {
-				#created = self.logger.obj_has_created_log,
-				#played = self.logger.card_has_played_log,
-				#destroyed = self.logger.obj_has_destroyed_log,
-				#prop_changed = self.logger.obj_prop_changed_log,
-			#})
 	)
 
 	self.cards_on_table.append(card)
@@ -180,14 +165,6 @@ func check_combos() -> void:
 
 func create_combo(name: StringName, cards: Array[Card]) -> Combo:
 	var combo := ComboFactory.create(name, cards)
-	if combo == null: return null
-
-	#Utils.connect_signals(combo, {
-		#created = self.logger.obj_has_created_log,
-		#played = self.logger.combo_has_activated,
-		#destroyed = self.logger.obj_has_destroyed_log,
-	#})
-
 	return combo
 
 
