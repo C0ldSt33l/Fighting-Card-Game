@@ -16,8 +16,11 @@ const OBJ_PLACEHOLDER := "%s '%s'"
 const OBJ_HAS_CREATED_PLACEHOLDER := OBJ_PLACEHOLDER + ' has created'
 const OBJ_HAS_DESTROYED_PLACEHOLDER := OBJ_PLACEHOLDER + ' has destroyed'
 
-const CARD_HAS_PLAYED_PLACEHOLDER := "%s '%s' has played with score(%s, %s)"
-const COMBO_HAS_ACTIVATED_PLACEHOLDER := "%s '%s' has activated with effects:"
+const CARD_HAS_PLAYED_PLACEHOLDER := OBJ_PLACEHOLDER + " has played with score(%s, %s)"
+const COMBO_HAS_ACTIVATED_PLACEHOLDER := OBJ_PLACEHOLDER + " has activated with effects:"
+const COMBO_STARTED := OBJ_PLACEHOLDER + ' started'
+const COMBO_ENDED := OBJ_PLACEHOLDER + ' ended'
+
 const APPLYED_EFFECT_PLACEHOLDER := '%s'
 const EFFECT_HAS_ACTIVATED := OBJ_PLACEHOLDER + ' has been applyed to ' + OBJ_PLACEHOLDER + ' by ' + OBJ_PLACEHOLDER
 
@@ -97,7 +100,7 @@ func card_has_played_log(c: Card) -> void:
 		self.put_text('\t' + (APPLYED_EFFECT_PLACEHOLDER % [colorful(e.name, EFFECT_NAME_COLOR)]))
 
 
-func combo_has_activated(c: Combo) -> void:
+func combo_has_activated_log(c: Combo) -> void:
 	var type_and_name := self.get_obj_type_and_name(c)
 	self.put_text(COMBO_HAS_ACTIVATED_PLACEHOLDER % [
 		colorful(type_and_name[0], OBJ_TYPE_COLOR),
@@ -108,7 +111,7 @@ func combo_has_activated(c: Combo) -> void:
 		self.put_text(APPLYED_EFFECT_PLACEHOLDER % [colorful(e.name, EFFECT_NAME_COLOR)])
 
 
-func effect_activated(e: Effect) -> void:
+func effect_activated_log(e: Effect) -> void:
 	var type_and_name := self.get_obj_type_and_name(e)
 	var caster_type_and_name := self.get_obj_type_and_name(e.caster)
 	var target_type_and_name := self.get_obj_type_and_name(e.target)
@@ -122,7 +125,7 @@ func effect_activated(e: Effect) -> void:
 	])
 
 
-func obj_prop_changed(obj: Variant, prop: StringName, old: Variant, new: Variant) -> void:
+func obj_prop_changed_log(obj: Variant, prop: StringName, old: Variant, new: Variant) -> void:
 	const placeholder := '%s.%s changed: %s -> %s'
 	var type := self.get_obj_type_and_name(obj)[0]
 	self.put_text(placeholder % [
@@ -152,6 +155,10 @@ func get_obj_type_and_name(obj: Variant) -> Array[String]:
 
 	var type_and_name: Array[String] = [obj_type, obj_name]
 	return type_and_name
+
+
+func connect_battle_signals() -> void:
+	pass
 
 
 static func colorful(text: String, c: Color) -> String:

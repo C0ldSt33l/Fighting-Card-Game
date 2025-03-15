@@ -12,7 +12,7 @@ var COMBOS := {
 		'patterns':
 		[
 			{ 'card_name': 'kick' },
-			{ 'type': Card.ACTION_TYPE.LEG_STRIKE },
+			{ 'type': Card.BODY_PART.LEG_STRIKE },
 		],
 		'effect': 'Multiplier+'
 	},

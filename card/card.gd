@@ -5,7 +5,7 @@ class_name Card
 @onready var type_label := $Background/Type as Label
 @onready var dmg_label := $Background/DMG as Label
 
-enum ACTION_TYPE {
+enum BODY_PART {
 	ARM_STRIKE,
 	LEG_STRIKE,
 }
@@ -43,7 +43,7 @@ enum ENERGY {
 	set(val): self.set_tag_val('card_name', val.capitalize())
 	get(): return self.get_tag_val('card_name')
 
-@export var type: ACTION_TYPE :
+@export var type: BODY_PART :
 	set(val): self.set_tag_val('type', val)
 	get(): return self.get_tag_val('type')
 
@@ -72,19 +72,14 @@ enum ENERGY {
 var effects: Array[Effect] = []
 
 
-signal created(c: Card)
-signal played(c: Card)
-signal destroyed(c: Card)
-signal prop_changed(c: Card, prop: StringName, old: Variant, new: Variant)
-
-
 func _ready() -> void:
 	self.name_label.text += str(self.card_name)
-	self.type_label.text += str(ACTION_TYPE.keys()[self.type])
+	self.type_label.text += str(BODY_PART.keys()[self.type])
 	self.dmg_label.text += str(self.points)
-	self.created.emit(self)
 
 	self.rarity = RARITY.REGULAR
+
+	Events.obj_created.emit(self)
 
 
 func play() -> void:
@@ -94,7 +89,7 @@ func play() -> void:
 		if e.activation_time == Effect.ACTIVATION_TIME.ROUND_IN_PROGRESS:
 			e.activate()
 
-	self.played.emit(self)
+	Events.card_ended.emit(self)	
 
 
 func add_tags(new_tags: Dictionary) -> void:
@@ -110,7 +105,7 @@ func get_tag_val(tag: String) -> Variant:
 
 
 func set_tag_val(tag: String, val: Variant) -> void:
-	self.prop_changed.emit(self, tag, self.get_tag_val(tag), val)
+	Events.obj_prop_changed.emit(self, tag, self.get_tag_val(tag), val)
 	self.tags[tag] = val
 
 
@@ -123,4 +118,4 @@ func add_effect(e: Effect) -> void:
 
 
 func _exit_tree() -> void:
-	self.destroyed.emit(self)
+	Events.obj_destroyed.emit(self)

@@ -6,8 +6,9 @@ extends Node2D
 @onready var timer := $Timer as Timer
 @onready var counter := $Counter as Counter
 
+var card_cursor := 0 :
+	set(val): card_cursor = clampi(val, 0, self.cards_on_table.size())
 var cards_on_table: Array[Card] = []
-var cur_card := 0
 var cards_in_hand: Array[Card] = []
 
 var available_combos: Array = Combos.COMBOS.keys()
@@ -19,11 +20,6 @@ var cur_combo: Combo :
 var effects: Array[Effect] = []
 
 
-signal round_started()
-signal round_ended()
-signal round_tick()
-
-
 func _ready() -> void:
 	Game.battle = self
 	# self.connect_signals(self, {
@@ -31,34 +27,34 @@ func _ready() -> void:
 	# 	round_ended = null,
 	# 	round_tick = null,
 	# })
-	Utils.connect_signals(self.counter, {
-		'points_changed': self.logger.change_points_log,
-		'multiplier_changed': self.logger.change_multiplier_log,
-		'total_score_changed': self.logger.change_total_score_log,
-	})
+	# Utils.connect_signals(self.counter, {
+	# 	'points_changed': self.logger.change_points_log,
+	# 	'multiplier_changed': self.logger.change_multiplier_log,
+	# 	'total_score_changed': self.logger.change_total_score_log,
+	# })
 
 	var configs := [
 		{
 			'card_name': 'fist',
-			'type': Card.ACTION_TYPE.ARM_STRIKE,
+			'type': Card.BODY_PART.ARM_STRIKE,
 			'points': 2,
 			'multiplier': 1,
 		},
 		{
 			'card_name': 'knee strike',
-			'type': Card.ACTION_TYPE.LEG_STRIKE,
+			'type': Card.BODY_PART.LEG_STRIKE,
 			'points': 3,
 			'multiplier': 1,
 		},
 		{
 			'card_name': 'elbow',
-			'type': Card.ACTION_TYPE.ARM_STRIKE,
+			'type': Card.BODY_PART.ARM_STRIKE,
 			'points': 5,
 			'multiplier': 1,
 		},
 		{
 			'card_name': 'fist',
-			'type': Card.ACTION_TYPE.ARM_STRIKE,
+			'type': Card.BODY_PART.ARM_STRIKE,
 			'points': 2,
 			'multiplier': 1,
 		},
@@ -72,10 +68,6 @@ func _ready() -> void:
 	for c in self.cards_on_table:
 		c.energy = Card.ENERGY.KI
 
-	var arr: Array[int] = [1, 2, 3]
-	if arr is Array:
-		print('arr is array')
-
 	var e := Effects.EFFECTS['Multiplier+'] as Effect
 	e.bind_to(self)
 	e.set_target(self.cards_on_table[0])
@@ -87,10 +79,11 @@ func _ready() -> void:
 	Game.battle.add_effect(post_round_effect)
 
 	# print(inst_to_dict(self))
+	Events.round_prepare_started.emit()
 
 
 func start_round() -> void:
-	self.logger.put_text('------ROUND START------')
+	Events.round_started.emit()
 	if self.cards_on_table.size() == 0: return
 	self.check_combos()
 	for e in self.effects:
@@ -100,7 +93,7 @@ func start_round() -> void:
 
 
 func end_round() -> void:
-	self.logger.put_text('-------ROUND STOP--------')
+	Events.round_exit.emit()
 	self.timer.stop()
 
 	await self.counter.update_round_score()
@@ -112,33 +105,38 @@ func end_round() -> void:
 	for c in self.combos_on_table:
 		c.free()
 	self.combos_on_table.clear()
-	self.cur_card = 0
+	self.card_cursor = 0
 
 	for card in self.cards_on_table:
 		card.queue_free()
 	self.cards_on_table.clear()
 	self.effects.clear()
 
+	Events.round_prepare_started.emit()
 
 
 func play_card() -> void:
-	self.logger.put_text('-----ROUDN IN PROGRESS-------')
-	var card := self.cards_on_table[self.cur_card]
+	var card := self.cards_on_table[self.card_cursor]
 	var combo := self.cur_combo
 
-	if combo and card == combo.first_card:
-		self.logger.put_text('Combo ' + combo.name + ' started')
-	if combo and card == combo.last_card:
-		self.logger.put_text('Combo ' + combo.name + ' ended')
+	if combo and card == combo.start_card:
+		Events.combo_started.emit(combo)
+	elif combo and card == combo.end_card:
+		Events.combo_ended.emit(combo)
 		# combo.apply_effect()	
 		self.combos_on_table.erase(combo)
+		Events.combo_exit.emit()
 
+	Events.card_started.emit(card)
 	card.play()
+	Events.card_exit.emit(card)
+
 	self.counter.points += card.points
 	self.counter.multiplier += card.multiplier
 
-	self.cur_card += 1
-	if self.cur_card == self.cards_on_table.size():
+	self.card_cursor += 1
+	if self.card_cursor == self.cards_on_table.size():
+		Events.round_ended.emit()
 		self.end_round()
 
 
@@ -148,12 +146,12 @@ func spawn_card(config: Dictionary, pos: Vector2) -> void:
 		func (c: Card) -> void:
 			c.add_tags(config)
 			c.position = pos
-			c = Utils.connect_signals(c, {
-				created = self.logger.obj_has_created_log,
-				played = self.logger.card_has_played_log,
-				destroyed = self.logger.obj_has_destroyed_log,
-				prop_changed = self.logger.obj_prop_changed,
-			})
+			#c = Utils.connect_signals(c, {
+				#created = self.logger.obj_has_created_log,
+				#played = self.logger.card_has_played_log,
+				#destroyed = self.logger.obj_has_destroyed_log,
+				#prop_changed = self.logger.obj_prop_changed_log,
+			#})
 	)
 
 	self.cards_on_table.append(card)
@@ -184,17 +182,14 @@ func create_combo(name: StringName, cards: Array[Card]) -> Combo:
 	var combo := ComboFactory.create(name, cards)
 	if combo == null: return null
 
-	Utils.connect_signals(combo, {
-		created = self.logger.obj_has_created_log,
-		played = self.logger.combo_has_activated,
-		destroyed = self.logger.obj_has_destroyed_log,
-	})
+	#Utils.connect_signals(combo, {
+		#created = self.logger.obj_has_created_log,
+		#played = self.logger.combo_has_activated,
+		#destroyed = self.logger.obj_has_destroyed_log,
+	#})
 
 	return combo
 
 
-
-
 func add_effect(e: Effect) -> void:
 	self.effects.append(e)
-	e.activated.connect(self.logger.effect_activated)

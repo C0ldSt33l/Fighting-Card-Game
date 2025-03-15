@@ -23,11 +23,6 @@ extends Node2D
 @onready var total_score: int = 0
 
 
-signal points_changed(old: int, new: int, diff: int)
-signal multiplier_changed(old: int, new: int, diff: int)
-signal total_score_changed(old: int, new: int, diff: int)
-
-
 func _ready() -> void:
 	self.points = 0
 	self.multiplier = 1
@@ -37,19 +32,19 @@ func _ready() -> void:
 	
 
 func set_points(val: int) -> void:
-	self.points_changed.emit(self.points, val, val - self.points)
+	Events.score_points_updated.emit(self.points, val, val - self.points)
 	points = val
 	self.label_points.text = str(val)
 
 
 func set_multiplier(val: int) -> void:
-	self.multiplier_changed.emit(self.multiplier, val, val - self.multiplier)
+	Events.score_multiplier_updated.emit(self.multiplier, val, val - self.multiplier)
 	multiplier = val
 	self.label_multiplier.text = str(val)
 
 
 func set_round_score(val: int) -> void:
-	self.total_score_changed.emit(self.round_score, val, val - self.round_score)
+	Events.score_total_score_updated.emit(self.round_score, val, val - self.round_score)
 	round_score = val
 	self.round_score_label.text = str(val)
 

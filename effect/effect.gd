@@ -19,6 +19,7 @@ enum TYPE {
 }
 enum TARGET_TYPE {
 	BATTLE_CARD,
+	FIRST_CARD,
 	COMBO,
 	STANCE,
 	DECK, # or HAND?
@@ -32,9 +33,6 @@ var caster
 
 var target_type: TARGET_TYPE
 var target
-
-
-signal activated(e: Effect)
 
 
 func _init(
@@ -60,13 +58,12 @@ func bind_to(caster):
 
 
 func set_target(target):
-	if 'add_effect' in target:
-		target.add_effect(self)
 	self.target = target
+	Events.effect_applyed.emit(self)
 
 
 func activate():
-	self.activated.emit(self)
+	Events.effect_activated.emit(self)
 	self.action.call(self.target)
 
 

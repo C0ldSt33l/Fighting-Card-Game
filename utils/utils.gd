@@ -1,8 +1,8 @@
 class_name Utils
 
-static func apply_effect_to(obj: Variant, e: Effect) -> void:
-	if 'add_effect' in obj:
-		obj.add_effect(e)
+static func apply_effect( e: Effect, to: Variant) -> void:
+	e.set_target(to)
+	to.add_effect(e)
 	Game.battle.add_effect(e)
 
 static func connect_signals(obj: Variant, what_to_what: Dictionary) -> Variant:

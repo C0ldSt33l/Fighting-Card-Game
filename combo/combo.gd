@@ -12,10 +12,10 @@ var multiplier: int
 var upgrade_lvl := 1
 
 var cards: Array[Card] = []
-var first_card: Card :
+var start_card: Card :
 	set(val): return
 	get(): return null if self.cards.size() == 0 else self.cards[0]
-var last_card: Card :
+var end_card: Card :
 	set(val): return
 	get(): return null if self.cards.size() == 0 else self.cards[-1]
 var length: int :
@@ -24,11 +24,6 @@ var length: int :
 
 var effect: Effect = null
 var effects_from_upgrades: Array[Effect] = []
-
-
-signal created(c: Combo)
-signal played(c: Combo)
-signal destroyed(c: Combo)
 
 
 func _init(
@@ -44,15 +39,13 @@ func _init(
 	self.effect = effect 
 	self.cards.append_array(cards)
 
-	self.created.emit(self)
+	Events.obj_created.emit(self)
 
 
 func apply_effect() -> void:
 	for c in self.cards:
 		var e := self.effect.clone()
-		e.set_target(c)
-		Game.battle.add_effect(e)
-	self.played.emit(self)
+		Utils.apply_effect(e, c)
 
 
 func count_card_by_tag(tag: String) -> int:
