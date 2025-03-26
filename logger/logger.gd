@@ -13,6 +13,9 @@ extends RichTextLabel
 @export var EFFECT_NAME_COLOR := Color.ORANGE
 @export var DMG_COLOR := Color.RED
 
+const BATTLE_STARTED_PLACEHOLDER := '---BATTLE START---'
+const BATTLE_ENDED_PLACEHOLDER := '---BATTLE END---'
+
 const ROUND_PREPARATION_STARTED_PLACEHOLDERA := '---ROUND PREPARATION---'
 const ROUND_STARTED_PLACEHOLDER := '---ROUND START---'
 const ROUND_ENDED_PLACEHOLDER := '---ROUND END---'
@@ -56,6 +59,7 @@ Possible colorful log elements:
 func _ready() -> void:
 	self.bbcode_enabled = true
 	self.add_theme_color_override('default_color', TEXT_DEFAULT_COLOR)
+	self.connect_battle_signals()
 
 
 func put_text(text: String) -> void:
@@ -84,6 +88,13 @@ func obj_prop_changed_log(obj: Variant, prop: StringName, old: Variant, new: Var
 		colorful(str(old), SCORE_OLD_VAL_COLOR),
 		colorful(str(new), SCORE_NEW_VAL_COLOR),
 	])
+
+
+func battle_started_log():
+	self.put_text(colorful(BATTLE_STARTED_PLACEHOLDER, Color.WHITE))
+
+func battle_ended_log():
+	self.put_text(colorful(BATTLE_ENDED_PLACEHOLDER, Color.WHITE))
 
 
 func round_preparation_started_log():
@@ -211,23 +222,29 @@ func get_obj_type_and_name(obj: Variant) -> Array[String]:
 
 func connect_battle_signals() -> void:
 	Events.connect_events({
+		obj_created = self.obj_created_log,
+		obj_prop_changed = self.obj_prop_changed_log,
+		obj_destroyed = self.obj_has_destroyed_log,
+
+		battle_started = self.battle_started_log,
+		battle_ended = self.battle_ended_log,
+
 		round_preparation_started = self.round_preparation_started_log,
 		round_started = self.round_started_log,
 		round_ended = self.round_ended_log,
 		round_exit = self.round_exit_log,
 
-		obj_created = self.obj_created_log,
-		obj_prop_changed = self.obj_prop_changed_log,
-		obj_destroyed = self.obj_has_destroyed_log,
-
 		card_started = self.card_started_log ,
 		card_ended = self.card_ended_log ,
 		card_exit = self.card_exit_log ,
+
 		combo_started = self.combo_started_log ,
 		combo_ended = self.combo_ended_log ,
 		combo_exit = self.combo_exit_log ,
+
 		effect_applyed = self.effect_applyed_log ,
 		effect_activated = self.effect_activated_log ,
+
 		score_points_updated = self.score_points_updated_log ,
 		score_multiplier_updated = self.score_multiplier_updated_log ,
 		score_total_score_updated = self.score_total_score_updated_log ,

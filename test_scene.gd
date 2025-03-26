@@ -17,13 +17,25 @@ var cur_combo: Combo :
 	set(val): return
 	get(): return null if self.combos_on_table.size() == 0 else self.combos_on_table[0]
 
+var round_count := 2
+
 var effects: Array[Effect] = []
 
 
-func _ready() -> void:
-	Game.battle = self
-	self.logger.connect_battle_signals()
+func _init() -> void:
+	pass	
 
+
+func _ready() -> void:
+	Events.connect_events({
+		battle_started = self.start_round_preparation,
+	})
+	Game.battle = self
+	Events.battle_started.emit()
+
+
+func start_round_preparation() -> void:
+	Events.round_preparation_started.emit()
 	var configs := [
 		{
 			'card_name': 'fist',
@@ -61,20 +73,18 @@ func _ready() -> void:
 
 	var e := Effects.EFFECTS['Multiplier+'] as Effect
 	e.bind_to(self)
-	e.set_target(self.cards_on_table[0])
-	Game.battle.add_effect(e)
+	Utils.apply_effect(e, self.cards_on_table[0])
 
 	var post_round_effect := Effects.EFFECTS['Double Score'] as Effect
 	post_round_effect.bind_to(self)
-	post_round_effect.set_target(self.counter)
-	Game.battle.add_effect(post_round_effect)
+	Utils.apply_effect(post_round_effect, self.counter)
 
 	# print(inst_to_dict(self))
-	Events.round_preparation_started.emit()
 
 
 func start_round() -> void:
 	Events.round_started.emit()
+	self.round_count -= 1
 	if self.cards_on_table.size() == 0: return
 	self.check_combos()
 	for e in self.effects:
@@ -103,7 +113,11 @@ func end_round() -> void:
 	self.cards_on_table.clear()
 	self.effects.clear()
 
-	Events.round_preparation_started.emit()
+	if self.round_count == 0:
+		Events.battle_ended.emit()
+		return
+
+	self.start_round_preparation()
 
 
 func play_card() -> void:
@@ -116,7 +130,7 @@ func play_card() -> void:
 		Events.combo_ended.emit(combo)
 		# combo.apply_effect()	
 		self.combos_on_table.erase(combo)
-		Events.combo_exit.emit()
+		Events.combo_exit.emit(combo)
 
 	Events.card_started.emit(card)
 	card.play()

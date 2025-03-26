@@ -1,6 +1,6 @@
 extends Node
 
-# BATTLE EVENTS
+# COMMON EVENTS
 signal obj_created(obj: Variant)
 signal obj_prop_changed(
 	obj: Variant,
@@ -9,6 +9,12 @@ signal obj_prop_changed(
 	new: int
 )
 signal obj_destroyed(obj: Variant)
+
+signal rerolled()
+
+# BATTLE EVENTS
+signal battle_started()
+signal battle_ended()
 
 signal round_preparation_started()
 signal round_started()
@@ -32,7 +38,7 @@ signal score_total_score_updated(old: int, new: int, diff: int)
 
 signal hand_updated()
 
-signal rerolled()
+# SHOP EVENTS
 
 
 func connect_events(event_to_func: Dictionary) -> void:

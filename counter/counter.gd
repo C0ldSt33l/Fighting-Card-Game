@@ -22,6 +22,8 @@ extends Node2D
 	set = set_round_score
 @onready var total_score: int = 0
 
+var effects: Array[Effect] = []
+
 
 func _ready() -> void:
 	self.points = 0
@@ -47,6 +49,10 @@ func set_round_score(val: int) -> void:
 	Events.score_total_score_updated.emit(self.round_score, val, val - self.round_score)
 	round_score = val
 	self.round_score_label.text = str(val)
+
+
+func add_effect(e: Effect) -> void:
+	self.effects.append(e)
 
 
 func show_score_panel() -> void:
