@@ -23,11 +23,12 @@ extends Node2D
 @onready var total_score: int = 0
 
 var effects: Array[Effect] = []
+var used_effects: Array[Effect] = []
 
 
 func _ready() -> void:
 	self.points = 0
-	self.multiplier = 1
+	self.multiplier = 0
 	
 	round_score_panel.visible = false
 	round_score_label.visible = false
@@ -49,6 +50,16 @@ func set_round_score(val: int) -> void:
 	Events.score_total_score_updated.emit(self.round_score, val, val - self.round_score)
 	round_score = val
 	self.round_score_label.text = str(val)
+
+
+func add(points: int, mult: int) -> void:
+	self.points += points
+	self.multiplier += mult
+
+
+func sub(points: int, mult: int) -> void:
+	self.points -= points
+	self.multiplier -= mult
 
 
 func add_effect(e: Effect) -> void:

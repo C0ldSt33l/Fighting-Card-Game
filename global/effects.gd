@@ -1,48 +1,56 @@
 extends Node
 
+# var EFFECTS := {
+# 	'Damage+': Effect.new(
+# 		'Damage+',
+# 		'Increase card points by `2`',
+# 		Effect.ACTIVATION_TIME.CARD_START,
+# 		Effect.TYPE.BUFF,
+# 		card_increase_points
+# 	),
+# 	'Multiplier+': Effect.new(
+# 		'Multiplier+',
+# 		'Increase card mulitplier by `1`',
+# 		Effect.ACTIVATION_TIME.ROUND_START,
+# 		Effect.TYPE.BUFF,
+# 		card_increase_mult
+# 	),
+# 	'Double Score': Effect.new(
+# 		'Double Score',
+# 		'Double score',
+# 		Effect.ACTIVATION_TIME.ROUND_END,
+# 		Effect.TYPE.BUFF,
+# 		score_double_score
+# 	),
+# }
+
 var EFFECTS := {
-	'Damage+': Effect.new(
-		'Damage+',
-		'Increase card points by `2`',
-		Effect.ACTIVATION_TIME.ROUND_IN_PROGRESS,
+	'Extra points': Effect.new(
+		'Extra points',
+		'Add points and multiplier to score after card is played',
+		Effect.ACTIVATION_TIME.CARD_END,
+		counter_add_points_and_multipier,
 		Effect.TYPE.BUFF,
-		card_increase_points
+		Effect.TARGET_TYPE.SCORE,
+		[50, 10],
 	),
-	'Multiplier+': Effect.new(
-		'Multiplier+',
-		'Increase card mulitpier by `1`',
-		Effect.ACTIVATION_TIME.ROUND_START,
+	'Card enchancment': Effect.new(
+		'Card enchancment',
+		'Enchance card points and multiplier by %i and %i respectively',
+		Effect.ACTIVATION_TIME.CARD_START,
+		card_add_points_and_mulitplier,
 		Effect.TYPE.BUFF,
-		card_increase_mult
-	),
-	'Double Score': Effect.new(
-		'Double Score',
-		'Double score',
-		Effect.ACTIVATION_TIME.ROUND_END,
-		Effect.TYPE.BUFF,
-		score_double_score
+		Effect.TARGET_TYPE.BATTLE_CARD,
 	),
 }
 
 # NOTE: effect func name convetion
 # TypeName_ActionName(obj: TypeName)
 
-static func card_increase_points(c: Card, bonus: int = 2) -> void:
-	c.points += bonus
+static func counter_add_points_and_multipier(c: Counter, points: int, mult: int) -> void:
+	c.add(points, mult)
 
 
-static func card_increase_mult(c: Card, bonus: int = 1) -> void:
-	c.multiplier += bonus
-
-
-static func score_double_score(c: Counter) -> void:
-	c.round_score *= 2
-
-
-static func combo_charge_with_ki(c: Combo) -> void:
-	pass
-
-
-static func card_charge_with_ki(c: Card) -> void:
-	c.energy = Card.ENERGY.KI
-	pass
+static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> void:
+	c.points += points
+	c.multiplier += mult

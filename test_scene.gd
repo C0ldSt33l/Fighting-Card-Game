@@ -5,11 +5,17 @@ extends Node2D
 @onready var logger := $Logger as Logger 
 @onready var timer := $Timer as Timer
 @onready var counter := $Counter as Counter
+@onready var round_counter:= $"Round counter" as Label
 
-var card_cursor := 0 :
-	set(val): card_cursor = clampi(val, 0, self.cards_on_table.size())
+
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
+var card_cursor := 0 :
+	set(val):
+		card_cursor = clampi(val, 0, self.cards_on_table.size())
+var cur_card: Card :
+	get():
+		return null if self.cards_on_table.size() == 0 else self.cards_on_table[self.card_cursor]
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
@@ -20,29 +26,39 @@ var cur_combo: Combo :
 var round_count := 2
 
 var effects: Array[Effect] = []
-
-
-func _init() -> void:
-	pass	
+var used_effects: Array[Effect]= []
 
 
 func _ready() -> void:
 	Events.connect_events({
 		battle_started = self.start_round_preparation,
+
+		# round_started = self.on_round_started,
+		# round_ended = self.on_round_ended,
+		# round_exit = self.on_round_exit,
+
+		card_started = self.on_card_started,
+		card_ended = self.on_card_ended,
+		# card_exit = self.on_card_exit,
+
+		# combo_started = self.on_combo_started,
+		# combo_ended = self.on_combo_ended,
+		# combo_exit = self.on_combo_exit,
 	})
 	Game.battle = self
+	self.round_counter.text = str(self.round_count)
 	Events.battle_started.emit()
 
 
 func start_round_preparation() -> void:
 	Events.round_preparation_started.emit()
 	var configs := [
-		{
-			'card_name': 'fist',
-			'type': Card.BODY_PART.ARM_STRIKE,
-			'points': 2,
-			'multiplier': 1,
-		},
+		# {
+		# 	'card_name': 'fist',
+		# 	'type': Card.BODY_PART.ARM_STRIKE,
+		# 	'points': 2,
+		# 	'multiplier': 1,
+		# },
 		{
 			'card_name': 'knee strike',
 			'type': Card.BODY_PART.LEG_STRIKE,
@@ -68,18 +84,12 @@ func start_round_preparation() -> void:
 		self.spawn_card(config, spawn_pos)
 		spawn_pos.x += 150
 
-	for c in self.cards_on_table:
-		c.energy = Card.ENERGY.KI
-
-	var e := Effects.EFFECTS['Multiplier+'] as Effect
-	e.bind_to(self)
-	Utils.apply_effect(e, self.cards_on_table[0])
-
-	var post_round_effect := Effects.EFFECTS['Double Score'] as Effect
-	post_round_effect.bind_to(self)
-	Utils.apply_effect(post_round_effect, self.counter)
-
-	# print(inst_to_dict(self))
+	var e := Effects.EFFECTS['Extra points'] as Effect
+	var c := self.cards_on_table[-1]
+	# TODO: where this effect should store (in card or in battle scene)
+	e.bind_to(c)
+	c.add_effect(e)	
+	self.apply_effect(e, self.counter)
 
 
 func start_round() -> void:
@@ -87,14 +97,13 @@ func start_round() -> void:
 	self.round_count -= 1
 	if self.cards_on_table.size() == 0: return
 	self.check_combos()
-	for e in self.effects:
-		if e.activation_time == Effect.ACTIVATION_TIME.ROUND_START:
-			e.activate()
+	
 	self.timer.start()
 
 
 func end_round() -> void:
 	Events.round_exit.emit()
+	self.round_counter.text = str(self.round_count)
 	self.timer.stop()
 
 	await self.counter.update_round_score()
@@ -121,23 +130,22 @@ func end_round() -> void:
 
 
 func play_card() -> void:
-	var card := self.cards_on_table[self.card_cursor]
+	var card := self.cur_card
 	var combo := self.cur_combo
 
 	if combo and card == combo.start_card:
 		Events.combo_started.emit(combo)
-	elif combo and card == combo.end_card:
+
+	Events.card_started.emit(card)
+	card.play()
+	Events.card_ended.emit(card)
+	Events.card_exit.emit(card)
+
+	if combo and card == combo.end_card:
 		Events.combo_ended.emit(combo)
 		# combo.apply_effect()	
 		self.combos_on_table.erase(combo)
 		Events.combo_exit.emit(combo)
-
-	Events.card_started.emit(card)
-	card.play()
-	Events.card_exit.emit(card)
-
-	self.counter.points += card.points
-	self.counter.multiplier += card.multiplier
 
 	self.card_cursor += 1
 	if self.card_cursor == self.cards_on_table.size():
@@ -173,9 +181,6 @@ func check_combos() -> void:
 
 		i += step
 
-	for c in self.combos_on_table:
-		c.apply_effect()	
-
 
 func create_combo(name: StringName, cards: Array[Card]) -> Combo:
 	var combo := ComboFactory.create(name, cards)
@@ -184,3 +189,78 @@ func create_combo(name: StringName, cards: Array[Card]) -> Combo:
 
 func add_effect(e: Effect) -> void:
 	self.effects.append(e)
+
+
+func apply_effect(e: Effect, to: Variant) -> void:
+	e.set_target(to)
+	to.add_effect(e)
+	self.add_effect(e)
+
+
+func activate_effects(time: Effect.ACTIVATION_TIME) -> void:
+	var effects_on_time: Array[Effect] = self.effects.filter(
+		func (e: Effect):
+			return e.activation_time == time
+	)
+	for e in effects_on_time:
+		e.activate()
+
+	self.effects = self.effects.filter(
+		func (e: Effect):
+			return effects_on_time.find(e) == -1
+	)
+	self.used_effects.append_array(effects_on_time)
+
+func on_round_preparation_started() -> void: pass
+func on_round_started() -> void:
+	for c in self.combos_on_table:
+		self.counter.add(c.points, c.multiplier)
+	self.activate_effects(Effect.ACTIVATION_TIME.ROUND_START)	
+
+# TODO: reset counter effects
+func on_round_ended() -> void:
+	self.activate_effects(Effect.ACTIVATION_TIME.ROUND_END)	
+
+# TODO: clear totems effects
+func on_round_exit() -> void:
+	self.effects.clear()
+	self.used_effects.clear()
+
+
+func on_card_started(c: Card) -> void:
+	var effs: Array[Effect] = c.effects.filter(
+		func (e: Effect):
+			return e.activation_time == Effect.ACTIVATION_TIME.CARD_START
+	)
+	for e in effs:
+		e.activate()
+
+func on_card_ended(c: Card) -> void:
+	var effects: Array[Effect] = c.effects.filter(
+		func (e: Effect):
+			return e.activation_time == Effect.ACTIVATION_TIME.CARD_END
+	)
+	for e in effects:
+		e.activate()
+
+func on_card_exit(c: Card) -> void:
+	c.reset_effects()
+
+
+func on_combo_started(c: Combo) -> void:
+	if c.effect.target_type == Effect.TARGET_TYPE.BATTLE_CARD:
+		c.apply_effect_to_cards()
+	# var effects: Array[Effect] = c.effects.filter(
+	
+
+func on_combo_ended(c: Combo) -> void:
+	var effects: Array[Effect] = c.effects.filter(
+		func (e: Effect):
+			return e.activation_time == Effect.ACTIVATION_TIME.COMBO_END
+	)
+
+func on_combo_exit(c: Combo) -> void:
+	c.reset_effects()
+
+func on_effect_applyed(e: Effect) -> void: pass
+func on_effect_activated(e: Effect) -> void: pass

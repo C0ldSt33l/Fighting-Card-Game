@@ -70,6 +70,7 @@ enum ENERGY {
 
 ## `Effect.action` should be func with signatoure `(Card) -> void`
 var effects: Array[Effect] = []
+var used_effects: Array[Effect] = []
 
 
 func _ready() -> void:
@@ -83,13 +84,11 @@ func _ready() -> void:
 
 
 func play() -> void:
-	print(self.effects)
+	# TODO: add animation
 	self.scale += Vector2(0.2, 0.2)
-	for e in self.effects:
-		if e.activation_time == Effect.ACTIVATION_TIME.ROUND_IN_PROGRESS:
-			e.activate()
-
-	Events.card_ended.emit(self)	
+	# NOTE: maybe do this after card is played
+	Game.battle.counter.points += self.points
+	Game.battle.counter.multiplier += self.multiplier
 
 
 func add_tags(new_tags: Dictionary) -> void:
@@ -115,6 +114,11 @@ func set_name_label_text(text: String) -> void:
 
 func add_effect(e: Effect) -> void:
 	self.effects.append(e)
+
+
+func reset_effects() -> void:
+	self.effects.append_array(self.used_effects)
+	self.used_effects.clear()
 
 
 func _exit_tree() -> void:

@@ -24,6 +24,8 @@ var length: int :
 
 var effect: Effect = null
 var effects_from_upgrades: Array[Effect] = []
+var effects: Array[Effect] = []
+var used_effects: Array[Effect] = []
 
 
 func _init(
@@ -42,10 +44,10 @@ func _init(
 	Events.obj_created.emit(self)
 
 
-func apply_effect() -> void:
+func apply_effect_to_cards() -> void:
 	for c in self.cards:
 		var e := self.effect.clone()
-		Utils.apply_effect(e, c)
+		Game.battle.apply_effect(e, c)
 
 
 func count_card_by_tag(tag: String) -> int:
@@ -68,6 +70,11 @@ func upgrade(e: Effect) -> void:
 	if self.upgrade_lvl + 1 > self.MAX_LVL: return
 	self.upgrade_lvl += 1
 	self.effects_from_upgrades.append(e)
+
+
+func reset_effects() -> void:
+	self.effects.append_array(self.used_effects)
+	self.used_effects.clear()
 
 
 # Maybe will come in useful for creating combo patterns
