@@ -97,9 +97,9 @@ func activate():
 	if !self.check_target_type() or self in self.target.used_effects: return
 
 	Events.effect_activated.emit(self)
-	var params := [self.target]
-	params.append_array(self.args)
-	self.action.bindv(params).call()
+	var args := [self.target]
+	args.append_array(self.args)
+	self.action.bindv(args).call()
 	self.make_unenabled()
 
 

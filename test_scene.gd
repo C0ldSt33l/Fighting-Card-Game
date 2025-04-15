@@ -41,7 +41,7 @@ func _ready() -> void:
 		card_ended = self.on_card_ended,
 		# card_exit = self.on_card_exit,
 
-		# combo_started = self.on_combo_started,
+		combo_started = self.on_combo_started,
 		# combo_ended = self.on_combo_ended,
 		# combo_exit = self.on_combo_exit,
 	})
@@ -53,12 +53,12 @@ func _ready() -> void:
 func start_round_preparation() -> void:
 	Events.round_preparation_started.emit()
 	var configs := [
-		# {
-		# 	'card_name': 'fist',
-		# 	'type': Card.BODY_PART.ARM_STRIKE,
-		# 	'points': 2,
-		# 	'multiplier': 1,
-		# },
+		{
+			'card_name': 'fist',
+			'type': Card.BODY_PART.ARM_STRIKE,
+			'points': 2,
+			'multiplier': 1,
+		},
 		{
 			'card_name': 'knee strike',
 			'type': Card.BODY_PART.LEG_STRIKE,
@@ -84,14 +84,15 @@ func start_round_preparation() -> void:
 		self.spawn_card(config, spawn_pos)
 		spawn_pos.x += 150
 
-	var e := Effects.EFFECTS['Extra points'] as Effect
-	var c := self.cards_on_table[-1]
-	# TODO: where this effect should store (in card or in battle scene)
-	e.bind_to(c)
-	c.add_effect(e)	
-	self.apply_effect(e, self.counter)
+	# var e := Effects.EFFECTS['Extra points'] as Effect
+	# var c := self.cards_on_table[-1]
+	# # TODO: where this effect should store (in card or in battle scene)
+	# e.bind_to(c)
+	# c.add_effect(e)	
+	# self.apply_effect(e, self.counter)
 
 
+# TODO: move `check_combos()` in round preparation stage
 func start_round() -> void:
 	Events.round_started.emit()
 	self.round_count -= 1
@@ -248,9 +249,15 @@ func on_card_exit(c: Card) -> void:
 
 
 func on_combo_started(c: Combo) -> void:
-	if c.effect.target_type == Effect.TARGET_TYPE.BATTLE_CARD:
-		c.apply_effect_to_cards()
-	# var effects: Array[Effect] = c.effects.filter(
+	match (c.effect.activation_time):
+		Effect.ACTIVATION_TIME.CARD_START, Effect.ACTIVATION_TIME.CARD_END:
+			print('fuck')
+			c.apply_effect_to_cards()
+		Effect.ACTIVATION_TIME.COMBO_START:
+			print('effect is activated at combo start')
+			for card in c.cards:
+				c.effect.set_target(card)
+				c.effect.activate()
 	
 
 func on_combo_ended(c: Combo) -> void:

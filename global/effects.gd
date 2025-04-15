@@ -37,10 +37,11 @@ var EFFECTS := {
 	'Card enchancment': Effect.new(
 		'Card enchancment',
 		'Enchance card points and multiplier by %i and %i respectively',
-		Effect.ACTIVATION_TIME.CARD_START,
+		Effect.ACTIVATION_TIME.COMBO_START,
 		card_add_points_and_mulitplier,
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.BATTLE_CARD,
+		[10, 2]
 	),
 }
 
