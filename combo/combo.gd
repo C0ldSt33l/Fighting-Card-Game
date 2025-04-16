@@ -77,6 +77,10 @@ func reset_effects() -> void:
 	self.used_effects.clear()
 
 
+func is_all_effects_activated() -> bool:
+	return self.effects.is_empty()
+
+
 # Maybe will come in useful for creating combo patterns
 static func equal(target, cur) -> bool:
 	return target == cur

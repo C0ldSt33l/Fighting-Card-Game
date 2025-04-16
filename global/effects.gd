@@ -55,3 +55,7 @@ static func counter_add_points_and_multipier(c: Counter, points: int, mult: int)
 static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> void:
 	c.points += points
 	c.multiplier += mult
+
+
+static func combo_play_again(c: Combo, times: int) -> void:
+	Game.battle.combo_cursor.move_back()

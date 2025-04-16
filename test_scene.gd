@@ -10,15 +10,14 @@ extends Node2D
 
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
-var card_cursor := 0 :
-	set(val):
-		card_cursor = clampi(val, 0, self.cards_on_table.size())
+var card_cursor := Cursor.new()
 var cur_card: Card :
 	get():
-		return null if self.cards_on_table.size() == 0 else self.cards_on_table[self.card_cursor]
+		return self.cards_on_table[self.card_cursor.index] if self.cards_on_table.size() != 0 else null
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
+var combo_cursor := Cursor.new()
 var cur_combo: Combo :
 	set(val): return
 	get(): return null if self.combos_on_table.size() == 0 else self.combos_on_table[0]
@@ -94,10 +93,10 @@ func start_round_preparation() -> void:
 
 # TODO: move `check_combos()` in round preparation stage
 func start_round() -> void:
+	self.check_combos()
 	Events.round_started.emit()
 	self.round_count -= 1
 	if self.cards_on_table.size() == 0: return
-	self.check_combos()
 	
 	self.timer.start()
 
@@ -116,11 +115,13 @@ func end_round() -> void:
 	for c in self.combos_on_table:
 		c.free()
 	self.combos_on_table.clear()
-	self.card_cursor = 0
+	self.combo_cursor.reset()
 
 	for card in self.cards_on_table:
 		card.queue_free()
 	self.cards_on_table.clear()
+	self.card_cursor.reset()
+
 	self.effects.clear()
 
 	if self.round_count == 0:
@@ -140,16 +141,18 @@ func play_card() -> void:
 	Events.card_started.emit(card)
 	card.play()
 	Events.card_ended.emit(card)
-	Events.card_exit.emit(card)
+	if card.is_all_effects_activated():
+		Events.card_exit.emit(card)
 
 	if combo and card == combo.end_card:
 		Events.combo_ended.emit(combo)
 		# combo.apply_effect()	
 		self.combos_on_table.erase(combo)
-		Events.combo_exit.emit(combo)
+		if combo.is_all_effects_activated():
+			Events.combo_exit.emit(combo)
 
-	self.card_cursor += 1
-	if self.card_cursor == self.cards_on_table.size():
+	self.card_cursor.move_foward()
+	if self.card_cursor.index == self.cards_on_table.size():
 		Events.round_ended.emit()
 		self.end_round()
 
