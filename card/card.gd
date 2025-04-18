@@ -4,6 +4,7 @@ class_name Card
 @onready var name_label := $Background/Name as Label
 @onready var type_label := $Background/Type as Label
 @onready var dmg_label := $Background/DMG as Label
+var index: int
 
 enum BODY_PART {
 	ARM_STRIKE,
@@ -72,6 +73,9 @@ enum ENERGY {
 var effects: Array[Effect] = []
 var used_effects: Array[Effect] = []
 
+var input_is_active: bool
+
+
 
 func _ready() -> void:
 	self.name_label.text += str(self.card_name)
@@ -83,12 +87,15 @@ func _ready() -> void:
 	Events.obj_created.emit(self)
 
 
+# TODO: add animation
 func play() -> void:
-	# TODO: add animation
+	print('enter to play')
 	self.scale += Vector2(0.2, 0.2)
 	# NOTE: maybe do this after card is played
 	Game.battle.counter.points += self.points
 	Game.battle.counter.multiplier += self.multiplier
+
+	print('exit from play')
 
 
 func add_tags(new_tags: Dictionary) -> void:

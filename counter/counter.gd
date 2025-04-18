@@ -68,6 +68,7 @@ func add_effect(e: Effect) -> void:
 
 func show_score_panel() -> void:
 	self.score_panel.show()
+	self.round_score_panel.hide()
 
 
 func hide_score_panel() -> void:
@@ -76,6 +77,7 @@ func hide_score_panel() -> void:
 
 func show_final_score_panel() -> void:
 	self.round_score_panel.show()
+	self.round_score_panel.size.x = 0
 	while(self.round_score_panel.size.x < self.score_panel.size.x):
 		await get_tree().create_timer(0.01).timeout
 		round_score_panel.size.x =round_score_panel.size.x + 4

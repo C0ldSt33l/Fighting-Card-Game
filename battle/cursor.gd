@@ -4,8 +4,12 @@ var index: int = 0
 var size: int = -1
 
 
+func set_index(i: int) -> void:
+	self.index = i
+
+
 func set_size(size: int) -> void:
-	self.size = size - 1
+	self.size = size
 
 
 func reset() -> void:

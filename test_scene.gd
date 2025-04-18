@@ -6,7 +6,7 @@ extends Node2D
 @onready var timer := $Timer as Timer
 @onready var counter := $Counter as Counter
 @onready var round_counter:= $"Round counter" as Label
-
+@onready var start_button := $"Start button" as Button
 
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
@@ -27,29 +27,49 @@ var round_count := 2
 var effects: Array[Effect] = []
 var used_effects: Array[Effect]= []
 
+# If `true` allow to play card by pressing `Enter` or `Space`
+var is_turn_based_mode := true 
+
+enum BATTLE_STAGE {
+	ROUND_PREPARATION,
+	ROUND_PLAYING,
+}
+
+signal next_card_key_pressed
+
 
 func _ready() -> void:
 	Events.connect_events({
 		battle_started = self.start_round_preparation,
 
-		# round_started = self.on_round_started,
-		# round_ended = self.on_round_ended,
-		# round_exit = self.on_round_exit,
+		round_started = self.on_round_started,
+		round_ended = self.on_round_ended,
+		round_exit = self.on_round_exit,
 
 		card_started = self.on_card_started,
 		card_ended = self.on_card_ended,
-		# card_exit = self.on_card_exit,
+		card_exit = self.on_card_exit,
 
 		combo_started = self.on_combo_started,
-		# combo_ended = self.on_combo_ended,
-		# combo_exit = self.on_combo_exit,
+		combo_ended = self.on_combo_ended,
+		combo_exit = self.on_combo_exit,
 	})
+
+	# self.next_card_key_pressed.connect(func (): print('input'))
+
 	Game.battle = self
 	self.round_counter.text = str(self.round_count)
 	Events.battle_started.emit()
+	# self.start_round_preparation()
+
+
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed('ui_accept'):
+		self.next_card_key_pressed.emit()
 
 
 func start_round_preparation() -> void:
+	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
 	var configs := [
 		{
@@ -79,8 +99,8 @@ func start_round_preparation() -> void:
 	]
 	var spawn_pos := Vector2(350, 200)
 
-	for config in configs:
-		self.spawn_card(config, spawn_pos)
+	for i in len(configs):
+		self.spawn_card(i, configs[i], spawn_pos)
 		spawn_pos.x += 150
 
 	# var e := Effects.EFFECTS['Extra points'] as Effect
@@ -94,15 +114,21 @@ func start_round_preparation() -> void:
 # TODO: move `check_combos()` in round preparation stage
 func start_round() -> void:
 	self.check_combos()
+
 	Events.round_started.emit()
 	self.round_count -= 1
 	if self.cards_on_table.size() == 0: return
+
+	self.card_cursor.set_size(self.cards_on_table.size())
+	self.combo_cursor.set_size(self.combos_on_table.size())
 	
-	self.timer.start()
+	if self.is_turn_based_mode:
+		self.play_card()
+	else:
+		self.timer.start()
 
 
 func end_round() -> void:
-	Events.round_exit.emit()
 	self.round_counter.text = str(self.round_count)
 	self.timer.stop()
 
@@ -112,8 +138,6 @@ func end_round() -> void:
 		if e.activation_time == Effect.ACTIVATION_TIME.ROUND_END:
 			e.activate()
 
-	for c in self.combos_on_table:
-		c.free()
 	self.combos_on_table.clear()
 	self.combo_cursor.reset()
 
@@ -124,47 +148,49 @@ func end_round() -> void:
 
 	self.effects.clear()
 
-	if self.round_count == 0:
-		Events.battle_ended.emit()
-		return
-
-	self.start_round_preparation()
+	Events.round_exit.emit()
 
 
 func play_card() -> void:
+	print('enter in play_card')
 	var card := self.cur_card
 	var combo := self.cur_combo
 
 	if combo and card == combo.start_card:
 		Events.combo_started.emit(combo)
 
-	Events.card_started.emit(card)
-	card.play()
+	Events.card_started.emit(card);\
+		card.play();\
+		if (self.is_turn_based_mode):
+			await self.next_card_key_pressed
 	Events.card_ended.emit(card)
+
 	if card.is_all_effects_activated():
 		Events.card_exit.emit(card)
 
 	if combo and card == combo.end_card:
 		Events.combo_ended.emit(combo)
 		# combo.apply_effect()	
-		self.combos_on_table.erase(combo)
 		if combo.is_all_effects_activated():
 			Events.combo_exit.emit(combo)
 
-	self.card_cursor.move_foward()
+
+	print('exit from play_card')
 	if self.card_cursor.index == self.cards_on_table.size():
 		Events.round_ended.emit()
 		self.end_round()
+	elif self.is_turn_based_mode:
+		self.play_card()
 
 
-func spawn_card(config: Dictionary, pos: Vector2) -> void:
+func spawn_card(index: int, config: Dictionary, pos: Vector2) -> void:
 	var card := CardFactory.create_with_binding(
 		self,
 		func (c: Card) -> void:
+			c.index = index
 			c.add_tags(config)
 			c.position = pos
 	)
-
 	self.cards_on_table.append(card)
 
 
@@ -217,8 +243,8 @@ func activate_effects(time: Effect.ACTIVATION_TIME) -> void:
 
 func on_round_preparation_started() -> void: pass
 func on_round_started() -> void:
-	for c in self.combos_on_table:
-		self.counter.add(c.points, c.multiplier)
+	# for c in self.combos_on_table:
+	# 	self.counter.add(c.points, c.multiplier)
 	self.activate_effects(Effect.ACTIVATION_TIME.ROUND_START)	
 
 # TODO: reset counter effects
@@ -230,8 +256,11 @@ func on_round_exit() -> void:
 	self.effects.clear()
 	self.used_effects.clear()
 
+	self.start_round_preparation()
+
 
 func on_card_started(c: Card) -> void:
+	# print('card started: ', c.index, ' cur index: ', self.card_cursor.index)
 	var effs: Array[Effect] = c.effects.filter(
 		func (e: Effect):
 			return e.activation_time == Effect.ACTIVATION_TIME.CARD_START
@@ -240,6 +269,9 @@ func on_card_started(c: Card) -> void:
 		e.activate()
 
 func on_card_ended(c: Card) -> void:
+	self.card_cursor.move_foward()
+	c.scale = Vector2.ONE
+
 	var effects: Array[Effect] = c.effects.filter(
 		func (e: Effect):
 			return e.activation_time == Effect.ACTIVATION_TIME.CARD_END
@@ -252,18 +284,19 @@ func on_card_exit(c: Card) -> void:
 
 
 func on_combo_started(c: Combo) -> void:
+	# print('combo started: ', c.name, ' index: ', self.combo_cursor.index)
 	match (c.effect.activation_time):
 		Effect.ACTIVATION_TIME.CARD_START, Effect.ACTIVATION_TIME.CARD_END:
-			print('fuck')
 			c.apply_effect_to_cards()
 		Effect.ACTIVATION_TIME.COMBO_START:
-			print('effect is activated at combo start')
 			for card in c.cards:
 				c.effect.set_target(card)
 				c.effect.activate()
 	
 
 func on_combo_ended(c: Combo) -> void:
+	self.combo_cursor.move_foward()
+
 	var effects: Array[Effect] = c.effects.filter(
 		func (e: Effect):
 			return e.activation_time == Effect.ACTIVATION_TIME.COMBO_END
