@@ -69,6 +69,7 @@ func _input(event: InputEvent) -> void:
 
 
 func start_round_preparation() -> void:
+	self.start_button.disabled = false
 	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
 	var configs := [
@@ -113,6 +114,7 @@ func start_round_preparation() -> void:
 
 # TODO: move `check_combos()` in round preparation stage
 func start_round() -> void:
+	self.start_button.disabled = true
 	self.check_combos()
 
 	Events.round_started.emit()
