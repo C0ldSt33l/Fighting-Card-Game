@@ -154,7 +154,6 @@ func end_round() -> void:
 
 
 func play_card() -> void:
-	print('enter in play_card')
 	var card := self.cur_card
 	var combo := self.cur_combo
 
@@ -176,8 +175,6 @@ func play_card() -> void:
 		if combo.is_all_effects_activated():
 			Events.combo_exit.emit(combo)
 
-
-	print('exit from play_card')
 	if self.card_cursor.index == self.cards_on_table.size():
 		Events.round_ended.emit()
 		self.end_round()
@@ -258,7 +255,11 @@ func on_round_exit() -> void:
 	self.effects.clear()
 	self.used_effects.clear()
 
-	self.start_round_preparation()
+	if self.round_count != 0:
+		self.start_round_preparation()
+	else:
+		Events.battle_ended.emit()
+		print('battle end')
 
 
 func on_card_started(c: Card) -> void:

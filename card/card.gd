@@ -89,13 +89,9 @@ func _ready() -> void:
 
 # TODO: add animation
 func play() -> void:
-	print('enter to play')
 	self.scale += Vector2(0.2, 0.2)
 	# NOTE: maybe do this after card is played
-	Game.battle.counter.points += self.points
-	Game.battle.counter.multiplier += self.multiplier
-
-	print('exit from play')
+	Game.battle.counter.add(self.points, self.multiplier)
 
 
 func add_tags(new_tags: Dictionary) -> void:

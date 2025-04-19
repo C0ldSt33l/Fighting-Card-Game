@@ -52,6 +52,11 @@ func set_round_score(val: int) -> void:
 	self.round_score_label.text = str(val)
 
 
+func zero_score() -> void:
+	self.points = 0
+	self.multiplier = 0
+
+
 func add(points: int, mult: int) -> void:
 	self.points += points
 	self.multiplier += mult
@@ -88,5 +93,7 @@ func update_round_score()-> void:
 	self.hide_score_panel()
 	await self.show_final_score_panel()	
 	self.round_score = self.points * self.multiplier
+	self.zero_score()
+	
 	
 	
