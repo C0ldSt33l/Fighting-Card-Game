@@ -94,7 +94,7 @@ func check_target_type() -> bool:
 			return false
 
 func activate():
-	if !self.check_target_type() or self in self.target.used_effects: return
+	if !self.check_target_type(): return
 
 	Events.effect_activated.emit(self)
 	var args := [self.target]
@@ -104,8 +104,6 @@ func activate():
 
 
 func make_unenabled() -> void:
-	self.target.effects.erase(self)
-	self.target.used_effects.append(self)
 	Game.battle.effects.erase(self)
 	Game.battle.used_effects.append(self)
 
