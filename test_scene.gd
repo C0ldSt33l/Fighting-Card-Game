@@ -2,7 +2,7 @@ class_name BattleScene
 extends Node2D
 
 
-@onready var logger := $Logger as Logger 
+# @onready var log_win := $LoggerWindow as Window 
 @onready var timer := $Timer as Timer
 @onready var counter := $Counter as Counter
 @onready var round_counter:= $"Round counter" as Label
@@ -234,6 +234,7 @@ func activate_effects(time: Effect.ACTIVATION_TIME) -> void:
 	for e in effects_on_time:
 		e.activate()
 
+	# effects that are not activated on `time`
 	self.effects = self.effects.filter(
 		func (e: Effect):
 			return effects_on_time.find(e) == -1

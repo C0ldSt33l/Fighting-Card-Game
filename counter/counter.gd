@@ -27,11 +27,10 @@ var used_effects: Array[Effect] = []
 
 
 func _ready() -> void:
-	self.points = 0
-	self.multiplier = 0
-	
+	self.label_points.text = str(0)	
+	self.label_multiplier.text = str(0)	
+
 	round_score_panel.visible = false
-	round_score_label.visible = false
 	
 
 func set_points(val: int) -> void:
