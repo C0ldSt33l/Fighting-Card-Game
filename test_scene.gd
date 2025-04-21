@@ -2,39 +2,6 @@ class_name BattleScene
 extends Node2D
 
 
-class Filter:
-	static func BY_ACTIVATION_TIME(e: Effect, time: Effect.ACTIVATION_TIME) -> bool:
-		return e.activation_time == time
-
-	static func BY_CASTER(e: Effect, caster: Variant) -> bool:
-		return e.caster == caster
-
-	static func BY_TARGET(e: Effect, target: Variant) -> bool:
-		return e.target == target
-
-	static func BY_ACTIVATION_TIME_AND_CASTER(
-		e: Effect,
-		time: Effect.ACTIVATION_TIME,
-		caster: Variant
-	) -> bool:
-		return e.activation_time == time and e.target == caster
-
-	static func BY_ACTIVATION_TIME_AND_TARGET(
-		e: Effect,
-		time: Effect.ACTIVATION_TIME,
-		target: Variant
-	) -> bool:
-		return e.activation_time == time and e.target == target
-
-	static func BY_ACTIVATION_TIME_CASTER_AND_TARGET(
-		e: Effect,
-		time: Effect.ACTIVATION_TIME, 
-		caster: Variant,
-		target: Variant
-	) -> bool:
-		return e.activation_time == time and e.caster == caster and e.target == target
-
-
 @onready var timer := $Timer as Timer
 @onready var counter := $Counter as Counter
 @onready var round_counter:= $"Round counter" as Label
@@ -259,20 +226,17 @@ func apply_effect(e: Effect, to: Variant) -> void:
 	self.add_effect(e)
 
 
-func activate_effects(time: Effect.ACTIVATION_TIME) -> void:
-	var effects_on_time: Array[Effect] = self.effects.filter(
-		func (e: Effect):
-			return e.activation_time == time
-	)
-	for e in effects_on_time:
-		e.activate()
+func _filter_effects(filter: Callable, args: Array) -> Array[Effect]:
+	var binded = filter.bindv(args)
+	return self.effects.filter(binded)
 
-	# effects that are not activated on `time`
-	self.effects = self.effects.filter(
-		func (e: Effect):
-			return effects_on_time.find(e) == -1
-	)
-	self.used_effects.append_array(effects_on_time)
+
+func activate_filtered_effects(filter: Callable, args: Array) -> void:
+	var effects := self._filter_effects(filter, args)
+	for e in effects:
+		e.activate()
+	self.used_effects.append_array(effects)
+	self.effects = Utils.exlude_array(self.effects, effects)
 
 
 func collect_all_effects() -> void:
@@ -289,10 +253,16 @@ func on_round_started() -> void:
 		self.counter.add(c.points, c.multiplier)
 	
 	self.collect_all_effects()
-	self.activate_effects(Effect.ACTIVATION_TIME.ROUND_START)	
+	self.activate_filtered_effects(
+		Utils.Filter.BY_ACTIVATION_TIME,
+		[Effect.ACTIVATION_TIME.ROUND_START]
+	)
 
 func on_round_ended() -> void:
-	self.activate_effects(Effect.ACTIVATION_TIME.ROUND_END)	
+	self.activate_filtered_effects(
+		Utils.Filter.BY_ACTIVATION_TIME,
+		[Effect.ACTIVATION_TIME.ROUND_END]
+	)
 
 # TODO: clear totems effects
 func on_round_exit() -> void:
@@ -307,46 +277,42 @@ func on_round_exit() -> void:
 
 
 func on_card_started(c: Card) -> void:
-	# print('card started: ', c.index, ' cur index: ', self.card_cursor.index)
-	var effs: Array[Effect] = c.effects.filter(
-		func (e: Effect):
-			return e.activation_time == Effect.ACTIVATION_TIME.CARD_START
+	self.activate_filtered_effects(
+		Utils.Filter.BY_ACTIVATION_TIME_AND_TARGET,
+		[Effect.ACTIVATION_TIME.CARD_START, c]
 	)
-	for e in effs:
-		e.activate()
 
 func on_card_ended(c: Card) -> void:
-	self.card_cursor.move_foward()
 	c.scale = Vector2.ONE
+	self.card_cursor.move_foward()
 
-	var effects: Array[Effect] = c.effects.filter(
-		func (e: Effect):
-			return e.activation_time == Effect.ACTIVATION_TIME.CARD_END
+	self.activate_filtered_effects(
+		Utils.Filter.BY_ACTIVATION_TIME_AND_TARGET,
+		[Effect.ACTIVATION_TIME.CARD_END, c]
 	)
-	for e in effects:
-		e.activate()
 
 func on_card_exit(c: Card) -> void:
 	c.reset_effects()
 
 
 func on_combo_started(c: Combo) -> void:
-	# var effects := self.effects.filter(
-	# 	func (e: Effect):
-	# 		return 
-	pass
+	self.activate_filtered_effects(
+		Utils.Filter.BY_ACTIVATION_TIME_AND_CASTER,
+		[Effect.ACTIVATION_TIME.COMBO_START, c]
+	)
 	
 
 func on_combo_ended(c: Combo) -> void:
 	self.combo_cursor.move_foward()
 
-	var effects: Array[Effect] = c.effects.filter(
-		func (e: Effect):
-			return e.activation_time == Effect.ACTIVATION_TIME.COMBO_END
+	self.activate_filtered_effects(
+		Utils.Filter.BY_ACTIVATION_TIME_AND_CASTER,
+		[Effect.ACTIVATION_TIME.COMBO_END, c]
 	)
 
 func on_combo_exit(c: Combo) -> void:
 	c.reset_effects()
+
 
 func on_effect_applyed(e: Effect) -> void: pass
 func on_effect_activated(e: Effect) -> void: pass
