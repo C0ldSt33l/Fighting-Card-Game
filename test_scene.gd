@@ -2,7 +2,39 @@ class_name BattleScene
 extends Node2D
 
 
-# @onready var log_win := $LoggerWindow as Window 
+class Filter:
+	static func BY_ACTIVATION_TIME(e: Effect, time: Effect.ACTIVATION_TIME) -> bool:
+		return e.activation_time == time
+
+	static func BY_CASTER(e: Effect, caster: Variant) -> bool:
+		return e.caster == caster
+
+	static func BY_TARGET(e: Effect, target: Variant) -> bool:
+		return e.target == target
+
+	static func BY_ACTIVATION_TIME_AND_CASTER(
+		e: Effect,
+		time: Effect.ACTIVATION_TIME,
+		caster: Variant
+	) -> bool:
+		return e.activation_time == time and e.target == caster
+
+	static func BY_ACTIVATION_TIME_AND_TARGET(
+		e: Effect,
+		time: Effect.ACTIVATION_TIME,
+		target: Variant
+	) -> bool:
+		return e.activation_time == time and e.target == target
+
+	static func BY_ACTIVATION_TIME_CASTER_AND_TARGET(
+		e: Effect,
+		time: Effect.ACTIVATION_TIME, 
+		caster: Variant,
+		target: Variant
+	) -> bool:
+		return e.activation_time == time and e.caster == caster and e.target == target
+
+
 @onready var timer := $Timer as Timer
 @onready var counter := $Counter as Counter
 @onready var round_counter:= $"Round counter" as Label
@@ -242,13 +274,23 @@ func activate_effects(time: Effect.ACTIVATION_TIME) -> void:
 	)
 	self.used_effects.append_array(effects_on_time)
 
+
+func collect_all_effects() -> void:
+	for c in self.cards_on_table:
+		self.effects.append_array(c.effects)
+	for c in self.combos_on_table:
+		self.effects.append_array(c.effects)
+
+
 func on_round_preparation_started() -> void: pass
 func on_round_started() -> void:
-	# for c in self.combos_on_table:
-	# 	self.counter.add(c.points, c.multiplier)
+	# TODO: move segment in round preparation segment
+	for c in self.combos_on_table:
+		self.counter.add(c.points, c.multiplier)
+	
+	self.collect_all_effects()
 	self.activate_effects(Effect.ACTIVATION_TIME.ROUND_START)	
 
-# TODO: reset counter effects
 func on_round_ended() -> void:
 	self.activate_effects(Effect.ACTIVATION_TIME.ROUND_END)	
 
@@ -289,14 +331,10 @@ func on_card_exit(c: Card) -> void:
 
 
 func on_combo_started(c: Combo) -> void:
-	# print('combo started: ', c.name, ' index: ', self.combo_cursor.index)
-	match (c.effect.activation_time):
-		Effect.ACTIVATION_TIME.CARD_START, Effect.ACTIVATION_TIME.CARD_END:
-			c.apply_effect_to_cards()
-		Effect.ACTIVATION_TIME.COMBO_START:
-			for card in c.cards:
-				c.effect.set_target(card)
-				c.effect.activate()
+	# var effects := self.effects.filter(
+	# 	func (e: Effect):
+	# 		return 
+	pass
 	
 
 func on_combo_ended(c: Combo) -> void:

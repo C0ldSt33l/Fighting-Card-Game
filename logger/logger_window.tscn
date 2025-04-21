@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://oloaocbsreqn" path="res://logger/logger.tscn" id="1_t2uku"]
 
 [node name="LoggerWindow" type="Window"]
+title = "Logger"
 position = Vector2i(0, 36)
 size = Vector2i(400, 800)
 
