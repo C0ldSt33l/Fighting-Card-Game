@@ -22,10 +22,7 @@ var length: int :
 	set(val): return
 	get(): return self.cards.size()
 
-var effect: Effect = null
-var effects_from_upgrades: Array[Effect] = []
-var effects: Array[Effect] = []
-var used_effects: Array[Effect] = []
+var effects: Array[Effect]
 
 
 func _init(
@@ -38,16 +35,17 @@ func _init(
 	for p in props:
 		self[p] = props[p]
 	effect.bind_to(self)
-	self.effect = effect 
 	self.cards.append_array(cards)
+	if effect.target_type == Effect.TARGET_TYPE.BATTLE_CARD:
+		for c in cards:
+			var e := effect.clone()
+			e.set_target(c)
+			self.bind_effect(e)
+	else:
+		# BUG: will cause error if target is not set
+		self.bind_effect(effect)
 
 	Events.obj_created.emit(self)
-
-
-func apply_effect_to_cards() -> void:
-	for c in self.cards:
-		var e := self.effect.clone()
-		Game.battle.apply_effect(e, c)
 
 
 func count_card_by_tag(tag: String) -> int:
@@ -72,9 +70,16 @@ func upgrade(e: Effect) -> void:
 	self.effects_from_upgrades.append(e)
 
 
+func bind_effect(e: Effect) -> void:
+	self.effects.append(e)
+
+
+func bind_effect_arr(effs: Array[Effect]) -> void:
+	self.effects.append_array(effs)
+
+
 func reset_effects() -> void:
-	self.effects.append_array(self.used_effects)
-	self.used_effects.clear()
+	pass
 
 
 func is_all_effects_activated() -> bool:

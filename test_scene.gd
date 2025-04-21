@@ -28,6 +28,7 @@ var effects: Array[Effect] = []
 var used_effects: Array[Effect]= []
 
 # If `true` allow to play card by pressing `Enter` or `Space`
+# TODO: move to config file
 var is_turn_based_mode := true 
 
 enum BATTLE_STAGE {

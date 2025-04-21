@@ -71,10 +71,6 @@ enum ENERGY {
 
 ## `Effect.action` should be func with signatoure `(Card) -> void`
 var effects: Array[Effect] = []
-var used_effects: Array[Effect] = []
-
-var input_is_active: bool
-
 
 
 func _ready() -> void:
@@ -115,13 +111,16 @@ func set_name_label_text(text: String) -> void:
 	self.name_label.text = text
 
 
-func add_effect(e: Effect) -> void:
+func bind_effect(e: Effect) -> void:
 	self.effects.append(e)
 
 
+func bind_effect_arr(effs: Array[Effect]) -> void:
+	self.effects.append_array(effs)
+
+
 func reset_effects() -> void:
-	self.effects.append_array(self.used_effects)
-	self.used_effects.clear()
+	pass
 
 
 func is_all_effects_activated() -> bool:
