@@ -39,6 +39,9 @@ enum TARGET_TYPE {
 	NEXT_COMBO,
 	PREV_COMBO,
 
+	#CARD_CURSOR,
+	#COMBO_CURSOR,
+
 	STANCE, # totem
 	DECK, # or/and HAND?
 	SCORE,

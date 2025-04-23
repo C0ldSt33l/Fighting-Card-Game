@@ -11,8 +11,9 @@ var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
 var card_cursor := Cursor.new()
 var cur_card: Card :
-	get():
-		return self.cards_on_table[self.card_cursor.index] if self.cards_on_table.size() != 0 else null
+	get(): return self.cards_on_table[self.card_cursor.index] if self.cards_on_table.size() != 0 else null
+var first_card: Card :
+	get(): return self.cards_on_table[0] if self.cards_on_table.size() != 0 else null
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
@@ -246,6 +247,20 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 		match e.target_type:
 			TYPE.SELF_CARD, TYPE.SELF_COMBO:
 				self.effects.append(e.set_target(e.caster))
+			TYPE.NEXT_CARD:
+				self.effects.append(
+					e.set_target(
+						self.cards_on_table[e.caster.index + 1]
+					)
+				)
+			TYPE.PREV_CARD:
+				self.effects.append(
+					e.set_target(
+						self.cards_on_table[e.caster.index - 1]
+					)
+				)
+			TYPE.FIRST_CARD:
+				self.effects.append(e.set_target(self.first_card))
 			TYPE.CARD_IN_COMBO:
 				for c: Card in e.caster.cards:
 					self.effects.append(e.set_target(c))
