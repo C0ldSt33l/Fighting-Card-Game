@@ -100,12 +100,31 @@ func select_combo_by_id(id:int)->Array:
 	database.query("select * from COMBO where COMBO.id = "+str(id))
 	return database.query_result
 
+func select_combos()->Array:
+	database.query("SELECT * from COMBOS")
+	return database.query_result
+
+func select_all_combos_with_tags()->Array:
+	var tmp = []
+	var combos_with_tags = []
+	
+	tmp = select_combos()
+	for combo in tmp:
+		var tags = select_combos_tag(combo.id)
+		
+		combos_with_tags.append({
+			"combo":combo,
+			"tags":tags
+		})
+		
+	return combos_with_tags
+
 func select_combos_tag(ComboID:int)->Array:
 	database.query("
-	SELECT t.name,t.value 
-	from tags t
+	SELECT t.Type,t.Name,t.Description 
+	from TAGS t
 	join COMBO_TAG ct on ct.id_tag = t.id
-	WHERE ct.id_card = " + str(ComboID))
+	WHERE ct.id_combo = " + str(ComboID))
 	return database.query_result
 
 func select_objects_in_pack_by_id(id:int)->Array:

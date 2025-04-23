@@ -1,0 +1,46 @@
+[
+ {
+  "Description": "d",
+  "Direction": "head",
+  "Factor": 0,
+  "Name": "blow to the head",
+  "Picture": "s",
+  "Point": 2,
+  "Price": 2,
+  "Type": "hand",
+  "id": 1
+ },
+ {
+  "Description": "dd",
+  "Direction": "torso",
+  "Factor": 0,
+  "Name": "blow to the torso",
+  "Picture": "s",
+  "Point": 1,
+  "Price": 1,
+  "Type": "hand",
+  "id": 2
+ },
+ {
+  "Description": "dd",
+  "Direction": "torso",
+  "Factor": 0,
+  "Name": "blow to the torso",
+  "Picture": "s",
+  "Point": 1,
+  "Price": 1,
+  "Type": "hand",
+  "id": 2
+ },
+ {
+  "Description": "d",
+  "Direction": "head",
+  "Factor": 0,
+  "Name": "blow to the head",
+  "Picture": "s",
+  "Point": 2,
+  "Price": 2,
+  "Type": "hand",
+  "id": 1
+ }
+]

@@ -1,7 +1,6 @@
 class_name _UpgradeCard_ extends _Card_
 
-@onready var Name_label:= $Panel/Label
-@onready var Background:=$Panel
+@onready var Name_label:= $Panel/Name
 
 var Price:int:
 	set(val): self.set_tag_val('Price',val)
@@ -9,6 +8,7 @@ var Price:int:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	super()
 	Name_label.text = str(self.Name)
 	pass # Replace with function body.
 

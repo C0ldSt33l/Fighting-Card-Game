@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://wjj8rhpt34wj"]
+
+[ext_resource type="Script" path="res://Cards/base_card.gd" id="1_kn6f0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g5k6p"]
+size = Vector2(129, 198)
+
+[node name="BaseCard" type="Node2D"]
+script = ExtResource("1_kn6f0")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 130.0
+offset_bottom = 200.0
+
+[node name="Area2D" type="Area2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(64.5, 101)
+shape = SubResource("RectangleShape2D_g5k6p")
+metadata/_edit_lock_ = true

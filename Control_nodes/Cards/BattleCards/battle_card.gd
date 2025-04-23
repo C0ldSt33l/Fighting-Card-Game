@@ -1,7 +1,7 @@
-class_name _BattleCard_ extends _Card_
+class_name BattleCard extends BaseCard
 
-@onready var Description_label:= $Panel/Description
-@onready var Name_label:=$Panel/Name
+@onready var Description_label:= $Background/Description
+@onready var Name_label:=$Background/Name
 
 var Price:int:
 	set(val): self.set_tag_val('Price',val)
@@ -26,8 +26,6 @@ var Type: String:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
-	self.Name_label.text = str(self.Name)
-	self.Description_label.text = self.Description
 	pass # Replace with function body.
 
 

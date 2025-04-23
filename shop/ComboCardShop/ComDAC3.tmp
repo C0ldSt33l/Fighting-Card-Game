@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm1la1g05stsh"]
+
+[ext_resource type="Script" path="res://shop/ComboCardShop/combo_card_shop.gd" id="1_1tmp3"]
+
+[node name="ComboCardShop" type="Node2D"]
+script = ExtResource("1_1tmp3")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 62.0
+offset_top = 87.0
+offset_right = 1085.0
+offset_bottom = 587.0
+
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 940.0
+offset_top = 416.0
+offset_right = 1001.0
+offset_bottom = 476.0
+
+[node name="Button2" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 86.0
+offset_top = -84.0
+offset_right = 183.0
+offset_bottom = -53.0
+
+[node name="Price" type="Label" parent="Panel/Button2"]
+layout_mode = 0
+offset_right = 96.0
+offset_bottom = 33.0
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = -58.0
+offset_top = -82.0
+offset_right = 38.0
+offset_bottom = -50.0
+
+[node name="hide_price_timer" type="Timer" parent="."]
+
+[connection signal="pressed" from="Panel/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/Button2" to="." method="_on_button_2_pressed"]
