@@ -18,7 +18,6 @@ var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
 var combo_cursor := Cursor.new()
 var cur_combo: Combo :
-	set(val): return
 	get(): return null if self.combos_on_table.size() == 0 else self.combos_on_table[0]
 
 var round_count := 2
