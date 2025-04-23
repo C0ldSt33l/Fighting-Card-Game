@@ -68,6 +68,6 @@ static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> v
 	c.multiplier += mult
 
 
-static func combo_play_again(c: Combo, times: int) -> void:
+static func combo_play_again(c: Combo) -> void:
 	Game.battle.combo_cursor.move_back()
 	Game.battle.card_cursor.set_index(c.start_card.index)

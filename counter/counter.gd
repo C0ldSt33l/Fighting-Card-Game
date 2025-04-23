@@ -64,8 +64,9 @@ func sub(points: int, mult: int) -> void:
 
 
 func show_score_panel() -> void:
-	self.score_panel.show()
 	self.round_score_panel.hide()
+	self.round_score_label.hide()
+	self.score_panel.show()
 
 
 func hide_score_panel() -> void:

@@ -35,7 +35,7 @@ func _init(
 	for p in props:
 		self[p] = props[p]
 	self.cards = cards
-	effect.bind_to(self)
+	self.bind_effect(effect)
 		# BUG: will cause error if target is not set
 
 	Events.obj_created.emit(self)
@@ -64,6 +64,7 @@ func upgrade(e: Effect) -> void:
 
 
 func bind_effect(e: Effect) -> void:
+	e.bind_to(self)
 	self.effects.append(e)
 
 
