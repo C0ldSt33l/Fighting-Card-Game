@@ -34,6 +34,7 @@ func _init(
 	self.name = name
 	for p in props:
 		self[p] = props[p]
+	self.cards = cards
 	effect.bind_to(self)
 		# BUG: will cause error if target is not set
 

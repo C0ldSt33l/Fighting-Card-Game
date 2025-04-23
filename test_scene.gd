@@ -207,7 +207,6 @@ func check_combos() -> void:
 				self.combos_on_table.append(combo)
 				step = combo.length
 				break
-
 		i += step
 
 
