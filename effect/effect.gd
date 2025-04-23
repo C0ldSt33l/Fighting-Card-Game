@@ -27,17 +27,25 @@ enum TYPE {
 	DEBUFF,
 }
 enum TARGET_TYPE {
-	BATTLE_CARD,
-	#CARD_IN_COMBO,
+	CARD,
+	SELF_CARD,
+	CARD_IN_COMBO,
+
 	COMBO,
+	SELF_COMBO,
+
 	STANCE, # totem
 	DECK, # or/and HAND?
 	SCORE,
 }
 
-# TODO: think about apply time
 var activation_time: ACTIVATION_TIME
 var type: TYPE
+# TODO: create as class
+# fields:
+# - time count
+# - reset time
+var limit: int
 
 var caster
 
@@ -52,6 +60,7 @@ func _init(
 	action: Callable,
 	type: TYPE,
 	target_type: TARGET_TYPE,
+	limit: int,
 	args: Array = [],
 	caster = null,
 	target = null 
@@ -62,6 +71,7 @@ func _init(
 	self.action = action
 	self.type = type
 	self.target_type = target_type
+	self.limit = limit
 	self.args = args
 	self.caster = caster 
 	self.target = target
@@ -75,32 +85,37 @@ func _init(
 func bind_to(caster):
 	self.caster = caster
 
+# TODO: replace with switch that handle all use cases
+func set_target(target: Variant) -> Effect:
+	var copy := self.clone()
+	copy.target = target
+	Events.effect_applyed.emit(copy)
 
-func set_target(target):
-	self.target = target
-	Events.effect_applyed.emit(self)
+	return copy
 
 
-func check_target_type() -> bool:
-	match self.target_type:
-		Effect.TARGET_TYPE.BATTLE_CARD:
-			return self.target is Card
-		Effect.TARGET_TYPE.COMBO:
-			return self.target is Combo
-		Effect.TARGET_TYPE.SCORE:
-			return self.target is Counter
-		_:
-			print('Impossible type for effect target')
-			return false
+# func check_target_type() -> bool:
+# 	match self.target_type:
+# 		Effect.TARGET_TYPE.CARD:
+# 			return self.target is Card
+# 		Effect.TARGET_TYPE.COMBO:
+# 			return self.target is Combo
+# 		Effect.TARGET_TYPE.SCORE:
+# 			return self.target is Counter
+# 		_:
+# 			print('Impossible type for effect target')
+# 			return false
 
 func activate():
-	if !self.check_target_type(): return
-
 	Events.effect_activated.emit(self)
+
 	var args := [self.target]
 	args.append_array(self.args)
 	self.action.bindv(args).call()
-	self.make_unenabled()
+
+	self.limit -= 1
+	if self.limit <= 0:
+		self.make_unenabled()
 
 
 func make_unenabled() -> void:
@@ -116,6 +131,7 @@ func clone() -> Effect:
 		self.action,
 		self.type,
 		self.target_type,
+		self.limit,
 		self.args,
 		self.caster
 	)

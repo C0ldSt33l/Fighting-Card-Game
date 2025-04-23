@@ -32,6 +32,7 @@ var EFFECTS := {
 		counter_add_points_and_multipier,
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.SCORE,
+		1,
 		[50, 10],
 	),
 	'Card enchancment': Effect.new(
@@ -40,8 +41,18 @@ var EFFECTS := {
 		Effect.ACTIVATION_TIME.COMBO_START,
 		card_add_points_and_mulitplier,
 		Effect.TYPE.BUFF,
-		Effect.TARGET_TYPE.BATTLE_CARD,
-		[10, 2]
+		Effect.TARGET_TYPE.CARD_IN_COMBO,
+		1,
+		[10, 2],
+	),
+	'One more time': Effect.new(
+		'One more time',
+		'Combo activates twice',
+		Effect.ACTIVATION_TIME.COMBO_END,
+		combo_play_again,
+		Effect.TYPE.BUFF,
+		Effect.TARGET_TYPE.SELF_COMBO,
+		2,
 	),
 }
 
@@ -59,3 +70,4 @@ static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> v
 
 static func combo_play_again(c: Combo, times: int) -> void:
 	Game.battle.combo_cursor.move_back()
+	Game.battle.card_cursor.set_index(c.start_card.index)

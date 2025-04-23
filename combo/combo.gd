@@ -35,15 +35,7 @@ func _init(
 	for p in props:
 		self[p] = props[p]
 	effect.bind_to(self)
-	self.cards.append_array(cards)
-	if effect.target_type == Effect.TARGET_TYPE.BATTLE_CARD:
-		for c in cards:
-			var e := effect.clone()
-			e.set_target(c)
-			self.bind_effect(e)
-	else:
 		# BUG: will cause error if target is not set
-		self.bind_effect(effect)
 
 	Events.obj_created.emit(self)
 

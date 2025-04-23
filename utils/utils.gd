@@ -56,3 +56,9 @@ static func exlude_array(from: Array, what: Array) -> Array:
 			return what.find(el) == -1
 	)
 	return res
+
+
+static func throw_error(err_text: String) -> void:
+	var nil = null
+	print(err_text)
+	nil.error

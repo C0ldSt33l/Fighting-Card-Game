@@ -123,9 +123,5 @@ func reset_effects() -> void:
 	pass
 
 
-func is_all_effects_activated() -> bool:
-	return self.effects.is_empty()
-
-
 func _exit_tree() -> void:
 	Events.obj_destroyed.emit(self)

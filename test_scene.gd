@@ -166,13 +166,13 @@ func play_card() -> void:
 			await self.next_card_key_pressed
 	Events.card_ended.emit(card)
 
-	if card.is_all_effects_activated():
+	if self.is_all_effects_activated_on(card):
 		Events.card_exit.emit(card)
 
 	if combo and card == combo.end_card:
 		Events.combo_ended.emit(combo)
 		# combo.apply_effect()	
-		if combo.is_all_effects_activated():
+		if self.is_all_effects_activated_on(combo):
 			Events.combo_exit.emit(combo)
 
 	if self.card_cursor.index == self.cards_on_table.size():
@@ -235,26 +235,41 @@ func activate_filtered_effects(filter: Callable, args: Array) -> void:
 	for e in effects:
 		print('activate')
 		e.activate()
-	self.used_effects.append_array(effects)
-	self.effects = Utils.exlude_array(self.effects, effects)
+
+
+func is_all_effects_activated_on(target: Variant) -> bool:
+	return Utils.Filter.BY_TARGET(self.effects, target).size() == 0
+
+
+func get_effects_from(obj: Variant) -> Array[Effect]:
+	const TYPE := Effect.TARGET_TYPE
+	var arr: Array[Effect] = []
+	for e: Effect in obj.effects:
+		match e.target_type:
+			TYPE.SELF_CARD, TYPE.SELF_COMBO:
+				self.effects.append(e.set_target(e.caster))
+			TYPE.CARD_IN_COMBO:
+				for c: Card in e.caster.cards:
+					self.effects.append(e.set_target(c))
+			_:
+				Utils.throw_error('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER')
+	return arr
 
 
 func collect_all_effects() -> void:
 	for c in self.cards_on_table:
-		self.effects.append_array(c.effects)
+		self.effects.append_array(self.get_effects_from(c))
 	for c in self.combos_on_table:
-		self.effects.append_array(c.effects)
+		self.effects.append_array(self.get_effects_from(c))
 
 
 func on_round_preparation_started() -> void: pass
 func on_round_started() -> void:
-	self.collect_all_effects()
-	print('size: ', self.effects.size())
-
 	# TODO: move segment in round preparation segment
 	for c in self.combos_on_table:
 		self.counter.add(c.points, c.multiplier)
 	
+	self.collect_all_effects()
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_START]
