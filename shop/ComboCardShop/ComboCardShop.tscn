@@ -20,10 +20,10 @@ offset_bottom = 476.0
 
 [node name="Button2" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 86.0
-offset_top = -84.0
-offset_right = 183.0
-offset_bottom = -53.0
+offset_left = 823.0
+offset_top = 421.0
+offset_right = 920.0
+offset_bottom = 470.0
 
 [node name="Price" type="Label" parent="Panel/Button2"]
 layout_mode = 0

@@ -23,6 +23,9 @@ var count_cards : int = 7
 
 var InfoPanel: Panel
 
+var basket = []
+var total_price = 0
+
 func _ready() -> void:
 	LabelMoney = get_node("Panel/Label")
 	LabelMoney.text = str(money)
@@ -41,7 +44,6 @@ func _ready() -> void:
 	for combo in All_combo:
 		print(combo)
 	
-	PriceButton.visible = false
 	PriceButton.set_size(Price.size)
 	
 	rng = RandomNumberGenerator.new()
@@ -60,30 +62,23 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	LabelMoney.text = str(money)
-	
-	var mouse_pos = get_global_mouse_position()
-	var hovered = false
-	Hide_price_timer.one_shot = true
-	
-	for obj in objects:		
-		if obj is BaseCard or Combo:
-			if obj.Background.get_global_rect().has_point(mouse_pos):
-				PriceButton.visible = true
-				
-				Price.text = "price = %s" % str(obj.Price)
-				
-				var background_rect = obj.Background.get_global_rect()
-				PriceButton.position = background_rect.position + Vector2(-30, background_rect.size.y-60)
-				
-				hovered = true
-				Hide_price_timer.start(0.5)
-				ChosenObj = obj
-				break
-	
-	if PriceButton.get_global_rect().has_point(mouse_pos):
-		hovered = true
-	if not hovered and Hide_price_timer.is_stopped():
-		PriceButton.visible = false
+	pass
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.is_pressed():
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			var mouse_pos = get_global_mouse_position()
+			for obj in objects:
+				if obj.Background.get_global_rect().has_point(mouse_pos) and !basket.has(obj):
+					basket.append(obj)
+					update_total_price()
+					return
+				elif obj.Background.get_global_rect().has_point(mouse_pos) and basket.has(obj):
+					basket.erase(obj)
+					update_total_price()
+					return
+					
+			
 
 func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 	var card := CardCreator.create_with_binding(
@@ -117,6 +112,8 @@ func _on_button_pressed() -> void: #reroll button
 		for object in objects:
 			object.queue_free()
 		objects.clear()
+		basket.clear()
+		update_total_price()
 	
 		var cards = Cards.CARDS.keys().duplicate()
 		var n:Vector2
@@ -129,13 +126,13 @@ func _on_button_pressed() -> void: #reroll button
 
 	
 func _on_button_2_pressed() -> void:#buy button
-	if (money - ChosenObj.Price >= 0): 
-		money -= ChosenObj.Price 
+	if (money - total_price >= 0): 
+		money -= total_price
 		
-		var new_object :Array = []
+		var new_object: Array = []
 		
 		for object in objects:
-			if object != ChosenObj:
+			if !basket.has(object):
 				new_object.append(object)
 			else:
 				object.queue_free()
@@ -145,8 +142,15 @@ func _on_button_2_pressed() -> void:#buy button
 					Combo:
 						PlayerConfig.player_available_combos.append(ChosenObj.return_all_tags())
 		objects = new_object
+		basket.clear()
+		total_price = 0
+				
 
-	pass
+func update_total_price():
+	total_price = 0
+	for obj in basket:
+		total_price+=obj.Price
+	Price.text = "Total price = %s" % str(total_price)
 
 func create_panel_with_text(card:BaseCard)->void:
 	if InfoPanel:
