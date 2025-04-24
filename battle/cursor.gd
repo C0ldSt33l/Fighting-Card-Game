@@ -1,7 +1,18 @@
 class_name  Cursor
 
+enum TYPE {
+	CARDS,
+	COMBOS
+}
+
+var type: TYPE
+
 var index: int = 0
 var size: int = -1
+
+
+func _init(type: TYPE):
+	self.type = type
 
 
 func set_index(i: int) -> void:

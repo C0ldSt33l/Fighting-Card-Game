@@ -54,6 +54,15 @@ var EFFECTS := {
 		Effect.TARGET_TYPE.SELF_COMBO,
 		2,
 	),
+	'Feint': Effect.new(
+		'Feint',
+		'Activate prev card',
+		Effect.ACTIVATION_TIME.CARD_END,
+		card_play_prev_card,
+		Effect.TYPE.BUFF,
+		Effect.TARGET_TYPE.CARD_CURSOR,
+		2,
+	)
 }
 
 # NOTE: effect func name convetion
@@ -68,6 +77,14 @@ static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> v
 	c.multiplier += mult
 
 
+static func card_play_prev_card(c: Cursor) -> void:
+	c.move_back(2)
+
+
 static func combo_play_again(c: Combo) -> void:
 	Game.battle.combo_cursor.move_back()
 	Game.battle.card_cursor.set_index(c.start_card.index)
+
+
+func get_effect(name: StringName) -> Effect:
+	return self.EFFECTS[name]

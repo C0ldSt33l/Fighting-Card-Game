@@ -9,7 +9,7 @@ extends Node2D
 
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
-var card_cursor := Cursor.new()
+var card_cursor := Cursor.new(Cursor.TYPE.CARDS)
 var cur_card: Card :
 	get(): return self.cards_on_table[self.card_cursor.index] if self.cards_on_table.size() != 0 else null
 var first_card: Card :
@@ -17,7 +17,7 @@ var first_card: Card :
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
-var combo_cursor := Cursor.new()
+var combo_cursor := Cursor.new(Cursor.TYPE.COMBOS)
 var cur_combo: Combo :
 	get(): return null if self.combos_on_table.size() == 0 else self.combos_on_table[0]
 
@@ -103,6 +103,11 @@ func start_round_preparation() -> void:
 	for i in len(configs):
 		self.spawn_card(i, configs[i], spawn_pos)
 		spawn_pos.x += 150
+
+	var card := self.cards_on_table[-1]
+	var effect := Effects.get_effect('Feint')
+	effect.caster = card
+	card.bind_effect(effect)
 
 	# var e := Effects.EFFECTS['Extra points'] as Effect
 	# var c := self.cards_on_table[-1]
@@ -264,6 +269,11 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 			TYPE.CARD_IN_COMBO:
 				for c: Card in e.caster.cards:
 					self.effects.append(e.set_target(c))
+			
+			TYPE.CARD_CURSOR:
+					self.effects.append(e.set_target(self.card_cursor))
+			TYPE.COMBO_CURSOR:
+					self.effects.append(e.set_target(self.combo_cursor))
 			_:
 				Utils.throw_error('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER')
 	return arr
@@ -319,6 +329,10 @@ func on_card_ended(c: Card) -> void:
 
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME_AND_TARGET,
+		[Effect.ACTIVATION_TIME.CARD_END, c]
+	)
+	self.activate_filtered_effects(
+		Utils.Filter.BY_ACTIVATION_TIME_AND_CASTER,
 		[Effect.ACTIVATION_TIME.CARD_END, c]
 	)
 	

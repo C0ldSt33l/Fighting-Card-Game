@@ -213,6 +213,9 @@ func get_obj_type_and_name(obj: Variant) -> Array[String]:
 	match obj_type:
 		'Card':
 			obj_name = (obj as Card).card_name
+		# NOTE: this case for cursors
+		'Cursor':
+			obj_name = 'CardCursor' if obj.type == Cursor.TYPE.CARDS else 'ComboCursor'
 		_:
 			obj_name = obj.name
 
