@@ -62,7 +62,17 @@ var EFFECTS := {
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.CARD_CURSOR,
 		2,
-	)
+	),
+	'First strike': Effect.new(
+		'First strike',
+		'Multiply points and multiplier of first card by %i and %i respectively',
+		Effect.ACTIVATION_TIME.ROUND_START,
+		card_mult_card_points_and_mult,
+		Effect.TYPE.BUFF,
+		Effect.TARGET_TYPE.FIRST_CARD,
+		1,
+		[5, 3],
+	),
 }
 
 # NOTE: effect func name convetion
@@ -79,6 +89,11 @@ static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> v
 
 static func card_play_prev_card(c: Cursor) -> void:
 	c.move_back(2)
+
+
+static func card_mult_card_points_and_mult(c: Card, points_mult: int, mult_mult: int) -> void:
+	c.points *= points_mult
+	c.multiplier *= mult_mult
 
 
 static func combo_play_again(c: Combo) -> void:

@@ -109,6 +109,10 @@ func start_round_preparation() -> void:
 	effect.caster = card
 	card.bind_effect(effect)
 
+	var first_card := self.first_card
+	var e := Effects.get_effect('First strike')
+	first_card.bind_effect(e)
+
 	# var e := Effects.EFFECTS['Extra points'] as Effect
 	# var c := self.cards_on_table[-1]
 	# # TODO: where this effect should store (in card or in battle scene)

@@ -112,6 +112,7 @@ func set_name_label_text(text: String) -> void:
 
 
 func bind_effect(e: Effect) -> void:
+	e.caster = self
 	self.effects.append(e)
 
 
