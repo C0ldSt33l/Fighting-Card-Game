@@ -28,6 +28,10 @@ Effects="*res://global/effects.gd"
 Game="*res://global/game.gd"
 Events="*res://global/events.gd"
 
+[display]
+
+window/subwindows/embed_subwindows=false
+
 [dotnet]
 
 project/assembly_name="main"
