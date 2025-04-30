@@ -15,15 +15,14 @@ var args: Array
 enum ACTIVATION_TIME {
 	ROUND_START,
 	ROUND_END,
-	ROUND_EXIT,
 
 	CARD_START,
 	CARD_END,
-	CARD_EXIT,
 
 	COMBO_START,
 	COMBO_END,
-	COMBO_EXIT,
+
+	TOTEM_ACTIVATION, # TODO: think about it
 }
 enum TYPE {
 	BUFF,
@@ -35,20 +34,28 @@ enum TARGET_TYPE {
 	NEXT_CARD,
 	PREV_CARD,
 	FIRST_CARD,
+	LAST_CARD,
 	CARD_IN_COMBO,
+	FIRST_CARD_IN_COMBO,
+	LAST_CARD_IN_COMBO,
+	CUSTOM_CARD,
 
 	COMBO,
 	SELF_COMBO,
 	NEXT_COMBO,
 	PREV_COMBO,
+	FIRST_COMBO,
+	LAST_COMBO,
 
 	CARD_CURSOR,
 	COMBO_CURSOR,
 
-	STANCE, # totem
+	TOTEM,
 	DECK, # or/and HAND?
 	SCORE,
 }
+
+# TODO: create checker to activate effect on its time
 
 var activation_time: ACTIVATION_TIME
 var type: TYPE
