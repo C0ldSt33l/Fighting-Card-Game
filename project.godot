@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="Figting Card Game"
-run/main_scene="res://test_scene.tscn"
+
+run/main_scene="res://battle/battle_scene.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -24,6 +25,10 @@ Sql="*res://global/sql.gd"
 CardCreator="*res://Control_nodes/Cards/Card_creator.gd"
 GlobalScript="*res://global/Global_script.gd"
 ComboCreator="*res://Control_nodes/Combo/ComboCreator.gd"
+Combos="*res://global/combos.gd"
+Effects="*res://global/effects.gd"
+Game="*res://global/game.gd"
+Events="*res://global/events.gd"
 
 [dotnet]
 

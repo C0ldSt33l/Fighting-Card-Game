@@ -1,20 +1,50 @@
 extends Node
 
-var COMBOS:= {
-	'Standrat Combo':
+var COMBOS := {
+	'Standart Combo':
 	{
-		'description': 'Started combo',
-		'Price': 15,
-		'points':10,
-		'multipliter':2,
-		'check': func()-> void: print('big combo')
+		'props': {
+			'description': 'Started combo',
+			'price': 15,
+			'points': 10,
+			'multiplier': 2,
+		},
+		'patterns':
+		[
+			{ 'card_name': 'kick' },
+			{ 'type': Card.BODY_PART.LEG_STRIKE },
+		],
+		'effect': 'Multiplier+'
 	},
 	'Big Combo':
 	{
-		'description': 'big Started combo',
-		'Price': 25,
-		'points':10,
-		'multipliter':2,
-		'check': func()-> void: print('big combo')
+		'props': {
+			'description': 'big Started combo',
+			'price': 25,
+			'points': 10,
+			'multiplier': 2,
+		},
+		'patterns':
+		[
+			{ 'card_name': 'fist' },
+			{ 'card_name': 'knee strike' },
+			{ 'card_name': 'elbow' },
+		],
+		'effect': 'One more time'
 	}
 }
+
+
+func get_combo_props(name: String) -> Dictionary:
+	return self.COMBOS[name]['props']
+
+
+func get_combo_patterns(name: String) -> Array[Dictionary]:
+	var patterns: Array[Dictionary]
+	patterns.assign(self.COMBOS[name]['patterns'])
+	return patterns
+
+
+func get_combo_effect(name: String) -> Effect:
+	var effect_name := self.COMBOS[name]['effect'] as String
+	return Effects.EFFECTS[effect_name]

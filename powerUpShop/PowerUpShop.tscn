@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://gh23cchy0djk"]
+
+[ext_resource type="Script" path="res://powerUpShop/power_up_shop.gd" id="1_3t8so"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_3t8so")
+
+[node name="Power" type="HSlider" parent="."]
+offset_left = 204.0
+offset_top = 377.0
+offset_right = 864.0
+offset_bottom = 393.0
+editable = false
+scrollable = false
+
+[node name="PowerUpButton" type="Button" parent="."]
+offset_left = 889.0
+offset_top = 370.0
+offset_right = 917.0
+offset_bottom = 399.0
+
+[node name="HandSize" type="HSlider" parent="."]
+offset_left = 205.0
+offset_top = 507.0
+offset_right = 865.0
+offset_bottom = 523.0
+editable = false
+scrollable = false
+
+[node name="HandSizeButton" type="Button" parent="."]
+offset_left = 890.0
+offset_top = 500.0
+offset_right = 918.0
+offset_bottom = 529.0
+
+[node name="PersonalPoint" type="Label" parent="."]
+offset_right = 269.0
+offset_bottom = 58.0
+
+[node name="PersonalMoney" type="Label" parent="."]
+offset_left = 3.0
+offset_top = 76.0
+offset_right = 272.0
+offset_bottom = 134.0
+
+[connection signal="pressed" from="PowerUpButton" to="." method="_on_power_up_button_pressed"]
+[connection signal="pressed" from="HandSizeButton" to="." method="_on_hand_size_button_pressed"]
