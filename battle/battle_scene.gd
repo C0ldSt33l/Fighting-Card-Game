@@ -257,17 +257,13 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 			TYPE.SELF_CARD, TYPE.SELF_COMBO:
 				self.effects.append(e.set_target(e.caster))
 			TYPE.NEXT_CARD:
-				self.effects.append(
-					e.set_target(
-						self.cards_on_table[e.caster.index + 1]
-					)
-				)
+				var i: int = e.caster.index + 1
+				if (i < self.cards_on_table.size()):
+					self.effects.append(e.set_target(self.cards_on_table[i]))
 			TYPE.PREV_CARD:
-				self.effects.append(
-					e.set_target(
-						self.cards_on_table[e.caster.index - 1]
-					)
-				)
+				var i: int = e.caster.index - 1
+				if (i > -1):
+					self.effects.append(e.set_target(self.cards_on_table[i]))
 			TYPE.FIRST_CARD:
 				self.effects.append(e.set_target(self.first_card))
 			TYPE.CARD_IN_COMBO:
