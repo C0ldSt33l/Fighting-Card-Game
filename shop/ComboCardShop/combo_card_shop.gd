@@ -98,7 +98,7 @@ func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 func spawn_combo(ComboInfo: Dictionary, pos:Vector2)->void:
 	var combo:= ComboCreator.create_with_binding(
 		self,
-		func (c:Combo)-> void:
+		func (c:_Combo_)-> void:
 			for i in ComboInfo.combo:
 				c[i] = ComboInfo.combo[i]
 			
@@ -139,7 +139,7 @@ func _on_button_2_pressed() -> void:#buy button
 				match ChosenObj:
 					BaseCard:
 						PlayerConfig.player_available_cards.append(ChosenObj.return_all_tags())
-					Combo:
+					_Combo_:
 						PlayerConfig.player_available_combos.append(ChosenObj.return_all_tags())
 		objects = new_object
 		basket.clear()

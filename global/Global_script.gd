@@ -31,13 +31,13 @@ func load_file(path:String):
 	
 func save_data(save_name:String):
 	save_file("res://save/player/Cards/"+save_name+".json",PlayerConfig.player_available_cards)
-	save_file("res://save/player/Combo/"+save_name+".json",PlayerConfig.player_available_combos)
+	save_file("res://save/player/_Combo_/"+save_name+".json",PlayerConfig.player_available_combos)
 	save_file("res://save/player/Totem/"+save_name+".json",PlayerConfig.player_available_combos)
 	print("game saved")
 	
 func load_data(path:String):
 	PlayerConfig.player_available_cards = load_file("res://save/player/Cards/"+path+".json")
-	PlayerConfig.player_available_combos = load_file("res://save/player/Combo/"+path+".json")
+	PlayerConfig.player_available_combos = load_file("res://save/player/_Combo_/"+path+".json")
 	PlayerConfig.player_available_totems = load_file("res://save/player/Totem/"+path+".json")
 	print("game load")
 
