@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3us6ifs22fk3"]
+
+[ext_resource type="PackedScene" uid="uid://wjj8rhpt34wj" path="res://Cards/base_card.tscn" id="1_lf42q"]
+[ext_resource type="Script" path="res://Cards/Battle_cards/battle_card.gd" id="1_n7gdo"]
+
+[node name="BaseCard" instance=ExtResource("1_lf42q")]
+script = ExtResource("1_n7gdo")
+
+[node name="Name" type="Label" parent="Panel" index="0"]
+layout_mode = 0
+offset_top = 98.0
+offset_right = 127.0
+offset_bottom = 121.0
+metadata/_edit_lock_ = true
+
+[node name="Description" type="Label" parent="Panel" index="1"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 126.0
+offset_right = 127.0
+offset_bottom = 199.0
+metadata/_edit_lock_ = true
