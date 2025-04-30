@@ -177,7 +177,6 @@ func play_card() -> void:
 
 	if self.card_cursor.index == self.cards_on_table.size():
 		self.end_round()
-		Events.round_exit.emit()
 	elif self.is_turn_based_mode:
 		self.play_card()
 

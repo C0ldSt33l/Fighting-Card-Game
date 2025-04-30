@@ -1,6 +1,6 @@
 extends Node
 
-const spawner := preload("res://card/card.tscn")
+const spawner := preload("res://battle/card/card.tscn")
 
 
 ## require func with signature `(Card) -> void`
