@@ -1,8 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bnv0hy2jwwtgd"]
 
-
-[ext_resource type="Script" path="res://counter/counter.gd" id="1_lwp5x"]
-
+[ext_resource type="Script" path="res://battle/counter/counter.gd" id="1_lwp5x"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_lwp5x")
@@ -51,12 +49,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="X" type="Label" parent="."]
+[node name="X" type="Label" parent="Panel"]
 z_index = 1
-offset_left = 244.0
-offset_top = 38.0
-offset_right = 284.0
-offset_bottom = 116.0
+layout_mode = 0
+offset_left = 243.0
+offset_top = 39.0
+offset_right = 283.0
+offset_bottom = 117.0
 text = "X"
 horizontal_alignment = 1
 vertical_alignment = 1

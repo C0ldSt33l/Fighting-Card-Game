@@ -1,6 +1,5 @@
 [gd_scene load_steps=2 format=3 uid="uid://gh23cchy0djk"]
 
-
 [ext_resource type="Script" path="res://powerUpShop/power_up_shop.gd" id="1_3t8so"]
 
 [node name="Node2D" type="Node2D"]
