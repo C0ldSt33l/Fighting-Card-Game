@@ -283,6 +283,9 @@ func on_round_started() -> void:
 		self.counter.add(c.points, c.multiplier)
 	
 	self.collect_all_effects()
+	print('effects: ', self.effects.size())
+	for e in self.effects:
+		print(e.name)
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_START]

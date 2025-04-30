@@ -41,8 +41,8 @@ func _ready() -> void:
 	ALL_cards_with_tags.append_array(tmp)
 	All_combo = Sql.select_all_combos_with_tags()
 	
-	for combo in All_combo:
-		print(combo)
+	for i in ALL_cards_with_tags:
+		print(i)
 	
 	PriceButton.set_size(Price.size)
 	
@@ -98,7 +98,7 @@ func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 func spawn_combo(ComboInfo: Dictionary, pos:Vector2)->void:
 	var combo:= ComboCreator.create_with_binding(
 		self,
-		func (c:Combo)-> void:
+		func (c:_Combo_)-> void:
 			for i in ComboInfo.combo:
 				c[i] = ComboInfo.combo[i]
 			
@@ -115,7 +115,6 @@ func _on_button_pressed() -> void: #reroll button
 		basket.clear()
 		update_total_price()
 	
-		var cards = Cards.CARDS.keys().duplicate()
 		var n:Vector2
 		for i in range(7):
 			spawn_card(ALL_cards_with_tags[randi() % ALL_cards_with_tags.size()], spawn_pos + Vector2(i * 150, 0))
@@ -139,7 +138,7 @@ func _on_button_2_pressed() -> void:#buy button
 				match ChosenObj:
 					BaseCard:
 						PlayerConfig.player_available_cards.append(ChosenObj.return_all_tags())
-					Combo:
+					_Combo_:
 						PlayerConfig.player_available_combos.append(ChosenObj.return_all_tags())
 		objects = new_object
 		basket.clear()

@@ -1,5 +1,5 @@
 extends Control
-class_name Combo
+class_name _Combo_
 @onready var Background : Panel = $Background
 @onready var NameLabel : Label = $Background/Name
 @onready var DescriptionLabel: Label = $Background/Description

@@ -21,7 +21,14 @@ func select_tag_cards(CardID: int,type:String) -> Array: #type: UPGRADE,BUTTLE,C
 	join CARD_TAGS ct on ct.id_tag = t.id
 	where ct.id_card = " + str(CardID)+
 	" AND ct.type_card = '"+ type + "'")
-	return database.query_result
+	var res = database.query_result
+	for i in res:
+		database.query("select * from EFFECTS e
+	join TAG_EFFECTS te on te.id_effect = e.id
+	where te.id_tag = " +  str(i["id"]))
+		i["effect"] = database.query_result
+	
+	return res
 
 func select_card_ids_by_tag_name(tag_name:Array)->Array:
 	var value = "'" + "', '".join(tag_name) + "'"

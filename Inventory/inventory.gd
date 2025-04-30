@@ -70,9 +70,9 @@ func create_card(CardInfo: Dictionary)-> BaseCard:
 	card.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	return card
 
-func create_combo(ComboInfo: Dictionary)->Combo:
+func create_combo(ComboInfo: Dictionary)->_Combo_:
 	var combo = ComboCreator.create(
-		func (c:Combo)-> void:
+		func (c:_Combo_)-> void:
 			for i in ComboInfo:
 				c[i] = ComboInfo[i] 
 	)
@@ -100,7 +100,7 @@ func _on_combos_pressed() -> void:
 	for child_data in PlayerConfig.player_available_combos:
 		var combo = create_combo(child_data)
 		gridContainer.add_child(combo)
-		print("Combo added:", combo.name)
+		print("_Combo_ added:", combo.name)
 	pass # Replace with function body.
 
 
