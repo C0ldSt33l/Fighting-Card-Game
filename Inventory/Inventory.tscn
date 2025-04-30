@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://cc4ri8a00auv7"]
+
+[ext_resource type="Script" path="res://Inventory/inventory.gd" id="1_3yjgh"]
+
+[node name="Inventory" type="Node2D"]
+script = ExtResource("1_3yjgh")
+
+[node name="Cards" type="Button" parent="."]
+offset_left = 55.0
+offset_top = 60.0
+offset_right = 119.0
+offset_bottom = 124.0
+
+[node name="Combos" type="Button" parent="."]
+offset_left = 55.0
+offset_top = 125.0
+offset_right = 119.0
+offset_bottom = 189.0
+
+[node name="totem" type="Button" parent="."]
+offset_left = 55.0
+offset_top = 190.0
+offset_right = 119.0
+offset_bottom = 254.0
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 160.0
+offset_top = 61.0
+offset_right = 1045.0
+offset_bottom = 650.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 885.0
+offset_bottom = 607.0
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="Panel/ScrollContainer"]
+custom_minimum_size = Vector2(885, 599)
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 400
+
+[connection signal="pressed" from="Cards" to="." method="_on_cards_pressed"]
+[connection signal="pressed" from="Combos" to="." method="_on_combos_pressed"]
+[connection signal="pressed" from="totem" to="." method="_on_totem_pressed"]
