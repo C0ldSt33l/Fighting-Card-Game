@@ -1,29 +1,5 @@
 extends Node
 
-# var EFFECTS := {
-# 	'Damage+': Effect.new(
-# 		'Damage+',
-# 		'Increase card points by `2`',
-# 		Effect.ACTIVATION_TIME.CARD_START,
-# 		Effect.TYPE.BUFF,
-# 		card_increase_points
-# 	),
-# 	'Multiplier+': Effect.new(
-# 		'Multiplier+',
-# 		'Increase card mulitplier by `1`',
-# 		Effect.ACTIVATION_TIME.ROUND_START,
-# 		Effect.TYPE.BUFF,
-# 		card_increase_mult
-# 	),
-# 	'Double Score': Effect.new(
-# 		'Double Score',
-# 		'Double score',
-# 		Effect.ACTIVATION_TIME.ROUND_END,
-# 		Effect.TYPE.BUFF,
-# 		score_double_score
-# 	),
-# }
-
 var EFFECTS := {
 	'Extra points': Effect.new(
 		'Extra points',
@@ -73,7 +49,18 @@ var EFFECTS := {
 		1,
 		[5, 3],
 	),
+	'Second breath': Effect.new(
+		'Second breath',
+		'Play all round again',
+		Effect.ACTIVATION_TIME.ROUND_END,
+		play_round_again,
+		Effect.TYPE.BUFF,
+		Effect.TARGET_TYPE.CARD_CURSOR,
+		1,
+	),
 }
+
+# EFFECT FUNCS
 
 # NOTE: effect func name convetion
 # TypeName_ActionName(obj: TypeName)
@@ -81,25 +68,31 @@ var EFFECTS := {
 static func counter_add_points_and_multipier(c: Counter, points: int, mult: int) -> void:
 	c.add(points, mult)
 
-
 static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> void:
 	c.points += points
 	c.multiplier += mult
 
-
 static func card_play_prev_card(c: Cursor) -> void:
 	c.move_back(2)
-
 
 static func card_mult_card_points_and_mult(c: Card, points_mult: int, mult_mult: int) -> void:
 	c.points *= points_mult
 	c.multiplier *= mult_mult
 
-
 static func combo_play_again(c: Combo) -> void:
 	Game.battle.combo_cursor.move_back()
 	Game.battle.card_cursor.set_index(c.start_card.index)
 
+static func play_round_again(c: Cursor) -> void:
+	Game.battle.card_cursor.back_to_start()
+	Game.battle.combo_cursor.back_to_start()
 
+
+# CHECK FUNCS
+static func check(e: Effect, card_or_combo: Variant) -> bool:
+	return e.target == card_or_combo
+
+
+# UTILS
 func get_effect(name: StringName) -> Effect:
 	return self.EFFECTS[name]

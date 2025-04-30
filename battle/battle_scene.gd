@@ -104,21 +104,9 @@ func start_round_preparation() -> void:
 		self.spawn_card(i, configs[i], spawn_pos)
 		spawn_pos.x += 150
 
-	var card := self.cards_on_table[-1]
-	var effect := Effects.get_effect('Feint')
-	effect.caster = card
-	card.bind_effect(effect)
-
 	var first_card := self.first_card
-	var e := Effects.get_effect('First strike')
+	var e := Effects.get_effect('Second breath')
 	first_card.bind_effect(e)
-
-	# var e := Effects.EFFECTS['Extra points'] as Effect
-	# var c := self.cards_on_table[-1]
-	# # TODO: where this effect should store (in card or in battle scene)
-	# e.bind_to(c)
-	# c.add_effect(e)	
-	# self.apply_effect(e, self.counter)
 
 
 # TODO: move `check_combos()` in round preparation stage
@@ -184,9 +172,12 @@ func play_card() -> void:
 		if self.is_all_effects_activated_on(combo):
 			Events.combo_exit.emit(combo)
 
-	if self.card_cursor.index == self.cards_on_table.size():
+	if card.index == self.cards_on_table.size() - 1:
 		Events.round_ended.emit()
+
+	if self.card_cursor.index == self.cards_on_table.size():
 		self.end_round()
+		Events.round_exit.emit()
 	elif self.is_turn_based_mode:
 		self.play_card()
 
@@ -301,7 +292,7 @@ func on_round_started() -> void:
 func on_round_ended() -> void:
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
-		[Effect.ACTIVATION_TIME.ROUND_START]
+		[Effect.ACTIVATION_TIME.ROUND_END]
 	)
 
 # TODO: clear totems effects

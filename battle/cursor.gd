@@ -23,6 +23,10 @@ func set_size(size: int) -> void:
 	self.size = size
 
 
+func back_to_start() -> void:
+	self.index = 0
+
+
 func reset() -> void:
 	self.index = 0
 	self.size = -1
