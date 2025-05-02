@@ -98,7 +98,7 @@ func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 func spawn_combo(ComboInfo: Dictionary, pos:Vector2)->void:
 	var combo:= ComboCreator.create_with_binding(
 		self,
-		func (c:Combo)-> void:
+		func (c:_Combo_)-> void:
 			for i in ComboInfo.combo:
 				c[i] = ComboInfo.combo[i]
 			
@@ -115,7 +115,6 @@ func _on_button_pressed() -> void: #reroll button
 		basket.clear()
 		update_total_price()
 	
-		var cards = Cards.CARDS.keys().duplicate()
 		var n:Vector2
 		for i in range(7):
 			spawn_card(ALL_cards_with_tags[randi() % ALL_cards_with_tags.size()], spawn_pos + Vector2(i * 150, 0))
