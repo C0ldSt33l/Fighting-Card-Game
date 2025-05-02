@@ -12,8 +12,6 @@ var log_win: Window = null
 
 func _ready() -> void:
 	if self.logger_enable:
-		# ProjectSettings.set_setting('display/window/subwindows/embed_subwindows', false)
-		# ProjectSettings.save_custom('custom_settings')
 		self.log_win = self.log_win_scene.instantiate()
 		self.add_child(self.log_win)
 		

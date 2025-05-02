@@ -41,8 +41,8 @@ func _ready() -> void:
 	ALL_cards_with_tags.append_array(tmp)
 	All_combo = Sql.select_all_combos_with_tags()
 	
-	for combo in All_combo:
-		print(combo)
+	for i in ALL_cards_with_tags:
+		print(i)
 	
 	PriceButton.set_size(Price.size)
 	
@@ -138,7 +138,7 @@ func _on_button_2_pressed() -> void:#buy button
 				match ChosenObj:
 					BaseCard:
 						PlayerConfig.player_available_cards.append(ChosenObj.return_all_tags())
-					Combo:
+					_Combo_:
 						PlayerConfig.player_available_combos.append(ChosenObj.return_all_tags())
 		objects = new_object
 		basket.clear()

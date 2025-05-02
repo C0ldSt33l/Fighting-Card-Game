@@ -117,7 +117,7 @@ func set_target(target: Variant) -> Effect:
 # 		Effect.TARGET_TYPE.CARD:
 # 			return self.target is Card
 # 		Effect.TARGET_TYPE.COMBO:
-# 			return self.target is Combo
+# 			return self.target is _Combo_
 # 		Effect.TARGET_TYPE.SCORE:
 # 			return self.target is Counter
 # 		_:

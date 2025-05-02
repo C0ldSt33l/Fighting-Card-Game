@@ -17,7 +17,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Cards="*res://global/cards.gd"
 CardFactory="*res://global/card_factory.gd"
 PlayerConfig="*res://global/player_config.gd"
 Sql="*res://global/sql.gd"
@@ -29,9 +28,17 @@ Effects="*res://global/effects.gd"
 Game="*res://global/game.gd"
 Events="*res://global/events.gd"
 
+[display]
+
+window/subwindows/embed_subwindows=false
+
 [dotnet]
 
 project/assembly_name="main"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
 
 [input]
 
