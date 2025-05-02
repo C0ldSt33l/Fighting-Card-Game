@@ -11,15 +11,21 @@ var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
 var card_cursor := Cursor.new(Cursor.TYPE.CARDS)
 var cur_card: Card :
-	get(): return self.cards_on_table[self.card_cursor.index] if self.cards_on_table.size() != 0 else null
+	get(): return self.cards_on_table[self.card_cursor.index] if self.cards_on_table.size() > 0 else null
 var first_card: Card :
-	get(): return self.cards_on_table[0] if self.cards_on_table.size() != 0 else null
+	get(): return self.cards_on_table[0] if self.cards_on_table.size() > 0 else null
+var last_card: Card :
+	get(): return self.cards_on_table[-1] if self.cards_on_table.size() > 0 else null
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
 var combo_cursor := Cursor.new(Cursor.TYPE.COMBOS)
 var cur_combo: Combo :
-	get(): return null if self.combos_on_table.size() == 0 else self.combos_on_table[0]
+	get(): return self.combos_on_table[self.combo_cursor.index] if self.combos_on_table.size() > 0 else null
+var first_combo: Combo :
+	get(): return self.combos_on_table[0] if self.combos_on_table.size() > 0 else null
+var last_combo: Combo :
+	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
 var round_count := 2
 
@@ -154,7 +160,7 @@ func play_card() -> void:
 	var card := self.cur_card
 	var combo := self.cur_combo
 
-	if combo and card == combo.start_card:
+	if combo and card == combo.first_card:
 		Events.combo_started.emit(combo)
 
 	Events.card_started.emit(card);\
@@ -166,7 +172,7 @@ func play_card() -> void:
 	if self.is_all_effects_activated_on(card):
 		Events.card_exit.emit(card)
 
-	if combo and card == combo.end_card:
+	if combo and card == combo.last_card:
 		Events.combo_ended.emit(combo)
 		# combo.apply_effect()	
 		if self.is_all_effects_activated_on(combo):
@@ -241,32 +247,54 @@ func is_all_effects_activated_on(target: Variant) -> bool:
 
 func get_effects_from(obj: Variant) -> Array[Effect]:
 	const TYPE := Effect.TARGET_TYPE
-	var arr: Array[Effect] = []
+	var effects: Array[Effect] = []
 	for e: Effect in obj.effects:
+		# TODO: testing
 		match e.target_type:
 			TYPE.SELF_CARD, TYPE.SELF_COMBO:
-				self.effects.append(e.set_target(e.caster))
+				effects.append(e.set_target(e.caster))
+
 			TYPE.NEXT_CARD:
 				var i: int = e.caster.index + 1
 				if (i < self.cards_on_table.size()):
-					self.effects.append(e.set_target(self.cards_on_table[i]))
+					effects.append(e.set_target(self.cards_on_table[i]))
 			TYPE.PREV_CARD:
 				var i: int = e.caster.index - 1
 				if (i > -1):
-					self.effects.append(e.set_target(self.cards_on_table[i]))
+					effects.append(e.set_target(self.cards_on_table[i]))
 			TYPE.FIRST_CARD:
-				self.effects.append(e.set_target(self.first_card))
+				effects.append(e.set_target(self.first_card))
+			TYPE.LAST_CARD:
+				effects.append(e.set_target(self.last_card))
 			TYPE.CARD_IN_COMBO:
 				for c: Card in e.caster.cards:
-					self.effects.append(e.set_target(c))
-			
+					effects.append(e.set_target(c))
+			TYPE.FIRST_CARD_IN_COMBO:
+				effects.append(e.set_target(e.caster.first_card))
+			TYPE.LAST_CARD_IN_COMBO:
+				effects.append(e.set_target(e.caster.last_card))
+
+			TYPE.NEXT_COMBO:
+				var i: int = e.caster.index + 1
+				if (i < self.combos_on_table.size()):
+					effects.append(e.set_target(self.combos_on_table[i]))
+			TYPE.PREV_COMBO:
+				var i: int = e.caster.index - 1
+				if (i > -1):
+					effects.append(e.set_target(self.combos_on_table[i]))
+			TYPE.FIRST_COMBO:
+				self.effects.append(e.set_target(self.first_combo))
+			TYPE.LAST_COMBO:
+				effects.append(e.set_target(self.last_combo))
+
 			TYPE.CARD_CURSOR:
-					self.effects.append(e.set_target(self.card_cursor))
+				effects.append(e.set_target(self.card_cursor))
 			TYPE.COMBO_CURSOR:
-					self.effects.append(e.set_target(self.combo_cursor))
+				effects.append(e.set_target(self.combo_cursor))
+
 			_:
 				Utils.throw_error('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER')
-	return arr
+	return effects
 
 
 func collect_all_effects() -> void:

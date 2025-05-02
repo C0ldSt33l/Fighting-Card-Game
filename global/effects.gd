@@ -81,7 +81,7 @@ static func card_mult_card_points_and_mult(c: Card, points_mult: int, mult_mult:
 
 static func combo_play_again(c: Combo) -> void:
 	Game.battle.combo_cursor.move_back()
-	Game.battle.card_cursor.set_index(c.start_card.index)
+	Game.battle.card_cursor.set_index(c.first_card.index)
 
 static func play_round_again(c: Cursor) -> void:
 	Game.battle.card_cursor.back_to_start()
