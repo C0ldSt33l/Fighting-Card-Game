@@ -230,12 +230,12 @@ func apply_effect(e: Effect, to: Variant) -> void:
 	self.add_effect(e)
 
 
-func _filter_effects(filter: Callable, args: Array) -> Array[Effect]:
+func _get_filtered_effects(filter: Callable, args: Array) -> Array[Effect]:
 	return filter.bindv(args).call(self.effects)
 
 
 func activate_filtered_effects(filter: Callable, args: Array) -> void:
-	var effects := self._filter_effects(filter, args)
+	var effects := self._get_filtered_effects(filter, args)
 	for e in effects:
 		print('activate')
 		e.activate()
@@ -311,20 +311,15 @@ func on_round_started() -> void:
 		self.counter.add(c.points, c.multiplier)
 	
 	self.collect_all_effects()
-	print('effects: ', self.effects.size())
-	for e in self.effects:
-		print(e.name)
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_START]
 	)
-
 func on_round_ended() -> void:
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_END]
 	)
-
 # TODO: clear totems effects
 func on_round_exit() -> void:
 	self.effects.clear()
@@ -339,44 +334,33 @@ func on_round_exit() -> void:
 
 func on_card_started(c: Card) -> void:
 	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_TARGET,
+		Utils.Filter.FOR_CARD,
 		[Effect.ACTIVATION_TIME.CARD_START, c]
 	)
-	
-
 func on_card_ended(c: Card) -> void:
 	c.scale = Vector2.ONE
 	self.card_cursor.move_foward()
 
 	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_TARGET,
+		Utils.Filter.FOR_CARD,
 		[Effect.ACTIVATION_TIME.CARD_END, c]
 	)
-	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_CASTER,
-		[Effect.ACTIVATION_TIME.CARD_END, c]
-	)
-	
-
 func on_card_exit(c: Card) -> void:
 	c.reset_effects()
 
 
 func on_combo_started(c: Combo) -> void:
 	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_CASTER,
+		Utils.Filter.FOR_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_START, c]
 	)
-	
-
 func on_combo_ended(c: Combo) -> void:
 	self.combo_cursor.move_foward()
 
 	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_CASTER,
+		Utils.Filter.FOR_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_END, c]
 	)
-
 func on_combo_exit(c: Combo) -> void:
 	c.reset_effects()
 

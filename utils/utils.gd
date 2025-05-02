@@ -50,6 +50,18 @@ class Filter:
 				return e.activation_time == time and e.caster == caster and e.target == target
 		)
 
+	static func FOR_CARD(effects: Array[Effect], time: Effect.ACTIVATION_TIME, c: Card) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.activation_time == time and (e.caster == c if e.target is not Card else e.target == c)
+		)
+
+	static func FOR_COMBO(effects: Array[Effect], time: Effect.ACTIVATION_TIME, c: Combo) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.activation_time == time and (e.caster == c if e.target is not Combo else e.target == c)
+		)
+
 static func exlude_array(from: Array, what: Array) -> Array:
 	var res := from.filter(
 		func (el) -> bool:
