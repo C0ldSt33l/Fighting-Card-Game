@@ -24,6 +24,11 @@ enum ACTIVATION_TIME {
 
 	TOTEM_ACTIVATION, # TODO: think about it
 }
+enum RESET_TIME {
+	NONE,
+	CARD,
+	COMBO,
+}
 enum TYPE {
 	BUFF,
 	DEBUFF,
@@ -57,17 +62,24 @@ enum TARGET_TYPE {
 
 # TODO: create checker to activate effect on its time
 
-var activation_time: ACTIVATION_TIME
-var type: TYPE
+var activation_time: ACTIVATION_TIME :
+	set(val): return
+var type: TYPE :
+	set(val): return
 # TODO: create as class
 # fields:
 # - time count
 # - reset time
-var limit: int
+var max_limit: int :
+	set(val): return
+var rest_limit: int
+var reset_time: RESET_TIME :
+	set(val): return
 
 var caster
 
-var target_type: TARGET_TYPE
+var target_type: TARGET_TYPE :
+	set(val): return
 var target
 
 
@@ -75,6 +87,7 @@ func _init(
 	name: String,
 	desc: String,
 	activation_time: ACTIVATION_TIME,
+	reset_time: RESET_TIME,
 	action: Callable,
 	type: TYPE,
 	target_type: TARGET_TYPE,
@@ -86,10 +99,12 @@ func _init(
 	self.name = name
 	self.description = desc
 	self.activation_time = activation_time
+	self.reset_time = reset_time
 	self.action = action
 	self.type = type
 	self.target_type = target_type
-	self.limit = limit
+	self.max_limit = limit
+	self.rest_limit = limit
 	self.args = args
 	self.caster = caster 
 	self.target = target
@@ -132,8 +147,8 @@ func activate():
 	args.append_array(self.args)
 	self.action.bindv(args).call()
 
-	self.limit -= 1
-	if self.limit <= 0:
+	self.rest_limit -= 1
+	if self.rest_limit <= 0:
 		self.make_unenabled()
 
 
@@ -142,15 +157,23 @@ func make_unenabled() -> void:
 	Game.battle.used_effects.append(self)
 
 
+func reset() -> void:
+	if (self.reset_time == RESET_TIME.NONE): return
+	self.rest_limit = self.max_limit
+	Game.battle.effects.append(self)
+	Game.battle.used_effects.erase(self)
+
+
 func clone() -> Effect:
 	return Effect.new(
 		self.name,
 		self.description,
 		self.activation_time,
+		self.reset_time,
 		self.action,
 		self.type,
 		self.target_type,
-		self.limit,
+		self.rest_limit,
 		self.args,
 		self.caster
 	)
