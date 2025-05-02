@@ -206,6 +206,7 @@ func spawn_card(index: int, config: Dictionary, pos: Vector2) -> void:
 
 func check_combos() -> void:
 	var i := 0
+	var combo_idx := 0
 	var step: int
 	while i < self.cards_on_table.size():
 		step = 1
@@ -215,8 +216,11 @@ func check_combos() -> void:
 				self.cards_on_table.slice(i)
 			)
 			if combo != null:
+				combo.index = combo_idx
 				self.combos_on_table.append(combo)
+
 				step = combo.length
+				combo_idx += 1
 				break
 		i += step
 
@@ -357,6 +361,7 @@ func on_card_ended(c: Card) -> void:
 		Utils.Filter.FOR_CARD,
 		[Effect.ACTIVATION_TIME.CARD_END, c]
 	)
+# TODO: test resets
 func on_card_exit(c: Card) -> void:
 	self.reset_filtered_effects(
 		Utils.Filter.FOR_CARD,
@@ -380,6 +385,7 @@ func on_combo_ended(c: Combo) -> void:
 		Utils.Filter.FOR_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_END, c]
 	)
+# TODO: test resets
 func on_combo_exit(c: Combo) -> void:
 	self.reset_filtered_effects(
 		Utils.Filter.FOR_COMBO,

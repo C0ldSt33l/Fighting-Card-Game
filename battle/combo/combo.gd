@@ -2,6 +2,8 @@ class_name Combo
 
 const MAX_LVL := 2
 
+var index: int
+
 var name: String
 var description: String
 
