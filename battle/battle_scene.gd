@@ -2,14 +2,14 @@ class_name BattleScene
 extends Node2D
 
 
-@onready var timer := $Timer as Timer
-@onready var counter := $Counter as Counter
-@onready var round_counter:= $"Round counter" as Label
-@onready var start_button := $"Start button" as Button
+@onready var timer: Timer = $Timer as Timer
+@onready var counter: Counter = $Counter as Counter
+@onready var round_counter: Label = $"Round counter" as Label
+@onready var start_button: Button = $"Start button" as Button
 
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
-var card_cursor := Cursor.new(Cursor.TYPE.CARDS)
+var card_cursor: Cursor = Cursor.new(Cursor.TYPE.CARDS)
 var cur_card: Card :
 	get(): return self.cards_on_table[self.card_cursor.index] if self.card_cursor.index < self.cards_on_table.size() else null
 var first_card: Card :
@@ -19,7 +19,7 @@ var last_card: Card :
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
-var combo_cursor := Cursor.new(Cursor.TYPE.COMBOS)
+var combo_cursor: Cursor = Cursor.new(Cursor.TYPE.COMBOS)
 var cur_combo: Combo :
 	get(): return self.combos_on_table[self.combo_cursor.index] if self.combo_cursor.index < self.combos_on_table.size() else null
 var first_combo: Combo :
@@ -27,7 +27,8 @@ var first_combo: Combo :
 var last_combo: Combo :
 	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
-var round_count := 2
+var round_count: int = 2
+var earned_money: int = 0
 
 var effects: Array[Effect] = []
 var used_effects: Array[Effect]= []

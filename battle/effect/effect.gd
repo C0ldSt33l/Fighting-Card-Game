@@ -72,10 +72,10 @@ var max_limit: int
 var rest_limit: int
 var reset_time: RESET_TIME
 
-var caster
+var caster: Variant
 
 var target_type: TARGET_TYPE
-var target
+var target: Variant
 
 
 func _init(
@@ -88,8 +88,8 @@ func _init(
 	target_type: TARGET_TYPE,
 	limit: int,
 	args: Array = [],
-	caster = null,
-	target = null 
+	caster: Variant = null,
+	target: Variant = null 
 ) -> void:
 	self.name = name
 	self.description = desc
@@ -110,7 +110,7 @@ func _init(
 	#)
 
 
-func bind_to(caster):
+func bind_to(caster: Variant):
 	self.caster = caster
 
 # TODO: replace with switch that handle all use cases

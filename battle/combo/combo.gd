@@ -11,7 +11,7 @@ var price: int
 var points: int
 var multiplier: int
 
-var upgrade_lvl := 1
+var upgrade_lvl: int = 1
 
 var cards: Array[Card] = []
 var first_card: Card :

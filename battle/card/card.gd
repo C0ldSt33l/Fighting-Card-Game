@@ -1,9 +1,9 @@
 extends Node2D
 class_name Card
 
-@onready var name_label := $Background/Name as Label
-@onready var type_label := $Background/Type as Label
-@onready var dmg_label := $Background/DMG as Label
+@onready var name_label: Label = $Background/Name as Label
+@onready var type_label: Label = $Background/Type as Label
+@onready var dmg_label: Label = $Background/DMG as Label
 
 var index: int
 
