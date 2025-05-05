@@ -7,6 +7,12 @@ class Filter:
 				return e.activation_time == time
 		)
 
+	static func BY_RESET_TIME(effects: Array[Effect], time: Effect.RESET_TIME) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.reset_time == time
+		)
+
 	static func BY_CASTER(effects: Array[Effect], caster: Variant) -> Array[Effect]:
 		return effects.filter(
 			func (e: Effect) -> bool:

@@ -16,22 +16,22 @@ var COMBOS := {
 		],
 		'effect': 'Multiplier+'
 	},
-	'Big Combo':
-	{
-		'props': {
-			'description': 'big Started combo',
-			'price': 25,
-			'points': 10,
-			'multiplier': 2,
-		},
-		'patterns':
-		[
-			{ 'card_name': 'fist' },
-			{ 'card_name': 'knee strike' },
-			{ 'card_name': 'elbow' },
-		],
-		'effect': 'One more time'
-	}
+	# 'Big Combo':
+	# {
+	# 	'props': {
+	# 		'description': 'big Started combo',
+	# 		'price': 25,
+	# 		'points': 10,
+	# 		'multiplier': 2,
+	# 	},
+	# 	'patterns':
+	# 	[
+	# 		{ 'card_name': 'fist' },
+	# 		{ 'card_name': 'knee strike' },
+	# 		{ 'card_name': 'elbow' },
+	# 	],
+	# 	'effect': 'One more time'
+	# }
 }
 
 
@@ -47,4 +47,4 @@ func get_combo_patterns(name: String) -> Array[Dictionary]:
 
 func get_combo_effect(name: String) -> Effect:
 	var effect_name := self.COMBOS[name]['effect'] as String
-	return Effects.EFFECTS[effect_name]
+	return Effects.EFFECTS[effect_name].clone()

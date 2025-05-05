@@ -76,6 +76,14 @@ func _input(event: InputEvent) -> void:
 
 
 func start_round_preparation() -> void:
+	# var e := Effects.get_effect('Feint')	
+	# e.caster = 1
+	# var clone := e.clone()
+	# clone.caster = 2
+	# print('orine target: ', e.caster)
+	# print('clone target: ', clone.caster)
+
+
 	self.start_button.disabled = false
 	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
@@ -111,9 +119,9 @@ func start_round_preparation() -> void:
 		self.spawn_card(i, configs[i], spawn_pos)
 		spawn_pos.x += 150
 
-	var first_card := self.first_card
-	var e := Effects.get_effect('Second breath')
-	first_card.bind_effect(e)
+	var cards := self.cards_on_table.slice(1, 3)
+	for c: Card in cards:
+		c.bind_effect(Effects.get_effect('Feint'))
 
 
 # TODO: move `check_combos()` in round preparation stage
@@ -238,19 +246,23 @@ func apply_effect(e: Effect, to: Variant) -> void:
 func _get_filtered_effects(filter: Callable, args: Array) -> Array[Effect]:
 	return filter.bindv(args).call(self.effects)
 
+func activate_effects(effects: Array[Effect]) -> void:
+	for e in effects:
+		print('activated')
+		e.activate()
 
 func activate_filtered_effects(filter: Callable, args: Array) -> void:
 	var effects := self._get_filtered_effects(filter, args)
-	for e in effects:
-		print('activate')
-		e.activate()
+	self.activate_effects(effects)
 
+func reset_effects(effects: Array[Effect]) -> void:
+	for e in effects:
+		e.reset()
 
 func reset_filtered_effects(filter: Callable, args: Array) -> void:
 	var effects := self._get_filtered_effects(filter, args)
 	for e in effects:
 		e.reset()
-
 
 func is_all_effects_activated_on(target: Variant) -> bool:
 	return Utils.Filter.BY_TARGET(self.effects, target).size() == 0
@@ -324,11 +336,17 @@ func on_round_started() -> void:
 		self.counter.add(c.points, c.multiplier)
 	
 	self.collect_all_effects()
+	for e in self.effects:
+		print(inst_to_dict(e))
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_START]
 	)
 func on_round_ended() -> void:
+	self.reset_filtered_effects(
+		Utils.Filter.BY_RESET_TIME,
+		[Effect.RESET_TIME.ROUND]
+	)
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_END]

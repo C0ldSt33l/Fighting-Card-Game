@@ -27,7 +27,7 @@ var EFFECTS := {
 		'One more time',
 		'Combo activates twice',
 		Effect.ACTIVATION_TIME.COMBO_END,
-		Effect.RESET_TIME.NONE,
+		Effect.RESET_TIME.COMBO,
 		combo_play_again,
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.SELF_COMBO,
@@ -37,7 +37,7 @@ var EFFECTS := {
 		'Feint',
 		'Activate prev card',
 		Effect.ACTIVATION_TIME.CARD_END,
-		Effect.RESET_TIME.NONE,
+		Effect.RESET_TIME.CARD,
 		card_play_prev_card,
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.CARD_CURSOR,
@@ -101,4 +101,4 @@ static func check(e: Effect, card_or_combo: Variant) -> bool:
 
 # UTILS
 func get_effect(name: StringName) -> Effect:
-	return self.EFFECTS[name]
+	return self.EFFECTS[name].clone()

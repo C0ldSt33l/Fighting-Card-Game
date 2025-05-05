@@ -1,5 +1,4 @@
 class_name Effect
-extends RefCounted
 
 # TODO: Create system of sub-effect for effects
 # with multiple target types
@@ -28,6 +27,7 @@ enum RESET_TIME {
 	NONE,
 	CARD,
 	COMBO,
+	ROUND,
 }
 enum TYPE {
 	BUFF,
@@ -153,7 +153,7 @@ func make_unenabled() -> void:
 
 
 func reset() -> void:
-	if (self.reset_time == RESET_TIME.NONE): return
+	if (self.reset_time == RESET_TIME.NONE): return 
 	self.rest_limit = self.max_limit
 	Game.battle.effects.append(self)
 	Game.battle.used_effects.erase(self)
