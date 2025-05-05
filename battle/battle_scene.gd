@@ -143,26 +143,32 @@ func start_round() -> void:
 
 
 func end_round() -> void:
+	Events.round_exit.emit()
+
 	self.round_counter.text = str(self.round_count)
 	self.timer.stop()
 
 	await self.counter.update_round_score()
 	await get_tree().create_timer(1).timeout
-	for e in self.effects:
-		if e.activation_time == Effect.ACTIVATION_TIME.ROUND_END:
-			e.activate()
 
 	self.combos_on_table.clear()
-	self.combo_cursor.reset()
 
 	for card in self.cards_on_table:
 		card.queue_free()
 	self.cards_on_table.clear()
+
 	self.card_cursor.reset()
+	self.combo_cursor.reset()
 
 	self.effects.clear()
+	self.used_effects.clear()
 
-	Events.round_exit.emit()
+	if self.round_count != 0:
+		self.start_round_preparation()
+	else:
+		Events.battle_ended.emit()
+		print('battle end')
+
 
 
 func play_card() -> void:
@@ -353,15 +359,7 @@ func on_round_ended() -> void:
 	)
 # TODO: clear totems effects
 func on_round_exit() -> void:
-	self.effects.clear()
-	self.used_effects.clear()
-
-	if self.round_count != 0:
-		self.start_round_preparation()
-	else:
-		Events.battle_ended.emit()
-		print('battle end')
-
+	pass
 
 func on_card_started(c: Card) -> void:
 	self.activate_filtered_effects(
@@ -413,3 +411,7 @@ func on_combo_exit(c: Combo) -> void:
 
 func on_effect_applyed(e: Effect) -> void: pass
 func on_effect_activated(e: Effect) -> void: pass
+
+
+func on_battle_ended() -> void:
+	self.earned_money += self.round_count
