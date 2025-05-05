@@ -62,24 +62,19 @@ enum TARGET_TYPE {
 
 # TODO: create checker to activate effect on its time
 
-var activation_time: ACTIVATION_TIME :
-	set(val): return
-var type: TYPE :
-	set(val): return
+var activation_time: ACTIVATION_TIME
+var type: TYPE
 # TODO: create as class
 # fields:
 # - time count
 # - reset time
-var max_limit: int :
-	set(val): return
+var max_limit: int
 var rest_limit: int
-var reset_time: RESET_TIME :
-	set(val): return
+var reset_time: RESET_TIME
 
 var caster
 
-var target_type: TARGET_TYPE :
-	set(val): return
+var target_type: TARGET_TYPE
 var target
 
 

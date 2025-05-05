@@ -11,26 +11,20 @@ var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
 var card_cursor := Cursor.new(Cursor.TYPE.CARDS)
 var cur_card: Card :
-	set(val): return 
-	get(): return self.cards_on_table[self.card_cursor.index] if self.cards_on_table.size() > 0 else null
+	get(): return self.cards_on_table[self.card_cursor.index] if self.card_cursor.index < self.cards_on_table.size() else null
 var first_card: Card :
-	set(val): return
 	get(): return self.cards_on_table[0] if self.cards_on_table.size() > 0 else null
 var last_card: Card :
-	set(val): return
 	get(): return self.cards_on_table[-1] if self.cards_on_table.size() > 0 else null
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
 var combo_cursor := Cursor.new(Cursor.TYPE.COMBOS)
 var cur_combo: Combo :
-	set(val): return
-	get(): return self.combos_on_table[self.combo_cursor.index] if self.combos_on_table.size() > 0 else null
+	get(): return self.combos_on_table[self.combo_cursor.index] if self.combo_cursor.index < self.combos_on_table.size() else null
 var first_combo: Combo :
-	set(val): return
 	get(): return self.combos_on_table[0] if self.combos_on_table.size() > 0 else null
 var last_combo: Combo :
-	set(val): return
 	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
 var round_count := 2
@@ -265,6 +259,8 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 	const TYPE := Effect.TARGET_TYPE
 	var effects: Array[Effect] = []
 	for e: Effect in obj.effects:
+		print('eff name: ', e.name)
+		print('target: ', Effect.TARGET_TYPE.keys()[e.target_type])
 		# TODO: testing
 		match e.target_type:
 			TYPE.SELF_CARD, TYPE.SELF_COMBO:
@@ -350,7 +346,7 @@ func on_round_exit() -> void:
 
 func on_card_started(c: Card) -> void:
 	self.activate_filtered_effects(
-		Utils.Filter.FOR_CARD,
+		Utils.Filter.BY_ACTIVATION_ON_CARD,
 		[Effect.ACTIVATION_TIME.CARD_START, c]
 	)
 func on_card_ended(c: Card) -> void:
@@ -358,41 +354,41 @@ func on_card_ended(c: Card) -> void:
 	self.card_cursor.move_foward()
 
 	self.activate_filtered_effects(
-		Utils.Filter.FOR_CARD,
+		Utils.Filter.BY_ACTIVATION_ON_CARD,
 		[Effect.ACTIVATION_TIME.CARD_END, c]
 	)
 # TODO: test resets
 func on_card_exit(c: Card) -> void:
 	self.reset_filtered_effects(
-		Utils.Filter.FOR_CARD,
+		Utils.Filter.BY_ACTIVATION_ON_CARD,
 		[Effect.ACTIVATION_TIME.CARD_START, c]
 	)
 	self.reset_filtered_effects(
-		Utils.Filter.FOR_CARD,
+		Utils.Filter.BY_ACTIVATION_ON_CARD,
 		[Effect.ACTIVATION_TIME.CARD_END, c]
 	)
 
 
 func on_combo_started(c: Combo) -> void:
 	self.activate_filtered_effects(
-		Utils.Filter.FOR_COMBO,
+		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_START, c]
 	)
 func on_combo_ended(c: Combo) -> void:
 	self.combo_cursor.move_foward()
 
 	self.activate_filtered_effects(
-		Utils.Filter.FOR_COMBO,
+		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_END, c]
 	)
 # TODO: test resets
 func on_combo_exit(c: Combo) -> void:
 	self.reset_filtered_effects(
-		Utils.Filter.FOR_COMBO,
+		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_START, c]
 	)
 	self.reset_filtered_effects(
-		Utils.Filter.FOR_COMBO,
+		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_END, c]
 	)
 

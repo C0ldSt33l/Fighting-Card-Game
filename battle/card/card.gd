@@ -5,8 +5,7 @@ class_name Card
 @onready var type_label := $Background/Type as Label
 @onready var dmg_label := $Background/DMG as Label
 
-var index: int :
-	set(val): return
+var index: int
 
 enum BODY_PART {
 	ARM_STRIKE,
