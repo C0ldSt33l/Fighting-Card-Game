@@ -126,6 +126,15 @@ func select_all_combos_with_tags()->Array:
 		
 	return combos_with_tags
 
+func select_totems()->Array:
+	var res = []
+	
+	database.query("select * from TOTEMS")
+	for tot in res:
+		database.query("select * from EFFECTS e join TOTEMS_EFFECTS te on te.id_effect = e.id where te.id_totem = " +  str(tot["id"])) 
+		tot["effect"] = database.query_result
+	return []
+
 func select_combos_tag(ComboID:int)->Array:
 	database.query("
 	SELECT t.Type,t.Name,t.Description 
