@@ -377,14 +377,9 @@ func on_card_ended(c: Card) -> void:
 # TODO: test resets
 func on_card_exit(c: Card) -> void:
 	self.reset_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_ON_CARD,
-		[Effect.ACTIVATION_TIME.CARD_START, c]
+		Utils.Filter.BY_RESET_ON_CARD,
+		[c]
 	)
-	self.reset_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_ON_CARD,
-		[Effect.ACTIVATION_TIME.CARD_END, c]
-	)
-
 
 func on_combo_started(c: Combo) -> void:
 	self.activate_filtered_effects(
@@ -401,12 +396,8 @@ func on_combo_ended(c: Combo) -> void:
 # TODO: test resets
 func on_combo_exit(c: Combo) -> void:
 	self.reset_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_ON_COMBO,
-		[Effect.ACTIVATION_TIME.COMBO_START, c]
-	)
-	self.reset_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_ON_COMBO,
-		[Effect.ACTIVATION_TIME.COMBO_END, c]
+		Utils.Filter.BY_RESET_ON_COMBO,
+		[c]
 	)
 
 func on_effect_applyed(e: Effect) -> void: pass

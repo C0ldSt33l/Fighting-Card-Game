@@ -68,6 +68,18 @@ class Filter:
 				return e.activation_time == time and (e.caster == c if e.target is not Combo else e.target == c)
 		)
 
+	static func BY_RESET_ON_CARD(effects: Array[Effect], c: Card) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.reset_time == Effect.RESET_TIME.CARD and (e.caster == c if e.target is not Card else e.target == c)
+		)
+
+	static func BY_RESET_ON_COMBO(effects: Array[Effect], c: Combo) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.reset_time == Effect.RESET_TIME.COMBO and (e.caster == c if e.target is not Combo else e.target == c)
+		)
+
 static func exlude_array(from: Array, what: Array) -> Array:
 	var res := from.filter(
 		func (el) -> bool:

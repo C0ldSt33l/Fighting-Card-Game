@@ -31,23 +31,23 @@ var EFFECTS := {
 		combo_play_again,
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.SELF_COMBO,
-		2,
+		1,
 	),
 	'Feint': Effect.new(
 		'Feint',
 		'Activate prev card',
 		Effect.ACTIVATION_TIME.CARD_END,
-		Effect.RESET_TIME.CARD,
+		Effect.RESET_TIME.ROUND,
 		card_play_prev_card,
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.CARD_CURSOR,
-		2,
+		1,
 	),
 	'First strike': Effect.new(
 		'First strike',
 		'Multiply points and multiplier of first card by %i and %i respectively',
 		Effect.ACTIVATION_TIME.ROUND_START,
-		Effect.RESET_TIME.CARD,
+		Effect.RESET_TIME.CARD, # maybe per round?
 		card_mult_card_points_and_mult,
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.FIRST_CARD,
@@ -79,7 +79,11 @@ static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> v
 	c.multiplier += mult
 
 static func card_play_prev_card(c: Cursor) -> void:
+	if c.index < 2: return
 	c.move_back(2)
+
+static func card_play_again(c: Cursor) -> void:
+	c.move_back()
 
 static func card_mult_card_points_and_mult(c: Card, points_mult: int, mult_mult: int) -> void:
 	c.points *= points_mult

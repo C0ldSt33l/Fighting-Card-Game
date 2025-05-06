@@ -30,7 +30,7 @@ var COMBOS := {
 	# 		{ 'card_name': 'knee strike' },
 	# 		{ 'card_name': 'elbow' },
 	# 	],
-	# 	'effect': 'One more time'
+	# 	'effect': 'Card enchancment'
 	# }
 }
 

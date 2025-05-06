@@ -50,7 +50,9 @@ enum ENERGY {
 	get(): return self.get_tag_val('type')
 
 @export var points: int = 1:
-	set(val): self.set_tag_val('points', val)
+	set(val):
+		self.set_tag_val('points', val)
+		self.dmg_label.text = str(val)
 	get(): return self.get_tag_val('points')
 
 @export var multiplier: int = 1 :
