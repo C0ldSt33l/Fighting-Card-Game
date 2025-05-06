@@ -62,8 +62,9 @@ func create_card(CardInfo: Dictionary)-> BaseCard:
 	var card := CardCreator.create(CardInfo.card['TypeCard'],
 		func (c:BaseCard)-> void:
 			for i in CardInfo.card:
-				if i != 'TypeCard':
-					c[i] = CardInfo.card[i]
+				c[i] = CardInfo.card[i]
+			for i in CardInfo.tags:
+				c.tags.append(i)
 	)
 	card.scale = Vector2(0.66,0.66)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
