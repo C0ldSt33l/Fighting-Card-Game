@@ -64,10 +64,7 @@ enum TARGET_TYPE {
 
 var activation_time: ACTIVATION_TIME
 var type: TYPE
-# TODO: create as class
-# fields:
-# - time count
-# - reset time
+
 var max_limit: int
 var rest_limit: int
 var reset_time: RESET_TIME

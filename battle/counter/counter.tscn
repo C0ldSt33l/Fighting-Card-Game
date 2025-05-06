@@ -8,8 +8,9 @@ script = ExtResource("1_lwp5x")
 [node name="Panel" type="Panel" parent="."]
 offset_left = 1.0
 offset_top = -1.0
-offset_right = 534.0
-offset_bottom = 167.0
+offset_right = 529.0
+offset_bottom = 168.0
+scale = Vector2(0.56, 0.56)
 
 [node name="Panel_point" type="Panel" parent="Panel"]
 z_index = 1
@@ -28,7 +29,6 @@ offset_right = 200.0
 offset_bottom = 118.0
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_lock_ = true
 
 [node name="panel_mult" type="Panel" parent="Panel"]
 z_index = 1
@@ -47,7 +47,6 @@ offset_right = 203.0
 offset_bottom = 124.0
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_lock_ = true
 
 [node name="X" type="Label" parent="Panel"]
 z_index = 1
@@ -74,4 +73,3 @@ offset_right = 531.0
 offset_bottom = 167.0
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_lock_ = true

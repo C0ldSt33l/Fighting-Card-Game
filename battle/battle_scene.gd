@@ -16,6 +16,7 @@ var first_card: Card :
 	get(): return self.cards_on_table[0] if self.cards_on_table.size() > 0 else null
 var last_card: Card :
 	get(): return self.cards_on_table[-1] if self.cards_on_table.size() > 0 else null
+var played_cards: Array[Card] = []
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
@@ -76,14 +77,6 @@ func _input(event: InputEvent) -> void:
 
 
 func start_round_preparation() -> void:
-	# var e := Effects.get_effect('Feint')	
-	# e.caster = 1
-	# var clone := e.clone()
-	# clone.caster = 2
-	# print('orine target: ', e.caster)
-	# print('clone target: ', clone.caster)
-
-
 	self.start_button.disabled = false
 	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
@@ -153,8 +146,9 @@ func end_round() -> void:
 
 	self.combos_on_table.clear()
 
-	for card in self.cards_on_table:
-		card.queue_free()
+	self.played_cards.append_array(self.cards_on_table)
+	for c in self.cards_on_table:
+		self.remove_child(c)
 	self.cards_on_table.clear()
 
 	self.card_cursor.reset()
@@ -189,7 +183,6 @@ func play_card() -> void:
 
 	if combo and card == combo.last_card:
 		Events.combo_ended.emit(combo)
-		# combo.apply_effect()	
 		if self.is_all_effects_activated_on(combo):
 			Events.combo_exit.emit(combo)
 
@@ -278,9 +271,6 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 	const TYPE := Effect.TARGET_TYPE
 	var effects: Array[Effect] = []
 	for e: Effect in obj.effects:
-		print('eff name: ', e.name)
-		print('target: ', Effect.TARGET_TYPE.keys()[e.target_type])
-		# TODO: testing
 		match e.target_type:
 			TYPE.SELF_CARD, TYPE.SELF_COMBO:
 				effects.append(e.set_target(e.caster))
@@ -374,7 +364,6 @@ func on_card_ended(c: Card) -> void:
 		Utils.Filter.BY_ACTIVATION_ON_CARD,
 		[Effect.ACTIVATION_TIME.CARD_END, c]
 	)
-# TODO: test resets
 func on_card_exit(c: Card) -> void:
 	self.reset_filtered_effects(
 		Utils.Filter.BY_RESET_ON_CARD,
@@ -393,7 +382,6 @@ func on_combo_ended(c: Combo) -> void:
 		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_END, c]
 	)
-# TODO: test resets
 func on_combo_exit(c: Combo) -> void:
 	self.reset_filtered_effects(
 		Utils.Filter.BY_RESET_ON_COMBO,
