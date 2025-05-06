@@ -169,3 +169,24 @@ func clone() -> Effect:
 		self.args,
 		self.caster
 	)
+
+func _to_string() -> String:
+	return (
+		('Effect\n' +
+		'name: %s\n' +
+		'desc: %s\n' +
+		'activation time: %s\n' +
+		'reset time: %s\n' +
+		'target type: %s\n' +
+		'max limit: %s\n' +
+		'rest limit: %s\n\n')
+		% [
+			self.name,
+			self.description,
+			ACTIVATION_TIME.keys()[self.activation_time],
+			RESET_TIME.keys()[self.reset_time],
+			TARGET_TYPE.keys()[self.target_type],
+			self.max_limit,
+			self.rest_limit,
+		]
+	)

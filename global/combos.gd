@@ -7,12 +7,12 @@ var COMBOS := {
 			'description': 'Started combo',
 			'price': 15,
 			'points': 10,
-			'multiplier': 2,
+			'factor': 2,
 		},
 		'patterns':
 		[
 			{ 'card_name': 'kick' },
-			{ 'type': Card.BODY_PART.LEG_STRIKE },
+			{ 'type': Card.BODY_PART.LEG },
 		],
 		'effect': 'Multiplier+'
 	},
@@ -22,7 +22,7 @@ var COMBOS := {
 	# 		'description': 'big Started combo',
 	# 		'price': 25,
 	# 		'points': 10,
-	# 		'multiplier': 2,
+	# 		'factor': 2,
 	# 	},
 	# 	'patterns':
 	# 	[

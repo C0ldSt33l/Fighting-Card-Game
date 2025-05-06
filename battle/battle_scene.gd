@@ -82,28 +82,40 @@ func start_round_preparation() -> void:
 	Events.round_preparation_started.emit()
 	var configs := [
 		{
-			'card_name': 'fist',
-			'type': Card.BODY_PART.ARM_STRIKE,
-			'points': 2,
-			'multiplier': 1,
+			'props': {
+				'card_name': 'fist',
+				'body_part': Card.BODY_PART.HAND,
+				'point': 2,
+				'factor': 1,
+			},
+			'tags': {}
 		},
 		{
-			'card_name': 'knee strike',
-			'type': Card.BODY_PART.LEG_STRIKE,
-			'points': 3,
-			'multiplier': 1,
+			'props': {
+				'card_name': 'knee strike',
+				'body_part': Card.BODY_PART.LEG,
+				'point': 3,
+				'factor': 1,
+			},
+			'tags': {}
 		},
 		{
-			'card_name': 'elbow',
-			'type': Card.BODY_PART.ARM_STRIKE,
-			'points': 5,
-			'multiplier': 1,
+			'props': {
+				'card_name': 'elbow',
+				'body_part': Card.BODY_PART.HAND,
+				'point': 5,
+				'factor': 1,
+			},
+			'tags': {}
 		},
 		{
-			'card_name': 'fist',
-			'type': Card.BODY_PART.ARM_STRIKE,
-			'points': 2,
-			'multiplier': 1,
+			'props': {
+				'card_name': 'fist',
+				'body_part': Card.BODY_PART.HAND,
+				'point': 2,
+				'factor': 1,
+			},
+			'tags': {}
 		},
 	]
 	var spawn_pos := Vector2(350, 200)
@@ -115,6 +127,10 @@ func start_round_preparation() -> void:
 	var cards := self.cards_on_table.slice(1, 3)
 	for c: Card in cards:
 		c.bind_effect(Effects.get_effect('Feint'))
+	
+	var first_card := self.first_card
+	var e := Effects.get_effect('Second breath')
+	first_card.bind_effect(e)
 
 
 # TODO: move `check_combos()` in round preparation stage
@@ -200,8 +216,10 @@ func spawn_card(index: int, config: Dictionary, pos: Vector2) -> void:
 		self,
 		func (c: Card) -> void:
 			c.index = index
-			c.add_tags(config)
 			c.position = pos
+			for prop in config.props:
+				c[prop] = config.props[prop]
+			c.add_tags(config.tags)
 	)
 	self.cards_on_table.append(card)
 
@@ -242,8 +260,8 @@ func apply_effect(e: Effect, to: Variant) -> void:
 	self.add_effect(e)
 
 
-func _get_filtered_effects(filter: Callable, args: Array) -> Array[Effect]:
-	return filter.bindv(args).call(self.effects)
+func _get_filtered_effects(effects: Array[Effect], filter: Callable, args: Array) -> Array[Effect]:
+	return filter.bindv(args).call(effects)
 
 func activate_effects(effects: Array[Effect]) -> void:
 	for e in effects:
@@ -251,7 +269,7 @@ func activate_effects(effects: Array[Effect]) -> void:
 		e.activate()
 
 func activate_filtered_effects(filter: Callable, args: Array) -> void:
-	var effects := self._get_filtered_effects(filter, args)
+	var effects := self._get_filtered_effects(self.effects, filter, args)
 	self.activate_effects(effects)
 
 func reset_effects(effects: Array[Effect]) -> void:
@@ -259,7 +277,7 @@ func reset_effects(effects: Array[Effect]) -> void:
 		e.reset()
 
 func reset_filtered_effects(filter: Callable, args: Array) -> void:
-	var effects := self._get_filtered_effects(filter, args)
+	var effects := self._get_filtered_effects(self.used_effects, filter, args)
 	for e in effects:
 		e.reset()
 
@@ -329,11 +347,9 @@ func on_round_preparation_started() -> void: pass
 func on_round_started() -> void:
 	# TODO: move segment in round preparation segment
 	for c in self.combos_on_table:
-		self.counter.add(c.points, c.multiplier)
+		self.counter.add(c.points, c.factor)
 	
 	self.collect_all_effects()
-	for e in self.effects:
-		print(inst_to_dict(e))
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_START]

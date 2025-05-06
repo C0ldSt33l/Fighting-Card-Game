@@ -8,8 +8,8 @@ var name: String
 var description: String
 
 var price: int
-var points: int
-var multiplier: int
+var point: int
+var factor: int
 
 var upgrade_lvl: int = 1
 

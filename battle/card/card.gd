@@ -5,11 +5,10 @@ class_name Card
 @onready var type_label: Label = $Background/Type as Label
 @onready var dmg_label: Label = $Background/DMG as Label
 
-var index: int
 
 enum BODY_PART {
-	ARM_STRIKE,
-	LEG_STRIKE,
+	HAND,
+	LEG,
 }
 
 enum RARITY {
@@ -30,6 +29,17 @@ enum ENERGY {
 	KI,
 }
 
+var index: int
+
+var card_name: String
+var description: String
+
+var point: int
+var factor: int
+var body_part: BODY_PART
+var direction: DIRECTION
+var rarity: RARITY = RARITY.REGULAR
+
 #Tags:
 # - card_name
 # - points
@@ -39,33 +49,6 @@ enum ENERGY {
 # - martial art
 # - has aura
 @export var tags: Dictionary = {}
-
-# Short cuts for base tags
-@export var card_name: String :
-	set(val): self.set_tag_val('card_name', val.capitalize())
-	get(): return self.get_tag_val('card_name')
-
-@export var type: BODY_PART :
-	set(val): self.set_tag_val('type', val)
-	get(): return self.get_tag_val('type')
-
-@export var points: int = 1:
-	set(val):
-		self.set_tag_val('points', val)
-		self.dmg_label.text = str(val)
-	get(): return self.get_tag_val('points')
-
-@export var multiplier: int = 1 :
-	set(val): self.set_tag_val('multiplier', val)
-	get(): return self.get_tag_val('multiplier')
-
-@export var dir: DIRECTION :
-	set(val): self.set_tag_val('direction', val)
-	get(): return self.get_tag_val('direction')
-
-@export var rarity: RARITY = RARITY.REGULAR :
-	set(val): self.set_tag_val('rarity', val)
-	get(): return self.get_tag_val('rarity')
 
 # TODO: add visual effect during changing this field
 @export var energy: ENERGY :
@@ -78,10 +61,8 @@ var effects: Array[Effect] = []
 
 func _ready() -> void:
 	self.name_label.text += str(self.card_name)
-	self.type_label.text += str(BODY_PART.keys()[self.type])
-	self.dmg_label.text += str(self.points)
-
-	self.rarity = RARITY.REGULAR
+	self.type_label.text += str(BODY_PART.keys()[self.body_part])
+	self.dmg_label.text += str(self.point)
 
 	Events.obj_created.emit(self)
 
@@ -90,7 +71,7 @@ func _ready() -> void:
 func play() -> void:
 	self.scale += Vector2(0.2, 0.2)
 	# NOTE: maybe do this after card is played
-	Game.battle.counter.add(self.points, self.multiplier)
+	Game.battle.counter.add(self.point, self.factor)
 
 
 func add_tags(new_tags: Dictionary) -> void:
@@ -121,10 +102,6 @@ func bind_effect(e: Effect) -> void:
 
 func bind_effect_arr(effs: Array[Effect]) -> void:
 	self.effects.append_array(effs)
-
-
-func reset_effects() -> void:
-	pass
 
 
 func _exit_tree() -> void:
