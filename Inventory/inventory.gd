@@ -5,6 +5,8 @@ extends Node2D
 
 @export var card_per_row : int = 4
 
+var selected_object = null
+var is_sell_popup_active = false
 #tmp
 var tmp
 var ALL_cards_with_tags
@@ -26,6 +28,24 @@ func _ready() -> void:  # Явно задаем размер
 	
 	gridContainer.columns = card_per_row
 	upgradeInventory()
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.is_pressed():
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			var mouse_pos = get_global_mouse_position()
+			
+			for obj in gridContainer.get_children():
+				if obj.Background.get_global_rect().has_point(mouse_pos):
+					
+					if selected_object == obj:
+						return
+					# Если активно другое окно продажи, закрываем его
+					if is_sell_popup_active:
+						clear_sell_popup()
+					
+					clear_sell_popup()
+					show_sell_popup(obj, mouse_pos)
+					break
 
 func upgradeInventory():
 	for child in gridContainer.get_children():
@@ -62,8 +82,9 @@ func create_card(CardInfo: Dictionary)-> BaseCard:
 	var card := CardCreator.create(CardInfo.card['TypeCard'],
 		func (c:BaseCard)-> void:
 			for i in CardInfo.card:
-				if i != 'TypeCard':
-					c[i] = CardInfo.card[i]
+				c[i] = CardInfo.card[i]
+			for i in CardInfo.tags:
+				c.tags.append(i)
 	)
 	card.scale = Vector2(0.66,0.66)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -91,7 +112,45 @@ func _on_cards_pressed() -> void:
 	arrange_cards()
 	pass 
 
-
+func show_sell_popup(obj,Position: Vector2):
+	var sell_popup_scene = preload("res://Inventory/SellPopup/SellPopup.tscn")
+	var sell_popup = sell_popup_scene.instantiate()
+	
+	add_child(sell_popup)
+	
+	sell_popup.position = Position
+	
+	var label = sell_popup.get_node("Panel/Label")
+	var yes_button = sell_popup.get_node("Panel/Yes")
+	var no_button = sell_popup.get_node("Panel/No")
+	
+	label.text = "Продать за %s?" % str(obj.Price)
+	selected_object = obj
+	
+	yes_button.pressed.connect(on_yes_pressed)
+	no_button.pressed.connect(on_no_pressed)
+	is_sell_popup_active = true
+	
+func on_yes_pressed():
+	if selected_object:
+		gridContainer.remove_child(selected_object)
+		selected_object.queue_free()
+		#нужно добавить удаление объекта из файла игрока 
+		var money : int  = 0 
+		money += selected_object.Price	
+		print("Sold for:", selected_object.Price)
+	clear_sell_popup()
+	
+func on_no_pressed():
+	clear_sell_popup()
+	
+func clear_sell_popup():
+	if has_node("SellPopup"):
+		var obj = $SellPopup
+		obj.queue_free()
+	selected_object = null
+	is_sell_popup_active = false
+	
 func _on_combos_pressed() -> void:
 	for child in gridContainer.get_children():
 		child.queue_free()
@@ -102,6 +161,7 @@ func _on_combos_pressed() -> void:
 		gridContainer.add_child(combo)
 		print("_Combo_ added:", combo.name)
 	pass # Replace with function body.
+
 
 
 func _on_totem_pressed() -> void:
