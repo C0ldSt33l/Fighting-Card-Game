@@ -5,7 +5,6 @@ class_name Card
 @onready var type_label: Label = $Background/Type as Label
 @onready var dmg_label: Label = $Background/DMG as Label
 
-
 enum BODY_PART {
 	HAND,
 	LEG,
@@ -30,6 +29,7 @@ enum ENERGY {
 }
 
 var index: int
+var picture: String
 
 var card_name: String
 var description: String
@@ -66,6 +66,25 @@ func _ready() -> void:
 
 	Events.obj_created.emit(self)
 
+
+func set_main_prop(
+	idx: int,
+	conf: Dictionary,
+) -> void:
+	self.index = idx
+	for prop in conf:
+		if prop not in ['id', 'Name', 'Price', 'Body part', 'Direction']:
+			self[prop.to_snake_case()] = conf[prop]
+		else:
+			match prop:
+				'id':
+					self.card_name = str(conf[prop])
+				'Body part':
+					self.body_part = BODY_PART[conf[prop].to_upper()]
+				'Direction':
+					self.direction = DIRECTION[conf[prop].to_upper()]
+				_:
+					pass
 
 # TODO: add animation
 func play() -> void:

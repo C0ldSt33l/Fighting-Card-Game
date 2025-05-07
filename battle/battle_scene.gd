@@ -7,6 +7,10 @@ extends Node2D
 @onready var round_counter: Label = $"Round counter" as Label
 @onready var start_button: Button = $"Start button" as Button
 
+@onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var hand: Array[Card] = []
+
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
 var card_cursor: Cursor = Cursor.new(Cursor.TYPE.CARDS)
@@ -45,6 +49,15 @@ enum BATTLE_STAGE {
 
 signal next_card_key_pressed
 
+func get_hand_configs() -> Array[Dictionary]:
+	var size := PlayerConfig.hand_size - self.hand.size()
+	var hand_confs: Array[Dictionary] = []
+	hand_confs.resize(size)
+	for pos in size:
+		var i := self.rng.randi_range(0, deck_dict.size() - 1)
+		hand_confs[pos] = self.deck_dict.pop_at(i)
+	return hand_confs
+
 
 func _ready() -> void:
 	Events.connect_events({
@@ -80,48 +93,11 @@ func start_round_preparation() -> void:
 	self.start_button.disabled = false
 	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
-	var configs := [
-		{
-			'props': {
-				'card_name': 'fist',
-				'body_part': Card.BODY_PART.HAND,
-				'point': 2,
-				'factor': 1,
-			},
-			'tags': {}
-		},
-		{
-			'props': {
-				'card_name': 'knee strike',
-				'body_part': Card.BODY_PART.LEG,
-				'point': 3,
-				'factor': 1,
-			},
-			'tags': {}
-		},
-		{
-			'props': {
-				'card_name': 'elbow',
-				'body_part': Card.BODY_PART.HAND,
-				'point': 5,
-				'factor': 1,
-			},
-			'tags': {}
-		},
-		{
-			'props': {
-				'card_name': 'fist',
-				'body_part': Card.BODY_PART.HAND,
-				'point': 2,
-				'factor': 1,
-			},
-			'tags': {}
-		},
-	]
 	var spawn_pos := Vector2(350, 200)
 
-	for i in len(configs):
-		self.spawn_card(i, configs[i], spawn_pos)
+	var confs := self.get_hand_configs()
+	for i in len(confs):
+		self.spawn_card(i, confs[i], spawn_pos)
 		spawn_pos.x += 150
 
 	var cards := self.cards_on_table.slice(1, 3)
@@ -211,15 +187,12 @@ func play_card() -> void:
 		self.play_card()
 
 
-func spawn_card(index: int, config: Dictionary, pos: Vector2) -> void:
+func spawn_card(idx: int, conf: Dictionary, pos: Vector2) -> void:
 	var card := CardFactory.create_with_binding(
 		self,
 		func (c: Card) -> void:
-			c.index = index
+			c.set_main_prop(idx, conf)
 			c.position = pos
-			for prop in config.props:
-				c[prop] = config.props[prop]
-			c.add_tags(config.tags)
 	)
 	self.cards_on_table.append(card)
 
