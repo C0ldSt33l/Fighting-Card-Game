@@ -1,66 +1,246 @@
 [
-	{
-		"card": {
-			"Description": "d",
-			"Direction": "torso",
-			"Factor": 0,
-			"Name": "blow to the torso",
-			"Picture": "s",
-			"Point": 1,
-			"Price": 1,
-			"Type": "leg",
-			"TypeCard": "BATTLE",
-			"id": 4
-		},
-		"tags": []
-	},
-	{
-		"card": {
-			"Description": "Energy KI",
-			"Name": "Energy KI",
-			"Picture": "p",
-			"Price": 5,
-			"Target": "CARD_AND_COMBO",
-			"TypeCard": "UPGRADE",
-			"id": 1
-		},
-		"tags": [
-			{
-				"Description": null,
-				"Name": "KI",
-				"Type": "ENERGY",
-				"effect": [
-					{
-						"Activation_time": "CARD_END",
-						"Args": "{ [50, 10] }",
-						"Check_name": "check_cursor ",
-						"Description": "Add points and multiplier to score after card is played",
-						"Func_name": "counter_add_points_and_multiplier",
-						"Limit": 1,
-						"Name": "Extra points",
-						"Target": "SCORE",
-						"id": 1,
-						"id_effect": 1,
-						"id_tag": 1
-					}
-				],
-				"id": 1
-			}
-		]
-	},
-	{
-		"card": {
-			"Description": "dd",
-			"Direction": "torso",
-			"Factor": 0,
-			"Name": "blow to the torso",
-			"Picture": "s",
-			"Point": 1,
-			"Price": 1,
-			"Type": "hand",
-			"TypeCard": "BATTLE",
-			"id": 2
-		},
-		"tags": []
-	}
+ {
+  "card": {
+   "Description": "d",
+   "Direction": "torso",
+   "Factor": 0,
+   "Name": "blow to the torso",
+   "Picture": "s",
+   "Point": 1,
+   "Price": 1,
+   "Type": "leg",
+   "TypeCard": "BATTLE",
+   "id": 4
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "Energy KI",
+   "Name": "Energy KI",
+   "Picture": "p",
+   "Price": 5,
+   "Target": "CARD_AND_COMBO",
+   "TypeCard": "UPGRADE",
+   "id": 1
+  },
+  "tags": [
+   {
+    "Description": null,
+    "Name": "KI",
+    "Type": "ENERGY",
+    "effect": [
+     {
+      "Activation_time": "CARD_END",
+      "Args": "{ [50, 10] }",
+      "Check_name": "check_cursor ",
+      "Description": "Add points and multiplier to score after card is played",
+      "Func_name": "counter_add_points_and_multiplier",
+      "Limit": 1,
+      "Name": "Extra points",
+      "Target": "SCORE",
+      "id": 1,
+      "id_effect": 1,
+      "id_tag": 1
+     }
+    ],
+    "id": 1
+   }
+  ]
+ },
+ {
+  "card": {
+   "Description": "dd",
+   "Direction": "torso",
+   "Factor": 0,
+   "Name": "blow to the torso",
+   "Picture": "s",
+   "Point": 1,
+   "Price": 1,
+   "Type": "hand",
+   "TypeCard": "BATTLE",
+   "id": 2
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "dd",
+   "Direction": "torso",
+   "Factor": 0,
+   "Name": "blow to the torso",
+   "Picture": "s",
+   "Point": 1,
+   "Price": 1,
+   "Type": "hand",
+   "TypeCard": "BATTLE",
+   "id": 2
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "d",
+   "Direction": "torso",
+   "Factor": 0,
+   "Name": "blow to the torso",
+   "Picture": "s",
+   "Point": 1,
+   "Price": 1,
+   "Type": "leg",
+   "TypeCard": "BATTLE",
+   "id": 4
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "dd",
+   "Direction": "torso",
+   "Factor": 0,
+   "Name": "blow to the torso",
+   "Picture": "s",
+   "Point": 1,
+   "Price": 1,
+   "Type": "hand",
+   "TypeCard": "BATTLE",
+   "id": 2
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "d",
+   "Direction": "head",
+   "Factor": 0,
+   "Name": "blow to the head",
+   "Picture": "s",
+   "Point": 2,
+   "Price": 2,
+   "Type": "leg",
+   "TypeCard": "BATTLE",
+   "id": 3
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "d",
+   "Direction": "head",
+   "Factor": 0,
+   "Name": "blow to the head",
+   "Picture": "s",
+   "Point": 2,
+   "Price": 2,
+   "Type": "hand",
+   "TypeCard": "BATTLE",
+   "id": 1
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "d",
+   "Direction": "head",
+   "Factor": 0,
+   "Name": "blow to the head",
+   "Picture": "s",
+   "Point": 2,
+   "Price": 2,
+   "Type": "hand",
+   "TypeCard": "BATTLE",
+   "id": 1
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "dd",
+   "Direction": "torso",
+   "Factor": 0,
+   "Name": "blow to the torso",
+   "Picture": "s",
+   "Point": 1,
+   "Price": 1,
+   "Type": "hand",
+   "TypeCard": "BATTLE",
+   "id": 2
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "d",
+   "Direction": "head",
+   "Factor": 0,
+   "Name": "blow to the head",
+   "Picture": "s",
+   "Point": 2,
+   "Price": 2,
+   "Type": "leg",
+   "TypeCard": "BATTLE",
+   "id": 3
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "d",
+   "Direction": "head",
+   "Factor": 0,
+   "Name": "blow to the head",
+   "Picture": "s",
+   "Point": 2,
+   "Price": 2,
+   "Type": "hand",
+   "TypeCard": "BATTLE",
+   "id": 1
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "d",
+   "Direction": "torso",
+   "Factor": 0,
+   "Name": "blow to the torso",
+   "Picture": "s",
+   "Point": 1,
+   "Price": 1,
+   "Type": "leg",
+   "TypeCard": "BATTLE",
+   "id": 4
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "dd",
+   "Direction": "torso",
+   "Factor": 0,
+   "Name": "blow to the torso",
+   "Picture": "s",
+   "Point": 1,
+   "Price": 1,
+   "Type": "hand",
+   "TypeCard": "BATTLE",
+   "id": 2
+  },
+  "tags": []
+ },
+ {
+  "card": {
+   "Description": "d",
+   "Direction": "head",
+   "Factor": 0,
+   "Name": "blow to the head",
+   "Picture": "s",
+   "Point": 2,
+   "Price": 2,
+   "Type": "hand",
+   "TypeCard": "BATTLE",
+   "id": 1
+  },
+  "tags": []
+ }
 ]
