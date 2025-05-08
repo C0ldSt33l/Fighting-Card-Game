@@ -5,11 +5,13 @@
 [node name="Card" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+offset_right = 100.0
+offset_bottom = 120.0
 script = ExtResource("1_174wl")
 
 [node name="Background" type="Panel" parent="."]
-offset_right = 130.0
-offset_bottom = 170.0
+offset_right = 100.0
+offset_bottom = 120.0
 
 [node name="Name" type="Label" parent="Background"]
 layout_mode = 0
@@ -29,8 +31,8 @@ text = "Type: "
 
 [node name="DMG" type="Label" parent="Background"]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 104.0
-offset_right = 57.0
-offset_bottom = 127.0
+offset_left = 9.0
+offset_top = 88.0
+offset_right = 56.0
+offset_bottom = 111.0
 text = "DMG: "

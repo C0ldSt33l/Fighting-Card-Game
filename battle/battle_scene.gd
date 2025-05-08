@@ -6,6 +6,7 @@ extends Node2D
 @onready var counter: Counter = $Counter as Counter
 @onready var round_counter: Label = $"Round counter" as Label
 @onready var start_button: Button = $"Start button" as Button
+@onready var card_container: CardContainer = $CardContainer as CardContainer
 
 @onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -93,16 +94,15 @@ func start_round_preparation() -> void:
 	self.start_button.disabled = false
 	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
-	var spawn_pos := Vector2(350, 200)
 
+	var spawn_pos := Vector2(350, 200)
 	var confs := self.get_hand_configs()
 	for i in len(confs):
 		self.spawn_card(i, confs[i], spawn_pos)
 		spawn_pos.x += 150
 
-	var cards := self.cards_on_table.slice(1, 3)
-	for c: Card in cards:
-		c.bind_effect(Effects.get_effect('Feint'))
+	print('container card count: ', self.card_container.card_count)
+
 	
 	var first_card := self.first_card
 	var e := Effects.get_effect('Second breath')
@@ -192,9 +192,9 @@ func spawn_card(idx: int, conf: Dictionary, pos: Vector2) -> void:
 		self,
 		func (c: Card) -> void:
 			c.set_main_prop(idx, conf)
-			c.position = pos
 	)
-	self.cards_on_table.append(card)
+	self.card_container.add_card(card)
+	self.cards_in_hand.append(card)
 
 
 func check_combos() -> void:
