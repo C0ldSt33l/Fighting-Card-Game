@@ -3,7 +3,7 @@
 /android/
 
 # IDE
-
+.idea
 .vscode
 
 # Code

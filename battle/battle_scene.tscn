@@ -9,9 +9,6 @@ script = ExtResource("1_437rl")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 
-[node name="Counter" parent="." instance=ExtResource("2_rxr4j")]
-position = Vector2(576, 1)
-
 [node name="Start button" type="Button" parent="."]
 offset_left = 780.0
 offset_top = 524.0
@@ -32,6 +29,7 @@ vertical_alignment = 1
 uppercase = true
 
 [node name="Counter" parent="." instance=ExtResource("2_hdy1t")]
+position = Vector2(544, 40)
 
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Start button" to="." method="start_round" flags=3]
