@@ -1,5 +1,5 @@
 class_name Counter
-extends Node2D
+extends Control
 
 @onready var score_panel: Panel = $Panel as Panel
 
@@ -27,7 +27,7 @@ func _ready() -> void:
 	self.points = 0
 	self.multiplier = 0
 
-	round_score_panel.visible = false
+	self.round_score_panel.visible = false
 	
 
 func set_points(val: int) -> void:

@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 class_name Card
 
 @onready var name_label: Label = $Background/Name as Label
