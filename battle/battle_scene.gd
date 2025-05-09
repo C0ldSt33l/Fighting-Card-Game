@@ -1,5 +1,5 @@
 class_name BattleScene
-extends Node2D
+extends Control
 
 
 @onready var timer: Timer = $Timer as Timer
@@ -103,11 +103,6 @@ func start_round_preparation() -> void:
 
 	print('container card count: ', self.card_container.card_count)
 
-	
-	var first_card := self.first_card
-	var e := Effects.get_effect('Second breath')
-	first_card.bind_effect(e)
-
 
 # TODO: move `check_combos()` in round preparation stage
 func start_round() -> void:
@@ -188,8 +183,7 @@ func play_card() -> void:
 
 
 func spawn_card(idx: int, conf: Dictionary, pos: Vector2) -> void:
-	var card := CardFactory.create_with_binding(
-		self,
+	var card := CardFactory.create(
 		func (c: Card) -> void:
 			c.set_main_prop(idx, conf)
 	)

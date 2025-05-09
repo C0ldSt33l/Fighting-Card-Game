@@ -4,13 +4,16 @@
 [ext_resource type="PackedScene" uid="uid://bnv0hy2jwwtgd" path="res://battle/counter/counter.tscn" id="2_hdy1t"]
 [ext_resource type="PackedScene" uid="uid://cp47xxnw14oip" path="res://battle/ui/card_container.tscn" id="3_6mdwl"]
 
-[node name="Battle scene" type="Node2D"]
+[node name="Battle scene" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_437rl")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 
 [node name="Start button" type="Button" parent="."]
+layout_mode = 0
 offset_left = 912.0
 offset_top = 39.0
 offset_right = 1107.0
@@ -19,6 +22,7 @@ focus_mode = 0
 text = "START"
 
 [node name="Round counter" type="Label" parent="."]
+layout_mode = 0
 offset_left = 408.0
 offset_top = 1.0
 offset_right = 572.0
@@ -41,8 +45,8 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 offset_left = 400.0
 offset_top = 416.0
-offset_right = 1008.0
-offset_bottom = 608.0
+offset_right = 1000.0
+offset_bottom = 616.0
 grow_horizontal = 1
 grow_vertical = 1
 
