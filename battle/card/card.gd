@@ -68,6 +68,8 @@ func _ready() -> void:
 	self.type_label.text = 'Type: %s' % [str(BODY_PART.keys()[self.body_part])]
 	self.dmg_label.text = 'Point: %s' % [str(self.point)]
 
+	print('card size: ', self.size)
+
 	Events.obj_created.emit(self)
 
 	
@@ -147,3 +149,7 @@ func _on_background_gui_input(event: InputEvent) -> void:
 func _get_drag_data(at_position: Vector2) -> Variant:
 	print('drag working in root node')
 	return self
+
+
+func _to_string() -> String:
+	return 'this card'
