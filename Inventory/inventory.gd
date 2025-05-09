@@ -43,7 +43,6 @@ func _input(event: InputEvent) -> void:
 					if is_sell_popup_active:
 						clear_sell_popup()
 					
-					clear_sell_popup()
 					show_sell_popup(obj, mouse_pos)
 					break
 
@@ -134,6 +133,7 @@ func show_sell_popup(obj,Position: Vector2):
 func on_yes_pressed():
 	if selected_object:
 		gridContainer.remove_child(selected_object)
+		
 		selected_object.queue_free()
 		#нужно добавить удаление объекта из файла игрока 
 		var money : int  = 0 
@@ -147,7 +147,9 @@ func on_no_pressed():
 func clear_sell_popup():
 	if has_node("SellPopup"):
 		var obj = $SellPopup
-		obj.queue_free()
+		self.remove_child(obj)
+		#obj.queue_free()
+		
 	selected_object = null
 	is_sell_popup_active = false
 	

@@ -58,6 +58,18 @@ func select_card_ids_by_tag_type(tag_type:String)->Array:
 		result.append(row["id_card"])
 	return result
 	
+func select_typed_card_by_id(type:String, id:int)->Dictionary:
+	type.to_upper()
+	var res
+	var query = "SELECT * from " + type + "_CARDS c where c.id = "+str(id)
+	var card = database.query_result
+	var tags = select_tag_cards(card.id,type)
+	res = {
+			"card":card,
+			"tags":tags
+		}
+	return 	res
+	
 func select_all_type_cards_with_tags(type:String) -> Array:
 	var tmp = []
 	var cards_with_tags = []
@@ -107,6 +119,14 @@ func select_combo_by_id(id:int)->Array:
 	database.query("select * from COMBO where COMBO.id = "+str(id))
 	return database.query_result
 
+func select_combo_by_id_with_tags(id:int)->Dictionary:
+	var combo = select_combo_by_id(id)
+	var tags = select_combos_tag(combo.id)
+	return {
+		"combo":combo,
+		"tags":tags
+		}
+
 func select_combos()->Array:
 	database.query("SELECT * from COMBOS")
 	return database.query_result
@@ -147,6 +167,10 @@ func select_objects_in_pack_by_id(id:int)->Array:
 	database.query("SELECT c.id_object, c.Object_type, c.Count 
 	FROM OBJECT_IN_PACK 
 	WHERE id_pack = " + str(id))
+	return database.query_result
+
+func select_all_packs()->Array:
+	database.query("SELECT * from PACKS")
 	return database.query_result
 
 func select_count_of_records(TableName:String)->int:
