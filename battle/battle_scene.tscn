@@ -66,6 +66,7 @@ pivot_offset = Vector2(20, 20)
 script = ExtResource("4_8xv4x")
 
 [node name="pos2" type="Panel" parent="tables"]
+layout_mode = 0
 offset_left = 624.0
 offset_top = 296.0
 offset_right = 664.0
@@ -74,6 +75,7 @@ pivot_offset = Vector2(20, 20)
 script = ExtResource("4_8xv4x")
 
 [node name="pos3" type="Panel" parent="tables"]
+layout_mode = 0
 offset_left = 728.0
 offset_top = 296.0
 offset_right = 768.0
@@ -82,6 +84,7 @@ pivot_offset = Vector2(20, 20)
 script = ExtResource("4_8xv4x")
 
 [node name="pos4" type="Panel" parent="tables"]
+layout_mode = 0
 offset_left = 841.0
 offset_top = 296.0
 offset_right = 881.0
