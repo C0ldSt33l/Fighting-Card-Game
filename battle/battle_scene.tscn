@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://battle/battle_scene.gd" id="1_437rl"]
 [ext_resource type="PackedScene" uid="uid://bnv0hy2jwwtgd" path="res://battle/counter/counter.tscn" id="2_hdy1t"]
-[ext_resource type="PackedScene" uid="uid://cp47xxnw14oip" path="res://battle/ui/card_container.tscn" id="3_6mdwl"]
+[ext_resource type="PackedScene" uid="uid://cp47xxnw14oip" path="res://battle/ui/hand.tscn" id="3_6mdwl"]
 [ext_resource type="PackedScene" uid="uid://5xl7p4fse6ad" path="res://battle/ui/table.tscn" id="4_mjw7e"]
 
 [node name="Battle scene" type="Control"]
@@ -40,14 +40,14 @@ offset_top = 40.0
 offset_right = 544.0
 offset_bottom = 40.0
 
-[node name="CardContainer" parent="." instance=ExtResource("3_6mdwl")]
+[node name="Hand" parent="." instance=ExtResource("3_6mdwl")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 400.0
-offset_top = 416.0
-offset_right = 1000.0
-offset_bottom = 616.0
+offset_left = 440.0
+offset_top = 440.0
+offset_right = 1072.0
+offset_bottom = 640.0
 grow_horizontal = 1
 grow_vertical = 1
 

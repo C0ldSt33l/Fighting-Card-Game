@@ -6,12 +6,11 @@ extends Control
 @onready var counter: Counter = $Counter as Counter
 @onready var round_counter: Label = $"Round counter" as Label
 @onready var start_button: Button = $"Start button" as Button
-@onready var card_container: CardContainer = $CardContainer as CardContainer
+@onready var hand: Hand = $Hand as Hand
 @onready var table: Table = $Table as Table
 
 @onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var hand: Array[Card] = []
 
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
@@ -52,7 +51,7 @@ enum BATTLE_STAGE {
 signal next_card_key_pressed
 
 func get_hand_configs() -> Array[Dictionary]:
-	var size := PlayerConfig.hand_size - self.hand.size()
+	var size := PlayerConfig.hand_size - self.hand.card_count
 	var hand_confs: Array[Dictionary] = []
 	hand_confs.resize(size)
 	for pos in size:
@@ -102,7 +101,7 @@ func start_round_preparation() -> void:
 		self.spawn_card(i, confs[i], spawn_pos)
 		spawn_pos.x += 150
 
-	print('container card count: ', self.card_container.card_count)
+	print('container card count: ', self.hand.card_count)
 
 
 # TODO: move `check_combos()` in round preparation stage
@@ -191,7 +190,7 @@ func spawn_card(idx: int, conf: Dictionary, pos: Vector2) -> void:
 		func (c: Card) -> void:
 			c.set_main_prop(idx, conf)
 	)
-	self.card_container.add_card(card)
+	self.hand.add_card(card)
 	self.cards_in_hand.append(card)
 
 
