@@ -68,8 +68,6 @@ func _ready() -> void:
 	self.type_label.text = 'Type: %s' % [str(BODY_PART.keys()[self.body_part])]
 	self.dmg_label.text = 'Point: %s' % [str(self.point)]
 
-	print('card size: ', self.size)
-
 	Events.obj_created.emit(self)
 
 	

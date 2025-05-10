@@ -3,7 +3,7 @@ class_name DragNDropPreview
 
 var data: Variant = null
 
-var delta: float = 1
+var delta: float = 0.5
 
 func _init(data: Variant) -> void:
     self.data = data
@@ -13,4 +13,4 @@ func _init(data: Variant) -> void:
 
 func _physics_process(delta: float) -> void:
     var tween := get_tree().create_tween()
-    tween.tween_property(self, "position", get_global_mouse_position(), 1)
+    tween.tween_property(self, "position", get_global_mouse_position(), self.delta)
