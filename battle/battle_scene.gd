@@ -107,6 +107,10 @@ func start_round_preparation() -> void:
 
 # TODO: move `check_combos()` in round preparation stage
 func start_round() -> void:
+	self.cards_on_table = self.table.get_cards()
+	if self.cards_on_table.size() == 0: return 
+
+
 	self.start_button.disabled = true
 	self.check_combos()
 
@@ -184,6 +188,7 @@ func play_card() -> void:
 
 
 func spawn_card(idx: int, conf: Dictionary, pos: Vector2) -> void:
+	print('spawn card')
 	var card := CardFactory.create(
 		func (c: Card) -> void:
 			c.set_main_prop(idx, conf)

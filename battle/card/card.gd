@@ -81,8 +81,8 @@ func set_main_prop(
 			self[prop.to_snake_case()] = conf[prop]
 		else:
 			match prop:
-				'id':
-					self.card_name = str(conf[prop])
+				'Name':
+					self.card_name = conf[prop]
 				'Body part':
 					self.body_part = BODY_PART[conf[prop].to_upper()]
 				'Direction':
