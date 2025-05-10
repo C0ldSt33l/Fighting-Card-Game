@@ -139,9 +139,8 @@ func end_round() -> void:
 	self.combos_on_table.clear()
 
 	self.played_cards.append_array(self.cards_on_table)
-	for c in self.cards_on_table:
-		self.remove_child(c)
 	self.cards_on_table.clear()
+	self.table.remove_cards()
 
 	self.card_cursor.reset()
 	self.combo_cursor.reset()
@@ -188,7 +187,6 @@ func play_card() -> void:
 
 
 func spawn_card(idx: int, conf: Dictionary, pos: Vector2) -> void:
-	print('spawn card')
 	var card := CardFactory.create(
 		func (c: Card) -> void:
 			c.set_main_prop(idx, conf)

@@ -19,3 +19,8 @@ func get_cards() -> Array[Card]:
 		if card:
 			cards.append(card)
 	return cards
+
+
+func remove_cards() -> void:
+	for p: CardPlace in self.places.get_children():
+		p.remove_card()
