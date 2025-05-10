@@ -102,12 +102,14 @@ func create_combo(ComboInfo: Dictionary)->_Combo_:
 
 func _on_cards_pressed() -> void:
 	for child in gridContainer.get_children():
+		gridContainer.remove_child(child)
 		child.queue_free()
 	
 	for child_data in PlayerConfig.player_available_cards:
 		var card = create_card(child_data)
 		gridContainer.add_child(card)
-		print("Card added:", card.name)  # Отладочный вывод
+		print("Card added:", card.name) 
+	print(gridContainer.get_child_count()) # Отладочный вывод
 	arrange_cards()
 	pass 
 
