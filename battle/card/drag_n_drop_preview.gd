@@ -9,7 +9,6 @@ func _init(data: Variant) -> void:
     self.data = data
     self.add_child(data)
     data.self_modulate.a = 0.5
-    self.data.position = -0.5 * self.data.size
 
 
 func _physics_process(delta: float) -> void:
