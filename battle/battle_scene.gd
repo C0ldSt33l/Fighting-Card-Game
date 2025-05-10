@@ -7,6 +7,7 @@ extends Control
 @onready var round_counter: Label = $"Round counter" as Label
 @onready var start_button: Button = $"Start button" as Button
 @onready var card_container: CardContainer = $CardContainer as CardContainer
+@onready var table: Table = $Table as Table
 
 @onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()

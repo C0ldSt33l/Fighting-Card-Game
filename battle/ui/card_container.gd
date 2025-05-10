@@ -5,11 +5,14 @@ extends Control
 @onready var margins: MarginContainer = $MarginContainer as MarginContainer
 @onready var cards: GridContainer = $MarginContainer/GridContainer as GridContainer
 
+var column_count: int = PlayerConfig.hand_size
+
 var card_count: int :
 	get(): return self.cards.get_child_count()
 
 
 func _ready() -> void:
+	self.cards.columns = self.column_count
 	self.background.custom_minimum_size = self.size
 	self.margins.custom_minimum_size = self.size
 

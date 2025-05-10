@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://battle/battle_scene.gd" id="1_437rl"]
 [ext_resource type="PackedScene" uid="uid://bnv0hy2jwwtgd" path="res://battle/counter/counter.tscn" id="2_hdy1t"]
 [ext_resource type="PackedScene" uid="uid://cp47xxnw14oip" path="res://battle/ui/card_container.tscn" id="3_6mdwl"]
-[ext_resource type="Script" path="res://drag_n_drop/object_dropable.gd" id="4_flsyr"]
+[ext_resource type="PackedScene" uid="uid://5xl7p4fse6ad" path="res://battle/ui/table.tscn" id="4_mjw7e"]
 
 [node name="Battle scene" type="Control"]
 layout_mode = 3
@@ -51,45 +51,12 @@ offset_bottom = 616.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="tables" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="pos" type="Panel" parent="tables"]
-layout_mode = 0
-offset_left = 528.0
-offset_top = 296.0
-offset_right = 568.0
-offset_bottom = 336.0
-script = ExtResource("4_flsyr")
-
-[node name="pos2" type="Panel" parent="tables"]
-layout_mode = 0
-offset_left = 624.0
-offset_top = 296.0
-offset_right = 664.0
-offset_bottom = 336.0
-pivot_offset = Vector2(20, 20)
-script = ExtResource("4_flsyr")
-
-[node name="pos3" type="Panel" parent="tables"]
-layout_mode = 0
-offset_left = 728.0
-offset_top = 296.0
-offset_right = 768.0
-offset_bottom = 336.0
-pivot_offset = Vector2(20, 20)
-script = ExtResource("4_flsyr")
-
-[node name="pos4" type="Panel" parent="tables"]
-layout_mode = 0
-offset_left = 841.0
-offset_top = 296.0
-offset_right = 881.0
-offset_bottom = 336.0
-pivot_offset = Vector2(20, 20)
-script = ExtResource("4_flsyr")
+[node name="Table" parent="." instance=ExtResource("4_mjw7e")]
+layout_mode = 1
+offset_left = 512.0
+offset_top = 232.0
+offset_right = 1112.0
+offset_bottom = 382.0
 
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Start button" to="." method="start_round" flags=3]
