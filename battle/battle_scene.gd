@@ -128,6 +128,8 @@ func end_round() -> void:
 
 	self.combos_on_table.clear()
 
+	var card_names := self.cards_on_table.map(func (c: Card): return c.card_name)
+	self.deck_dict = self.deck_dict.filter(func (conf: Dictionary): return conf.Name not in card_names)
 	self.played_cards.append_array(self.cards_on_table)
 	self.cards_on_table.clear()
 	self.table.remove_cards()
@@ -194,11 +196,13 @@ func reroll() -> void:
 
 
 func get_hand_configs(size: int) -> Array[Dictionary]:
-	var hand_confs: Array[Dictionary] = []
-	hand_confs.resize(size)
-	for pos in size:
-		var i := self.rng.randi_range(0, deck_dict.size() - 1)
-		hand_confs[pos] = self.deck_dict.pop_at(i)
+	var hand_confs: Array[Dictionary]
+	hand_confs.assign(
+		Utils.get_array_with_uniq_nums(
+			size, self.deck_dict.size() - 1
+		)\
+		.map(func (el: int): return self.deck_dict[el])
+	)
 	return hand_confs
 
 
@@ -388,5 +392,3 @@ func on_effect_activated(e: Effect) -> void: pass
 
 func on_battle_ended() -> void:
 	self.earned_money += self.round_count
-
-

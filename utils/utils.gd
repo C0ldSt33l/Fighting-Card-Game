@@ -88,10 +88,13 @@ static func exlude_array(from: Array, what: Array) -> Array:
 	return res
 
 
-static func get_array_with_uniq_nums(size: int) -> Array[int]:
-	var arr: Array[int]
-	arr.resize(size)
-	return []
+static func get_array_with_uniq_nums(size: int, max: int) -> Array[int]:
+	var arr: Array[int] = []
+	while arr.size() < size:
+		var n := randi_range(0, max)
+		if n not in arr:
+			arr.append(n)
+	return arr
 
 
 static func throw_error(err_text: String) -> void:
