@@ -34,7 +34,10 @@ var first_combo: Combo :
 var last_combo: Combo :
 	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
+# TODO: move in player config
 var round_count: int = 2
+var reroll_count: int = 4
+
 var earned_money: int = 0
 
 var effects: Array[Effect] = []
@@ -188,11 +191,16 @@ func spawn_card(conf: Dictionary) -> void:
 
 
 func reroll() -> void:
+	self.reroll_count -= 1
+
 	var size := self.hand.card_count
-	self.hand.remove_all_cards()
 	var configs := self.get_hand_configs(size)
+	self.hand.remove_all_cards()
 	for c in configs:
 		self.spawn_card(c)
+
+	if self.reroll_count == 0:
+		self.reroll_button.disabled = true
 
 
 func get_hand_configs(size: int) -> Array[Dictionary]:

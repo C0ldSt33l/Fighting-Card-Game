@@ -64,6 +64,7 @@ offset_left = 450.0
 offset_top = 592.0
 offset_right = 578.0
 offset_bottom = 640.0
+focus_mode = 0
 text = "Reroll"
 
 [connection signal="timeout" from="Timer" to="." method="play_card"]
