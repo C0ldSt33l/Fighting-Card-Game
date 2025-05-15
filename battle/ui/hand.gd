@@ -19,3 +19,9 @@ func _ready() -> void:
 
 func add_card(c: Card) -> void:
 	self.cards.add_child(c)
+
+
+func remove_all_cards() -> void:
+	var cards := self.cards.get_children()
+	for c in cards:
+		self.cards.remove_child(c)

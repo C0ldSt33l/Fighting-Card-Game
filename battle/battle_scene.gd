@@ -6,6 +6,7 @@ extends Control
 @onready var counter: Counter = $Counter as Counter
 @onready var round_counter: Label = $"Round counter" as Label
 @onready var start_button: Button = $"Start button" as Button
+@onready var reroll_button: Button = $"Reroll button" as Button
 @onready var hand: Hand = $Hand as Hand
 @onready var table: Table = $Table as Table
 
@@ -50,15 +51,6 @@ enum BATTLE_STAGE {
 
 signal next_card_key_pressed
 
-func get_hand_configs() -> Array[Dictionary]:
-	var size := PlayerConfig.hand_size - self.hand.card_count
-	var hand_confs: Array[Dictionary] = []
-	hand_confs.resize(size)
-	for pos in size:
-		var i := self.rng.randi_range(0, deck_dict.size() - 1)
-		hand_confs[pos] = self.deck_dict.pop_at(i)
-	return hand_confs
-
 
 func _ready() -> void:
 	Events.connect_events({
@@ -95,11 +87,10 @@ func start_round_preparation() -> void:
 	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
 
-	var spawn_pos := Vector2(350, 200)
-	var confs := self.get_hand_configs()
-	for i in len(confs):
-		self.spawn_card(i, confs[i], spawn_pos)
-		spawn_pos.x += 150
+	var hand_size := PlayerConfig.hand_size - self.hand.card_count
+	var confs := self.get_hand_configs(hand_size)
+	for c in confs:
+		self.spawn_card(c)
 
 	print('container card count: ', self.hand.card_count)
 
@@ -185,13 +176,30 @@ func play_card() -> void:
 		self.play_card()
 
 
-func spawn_card(idx: int, conf: Dictionary, pos: Vector2) -> void:
+func spawn_card(conf: Dictionary) -> void:
 	var card := CardFactory.create(
 		func (c: Card) -> void:
-			c.set_main_prop(idx, conf)
+			c.set_main_props(conf)
 	)
 	self.hand.add_card(card)
 	self.cards_in_hand.append(card)
+
+
+func reroll() -> void:
+	var size := self.hand.card_count
+	self.hand.remove_all_cards()
+	var configs := self.get_hand_configs(size)
+	for c in configs:
+		self.spawn_card(c)
+
+
+func get_hand_configs(size: int) -> Array[Dictionary]:
+	var hand_confs: Array[Dictionary] = []
+	hand_confs.resize(size)
+	for pos in size:
+		var i := self.rng.randi_range(0, deck_dict.size() - 1)
+		hand_confs[pos] = self.deck_dict.pop_at(i)
+	return hand_confs
 
 
 func check_combos() -> void:
@@ -380,3 +388,5 @@ func on_effect_activated(e: Effect) -> void: pass
 
 func on_battle_ended() -> void:
 	self.earned_money += self.round_count
+
+

@@ -88,6 +88,12 @@ static func exlude_array(from: Array, what: Array) -> Array:
 	return res
 
 
+static func get_array_with_uniq_nums(size: int) -> Array[int]:
+	var arr: Array[int]
+	arr.resize(size)
+	return []
+
+
 static func throw_error(err_text: String) -> void:
 	var nil = null
 	print(err_text)
