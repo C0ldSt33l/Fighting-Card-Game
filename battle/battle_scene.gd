@@ -4,9 +4,7 @@ extends Control
 
 @onready var timer: Timer = $Timer as Timer
 @onready var counter: Counter = $Counter as Counter
-@onready var round_counter: Label = $"Round counter" as Label
 @onready var start_button: Button = $"Start button" as Button
-@onready var reroll_button: Button = $"Reroll button" as Button
 @onready var hand: Hand = $Hand as Hand
 @onready var table: Table = $Table as Table
 
@@ -35,8 +33,16 @@ var last_combo: Combo :
 	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
 # TODO: move in player config
-var round_count: int = 2
-var reroll_count: int = 4
+@onready var round_count: int = 2 :
+	set(val):
+		round_count = val
+		self.round_counter.text = str(val)
+@onready var round_counter: Label = $"Round counter" as Label
+@onready var reroll_count: int = 4 :
+	set(val):
+		reroll_count = val
+		self.reroll_button.text = 'Reroll: %s' % [val]
+@onready var reroll_button: Button = $"Reroll button" as Button
 
 var earned_money: int = 0
 
@@ -46,11 +52,6 @@ var used_effects: Array[Effect]= []
 # If `true` allow to play card by pressing `Enter` or `Space`
 # TODO: move to config file
 var is_turn_based_mode := true 
-
-enum BATTLE_STAGE {
-	ROUND_PREPARATION,
-	ROUND_PLAYING,
-}
 
 signal next_card_key_pressed
 
@@ -72,12 +73,11 @@ func _ready() -> void:
 		combo_exit = self.on_combo_exit,
 	})
 
-	# self.next_card_key_pressed.connect(func (): print('input'))
+	self.reroll_count = 4
+	self.round_count = 2
 
 	Game.battle = self
-	self.round_counter.text = str(self.round_count)
 	Events.battle_started.emit()
-	# self.start_round_preparation()
 
 
 func _input(event: InputEvent) -> void:
@@ -322,7 +322,7 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 				effects.append(e.set_target(self.combo_cursor))
 
 			_:
-				Utils.throw_error('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER')
+				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER')
 	return effects
 
 

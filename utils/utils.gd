@@ -97,7 +97,7 @@ static func get_array_with_uniq_nums(size: int, max: int) -> Array[int]:
 	return arr
 
 
-static func throw_error(err_text: String) -> void:
+static func panic(err_text: String) -> void:
 	var nil = null
 	print(err_text)
 	nil.error
