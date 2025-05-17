@@ -7,13 +7,15 @@ const SIZE: Vector2i = Vector2i(40, 40)
 
 
 func _ready() -> void:
+	self.panel.check = func(data: Variant) -> bool:
+		return data is Card
 	self.custom_minimum_size = SIZE
 
 
 func get_card() -> Card:
-	return self.panel.data
+	return self.panel.held_data_data
 
 
 func remove_card() -> void:
-	self.panel.remove_child(self.panel.data)
-	self.panel.data = null
+	self.panel.remove_child(self.panel.held_data_data)
+	self.panel.held_data_data = null
