@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://deuo7arhl57vj"]
+[gd_scene load_steps=2 format=3 uid="uid://cp47xxnw14oip"]
 
-[ext_resource type="Script" path="res://battle/ui/hand.gd" id="1_2arj1"]
+[ext_resource type="Script" path="res://battle/ui/hand/hand.gd" id="1_bvbxc"]
 
 [node name="Hand" type="Control"]
 layout_mode = 3
@@ -11,7 +11,7 @@ offset_right = -856.0
 offset_bottom = -548.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_2arj1")
+script = ExtResource("1_bvbxc")
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1

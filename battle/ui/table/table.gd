@@ -4,7 +4,7 @@ class_name Table
 @onready var places: HBoxContainer = $PanelContainer/MarginContainer/Places as HBoxContainer
 var place_count: int = PlayerConfig.hand_size
 
-const PLACE_SCENE := preload("res://battle/ui/card_place.tscn")
+const PLACE_SCENE := preload("res://battle/ui/card place/card_place.tscn")
 
 
 func _ready() -> void:

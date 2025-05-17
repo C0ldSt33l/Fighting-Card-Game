@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://d357sqaw313jj"]
+[gd_scene load_steps=3 format=3 uid="uid://detwa70k242s7"]
 
-[ext_resource type="Script" path="res://battle/ui/card place/card_place.gd" id="1_4dcte"]
+[ext_resource type="Script" path="res://battle/ui/card place/card_place.gd" id="1_4b0ax"]
 [ext_resource type="Script" path="res://drag_n_drop/object_dropable.gd" id="1_w3g6f"]
 
 [node name="Card place" type="Control"]
@@ -10,7 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_4dcte")
+script = ExtResource("1_4b0ax")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

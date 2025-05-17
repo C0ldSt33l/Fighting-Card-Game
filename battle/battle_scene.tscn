@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://battle/battle_scene.gd" id="1_437rl"]
 [ext_resource type="PackedScene" uid="uid://bnv0hy2jwwtgd" path="res://battle/counter/counter.tscn" id="2_hdy1t"]
-[ext_resource type="PackedScene" uid="uid://cp47xxnw14oip" path="res://battle/ui/hand.tscn" id="3_6mdwl"]
-[ext_resource type="PackedScene" uid="uid://5xl7p4fse6ad" path="res://battle/ui/table.tscn" id="4_mjw7e"]
+[ext_resource type="PackedScene" uid="uid://5xl7p4fse6ad" path="res://battle/ui/table/table.tscn" id="3_aygk4"]
+[ext_resource type="PackedScene" uid="uid://cp47xxnw14oip" path="res://battle/ui/hand/hand.tscn" id="4_va1qn"]
 
 [node name="Battle scene" type="Control"]
 layout_mode = 3
@@ -40,23 +40,19 @@ offset_top = 40.0
 offset_right = 544.0
 offset_bottom = 40.0
 
-[node name="Hand" parent="." instance=ExtResource("3_6mdwl")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 440.0
-offset_top = 440.0
-offset_right = 1080.0
-offset_bottom = 576.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="Table" parent="." instance=ExtResource("4_mjw7e")]
+[node name="Table" parent="." instance=ExtResource("3_aygk4")]
 layout_mode = 1
-offset_left = 512.0
-offset_top = 232.0
-offset_right = 1112.0
-offset_bottom = 382.0
+offset_left = 448.0
+offset_top = 320.0
+offset_right = 1152.0
+offset_bottom = 420.0
+
+[node name="Hand" parent="." instance=ExtResource("4_va1qn")]
+layout_mode = 1
+offset_left = 448.0
+offset_top = 432.0
+offset_right = 1152.0
+offset_bottom = 576.0
 
 [node name="Reroll button" type="Button" parent="."]
 layout_mode = 0
