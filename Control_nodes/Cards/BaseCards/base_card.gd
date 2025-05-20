@@ -2,7 +2,8 @@ extends Control
 class_name BaseCard
 
 @onready var Background:Panel = $Background
-var tags := {}
+var data := {}
+var tags : Array = []
 
 var id: int:
 	set(val): self.set_tag_val('id', val)
@@ -24,17 +25,21 @@ var Picture: String:
 	set(val):self.set_tag_val('Picture',"" if val == null else val)
 	get():return self.get_tag_val('Picture') if self.get_tag_val('Picture') != null else ""
 	
+var TypeCard: String:
+	set(val):self.set_tag_val('TypeCard',"" if val == null else val)
+	get():return self.get_tag_val('TypeCard') if self.get_tag_val('TypeCard') != null else ""	
+	
 func set_tag_val(tag: String, val: Variant) -> void:
-	self.tags[tag] = val
+	self.data[tag] = val
 	
 func get_tag_val(tag: String) -> Variant:
-	return self.tags[tag] if self.has_tag(tag) else null
+	return self.data[tag] if self.has_tag(tag) else null
 	
 func add_tags(new_tags: Dictionary) -> void:
-	self.tags.merge(new_tags, true)
+	self.data.merge(new_tags, true)
 
 func has_tag(tag: String) -> bool:
-	return self.tags.keys().has(tag)
+	return self.data.keys().has(tag)
 	
 func _on_mouse_entered() -> void:
 	self.hovered.emit(self)
@@ -43,7 +48,10 @@ func _on_mouse_exited() -> void:
 	self.unhovered.emit()
 
 func return_all_tags()-> Dictionary:
-	return tags
+	return {
+			"card":data,
+			"tags":tags
+		}
 
 func  return_Background()->Panel:
 	return Background

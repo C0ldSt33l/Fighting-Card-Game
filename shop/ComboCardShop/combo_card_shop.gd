@@ -41,9 +41,6 @@ func _ready() -> void:
 	ALL_cards_with_tags.append_array(tmp)
 	All_combo = Sql.select_all_combos_with_tags()
 	
-	for i in ALL_cards_with_tags:
-		print(i)
-	
 	PriceButton.set_size(Price.size)
 	
 	rng = RandomNumberGenerator.new()
@@ -85,10 +82,9 @@ func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 		self, CardInfo.card['TypeCard'],
 		func (c:BaseCard)-> void:
 			for i in CardInfo.card:
-				if i != 'TypeCard':
-					c[i] = CardInfo.card[i]
-			#for tag in CardInfo.tags:
-				#c.add_tags(tag)
+				c[i] = CardInfo.card[i]
+			for tag in CardInfo.tags:
+				c.tags.append(tag)
 			c.position = pos
 			#c.hovered.connect(self.create_panel_with_text)
 			#c.unhovered.connect(self.remove_panel)
@@ -134,13 +130,13 @@ func _on_button_2_pressed() -> void:#buy button
 			if !basket.has(object):
 				new_object.append(object)
 			else:
+				if object is BaseCard:
+						PlayerConfig.player_available_cards.append(object.return_all_tags())
+				if object is _Combo_:
+						PlayerConfig.player_available_combos.append(object.return_all_tags())
 				object.queue_free()
-				match ChosenObj:
-					BaseCard:
-						PlayerConfig.player_available_cards.append(ChosenObj.return_all_tags())
-					_Combo_:
-						PlayerConfig.player_available_combos.append(ChosenObj.return_all_tags())
 		objects = new_object
+		print(PlayerConfig.player_available_cards)
 		basket.clear()
 		total_price = 0
 				
