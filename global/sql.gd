@@ -62,6 +62,7 @@ func select_typed_card_by_id(type:String, id:int)->Dictionary:
 	type.to_upper()
 	var res
 	var query = "SELECT * from " + type + "_CARDS c where c.id = "+str(id)
+	res = database.query(query)
 	var card = database.query_result
 	var tags = select_tag_cards(card.id,type)
 	res = {

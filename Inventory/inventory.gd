@@ -19,7 +19,7 @@ func _ready() -> void:  # Явно задаем размер
 	gridContainer.set_anchors_preset(Control.PRESET_HCENTER_WIDE)
 	
 	gridContainer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gridContainer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	gridContainer.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	
 	tmp = Sql.select_all_type_cards_with_tags('BATTLE')
 	ALL_cards_with_tags = tmp
@@ -101,6 +101,7 @@ func create_combo(ComboInfo: Dictionary)->_Combo_:
 	return combo
 
 func _on_cards_pressed() -> void:
+	gridContainer.columns = 4
 	for child in gridContainer.get_children():
 		gridContainer.remove_child(child)
 		child.queue_free()
