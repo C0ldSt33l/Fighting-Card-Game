@@ -1,5 +1,4 @@
 class_name Effect
-extends RefCounted
 
 # TODO: Create system of sub-effect for effects
 # with multiple target types
@@ -23,6 +22,12 @@ enum ACTIVATION_TIME {
 	COMBO_END,
 
 	TOTEM_ACTIVATION, # TODO: think about it
+}
+enum RESET_TIME {
+	NONE,
+	CARD,
+	COMBO,
+	ROUND,
 }
 enum TYPE {
 	BUFF,
@@ -59,37 +64,39 @@ enum TARGET_TYPE {
 
 var activation_time: ACTIVATION_TIME
 var type: TYPE
-# TODO: create as class
-# fields:
-# - time count
-# - reset time
-var limit: int
 
-var caster
+var max_limit: int
+var rest_limit: int
+var reset_time: RESET_TIME
+
+var caster: Variant
 
 var target_type: TARGET_TYPE
-var target
+var target: Variant
 
 
 func _init(
 	name: String,
 	desc: String,
 	activation_time: ACTIVATION_TIME,
+	reset_time: RESET_TIME,
 	action: Callable,
 	type: TYPE,
 	target_type: TARGET_TYPE,
 	limit: int,
 	args: Array = [],
-	caster = null,
-	target = null 
+	caster: Variant = null,
+	target: Variant = null 
 ) -> void:
 	self.name = name
 	self.description = desc
 	self.activation_time = activation_time
+	self.reset_time = reset_time
 	self.action = action
 	self.type = type
 	self.target_type = target_type
-	self.limit = limit
+	self.max_limit = limit
+	self.rest_limit = limit
 	self.args = args
 	self.caster = caster 
 	self.target = target
@@ -100,7 +107,8 @@ func _init(
 	#)
 
 
-func bind_to(caster):
+
+func bind_to(caster: Variant):
 	self.caster = caster
 
 # TODO: replace with switch that handle all use cases
@@ -132,8 +140,8 @@ func activate():
 	args.append_array(self.args)
 	self.action.bindv(args).call()
 
-	self.limit -= 1
-	if self.limit <= 0:
+	self.rest_limit -= 1
+	if self.rest_limit <= 0:
 		self.make_unenabled()
 
 
@@ -142,15 +150,44 @@ func make_unenabled() -> void:
 	Game.battle.used_effects.append(self)
 
 
+func reset() -> void:
+	if (self.reset_time == RESET_TIME.NONE): return 
+	self.rest_limit = self.max_limit
+	Game.battle.effects.append(self)
+	Game.battle.used_effects.erase(self)
+
+
 func clone() -> Effect:
 	return Effect.new(
 		self.name,
 		self.description,
 		self.activation_time,
+		self.reset_time,
 		self.action,
 		self.type,
 		self.target_type,
-		self.limit,
+		self.rest_limit,
 		self.args,
 		self.caster
+	)
+
+func _to_string() -> String:
+	return (
+		('Effect\n' +
+		'name: %s\n' +
+		'desc: %s\n' +
+		'activation time: %s\n' +
+		'reset time: %s\n' +
+		'target type: %s\n' +
+		'max limit: %s\n' +
+		'rest limit: %s\n\n')
+		% [
+			self.name,
+			self.description,
+			ACTIVATION_TIME.keys()[self.activation_time],
+			RESET_TIME.keys()[self.reset_time],
+			TARGET_TYPE.keys()[self.target_type],
+			self.max_limit,
+			self.rest_limit,
+		]
 	)

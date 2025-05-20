@@ -12,6 +12,8 @@ signal obj_destroyed(obj: Variant)
 
 signal rerolled()
 
+signal obj_draged(obj: Variant)
+
 # BATTLE EVENTS
 signal battle_started()
 signal battle_ended()

@@ -39,7 +39,7 @@ const EFFECT_ACTIVATED_PLACEHOLDER := OBJ_PLACEHOLDER + ' activated on ' + OBJ_P
 
 const NUMBER_CHANGE_PLACEHOLDER := '%s -> %s: %s'
 const SCORE_POINTS_CHANGE_PLACEHOLDER := 'Score: points ' + NUMBER_CHANGE_PLACEHOLDER
-const SCORE_MULTIPLIER_CHANGE_PLACEHOLDER := 'Score: multiplier ' + NUMBER_CHANGE_PLACEHOLDER
+const SCORE_FACTOR_CHANGE_PLACEHOLDER := 'Score: factor ' + NUMBER_CHANGE_PLACEHOLDER
 const SCORE_TOTAL_SCORE_CHANGE_PLACEHOLDER := 'Score: total score ' + NUMBER_CHANGE_PLACEHOLDER
 
 '''
@@ -115,8 +115,8 @@ func card_started_log(c: Card) -> void:
 	self.put_text(CARD_STARTED_PLACEHOLDER % [
 		colorful(type_and_name[0], OBJ_TYPE_COLOR),
 		colorful(type_and_name[1], OBJ_NAME_COLOR),
-		colorful(str(c.points), OBJ_PROP_COLOR),
-		colorful(str(c.multiplier), OBJ_PROP_COLOR),
+		colorful(str(c.point), OBJ_PROP_COLOR),
+		colorful(str(c.factor), OBJ_PROP_COLOR),
 	])
 
 func card_ended_log(c: Card) -> void:
@@ -139,8 +139,8 @@ func combo_started_log(c: Combo) -> void:
 	self.put_text(COMBO_STARTED_PLACEHOLDER % [
 		colorful(type_and_name[0], OBJ_TYPE_COLOR),
 		colorful(type_and_name[1], OBJ_NAME_COLOR),
-		colorful(str(c.points), OBJ_PROP_COLOR),
-		colorful(str(c.multiplier), OBJ_PROP_COLOR),
+		colorful(str(c.point), OBJ_PROP_COLOR),
+		colorful(str(c.factor), OBJ_PROP_COLOR),
 	])
 
 func combo_ended_log(c: Combo) -> void:
@@ -192,7 +192,7 @@ func score_points_updated_log(old: int, new: int, diff: int) -> void:
 
 func score_multiplier_updated_log(old: int, new: int, diff: int) -> void:
 	var diff_color := SCORE_NEGATIVE_DIFF_COLOR if diff < 0 else SCORE_DIFF_COLOR
-	self.put_text(SCORE_MULTIPLIER_CHANGE_PLACEHOLDER % [
+	self.put_text(SCORE_FACTOR_CHANGE_PLACEHOLDER % [
 		colorful(str(old), SCORE_OLD_VAL_COLOR),
 		colorful(str(new), SCORE_NEW_VAL_COLOR),
 		colorful(str(diff), diff_color),

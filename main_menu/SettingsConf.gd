@@ -22,13 +22,13 @@ var sfx_volume: int = 100
 
 func _ready() -> void:
 	# print(self.get_property_list())
-	self._print_settings()
+	# self._print_settings()
 	if !FileAccess.file_exists(self.SAVE_FILE_PATH):
 		self._set_default()
 		self.save_settings()
 	else:
 		self.load_settings()
-		self._print_settings()
+		# self._print_settings()
 
 
 
@@ -53,7 +53,7 @@ func save_settings() -> void:
 
 
 func load_settings() -> void:
-	print('Load settings')
+	# print('Load settings')
 	var save_file := FileAccess.open(self.SAVE_FILE_PATH, FileAccess.READ)
 	var load_data: Dictionary
 	
@@ -80,12 +80,12 @@ func set_bus_volume(bus_name: String, volume: float) -> void:
 
 	var bus_index = AudioServer.get_bus_index(bus_name)
 	var volume_in_db = linear_to_db(volume / 100)
-	print('volume in db ', volume_in_db)
-	print('volume ', volume)
-	print('volume / 100: ', volume / 100)
+	# print('volume in db ', volume_in_db)
+	# print('volume ', volume)
+	# print('volume / 100: ', volume / 100)
 	AudioServer.set_bus_volume_db(bus_index, volume_in_db)
 
-	print(bus_name, ' ', volume_in_db)
+	# print(bus_name, ' ', volume_in_db)
 
 
 func set_window_mode(mode: WINDOW_MODE) -> void:

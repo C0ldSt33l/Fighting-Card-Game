@@ -1,26 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmwiv3j3x3x3d"]
+[gd_scene load_steps=5 format=3 uid="uid://dmwiv3j3x3x3d"]
 
 [ext_resource type="Script" path="res://battle/battle_scene.gd" id="1_437rl"]
 [ext_resource type="PackedScene" uid="uid://bnv0hy2jwwtgd" path="res://battle/counter/counter.tscn" id="2_hdy1t"]
+[ext_resource type="PackedScene" uid="uid://5xl7p4fse6ad" path="res://battle/ui/table/table.tscn" id="3_aygk4"]
+[ext_resource type="PackedScene" uid="uid://cp47xxnw14oip" path="res://battle/ui/hand/hand.tscn" id="4_va1qn"]
 
-[node name="Battle scene" type="Node2D"]
+[node name="Battle scene" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_437rl")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 
 [node name="Start button" type="Button" parent="."]
-offset_left = 780.0
-offset_top = 524.0
-offset_right = 975.0
-offset_bottom = 603.0
+layout_mode = 0
+offset_left = 912.0
+offset_top = 39.0
+offset_right = 1107.0
+offset_bottom = 118.0
 focus_mode = 0
 text = "START"
 
 [node name="Round counter" type="Label" parent="."]
-offset_left = 687.0
-offset_right = 851.0
-offset_bottom = 130.0
+layout_mode = 0
+offset_left = 408.0
+offset_top = 1.0
+offset_right = 572.0
+offset_bottom = 131.0
 theme_override_font_sizes/font_size = 50
 text = "5"
 horizontal_alignment = 1
@@ -28,6 +35,34 @@ vertical_alignment = 1
 uppercase = true
 
 [node name="Counter" parent="." instance=ExtResource("2_hdy1t")]
+offset_left = 544.0
+offset_top = 40.0
+offset_right = 544.0
+offset_bottom = 40.0
+
+[node name="Table" parent="." instance=ExtResource("3_aygk4")]
+layout_mode = 1
+offset_left = 448.0
+offset_top = 320.0
+offset_right = 1152.0
+offset_bottom = 420.0
+
+[node name="Hand" parent="." instance=ExtResource("4_va1qn")]
+layout_mode = 1
+offset_left = 448.0
+offset_top = 432.0
+offset_right = 1152.0
+offset_bottom = 576.0
+
+[node name="Reroll button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 450.0
+offset_top = 592.0
+offset_right = 578.0
+offset_bottom = 640.0
+focus_mode = 0
+text = "Reroll"
 
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Start button" to="." method="start_round" flags=3]
+[connection signal="pressed" from="Reroll button" to="." method="reroll"]
