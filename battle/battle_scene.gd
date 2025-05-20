@@ -1,27 +1,50 @@
 class_name BattleScene
-extends Node2D
+extends Control
 
 
-@onready var timer := $Timer as Timer
-@onready var counter := $Counter as Counter
-@onready var round_counter:= $"Round counter" as Label
-@onready var start_button := $"Start button" as Button
+@onready var timer: Timer = $Timer as Timer
+@onready var counter: Counter = $Counter as Counter
+@onready var start_button: Button = $"Start button" as Button
+@onready var hand: Hand = $Hand as Hand
+@onready var table: Table = $Table as Table
+
+@onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
-var card_cursor := Cursor.new(Cursor.TYPE.CARDS)
+var card_cursor: Cursor = Cursor.new(Cursor.TYPE.CARDS)
 var cur_card: Card :
-	get(): return self.cards_on_table[self.card_cursor.index] if self.cards_on_table.size() != 0 else null
+	get(): return self.cards_on_table[self.card_cursor.index] if self.card_cursor.index < self.cards_on_table.size() else null
 var first_card: Card :
-	get(): return self.cards_on_table[0] if self.cards_on_table.size() != 0 else null
+	get(): return self.cards_on_table[0] if self.cards_on_table.size() > 0 else null
+var last_card: Card :
+	get(): return self.cards_on_table[-1] if self.cards_on_table.size() > 0 else null
+var played_cards: Array[Card] = []
 
 var available_combos: Array = Combos.COMBOS.keys()
 var combos_on_table: Array[Combo] = []
-var combo_cursor := Cursor.new(Cursor.TYPE.COMBOS)
+var combo_cursor: Cursor = Cursor.new(Cursor.TYPE.COMBOS)
 var cur_combo: Combo :
-	get(): return null if self.combos_on_table.size() == 0 else self.combos_on_table[0]
+	get(): return self.combos_on_table[self.combo_cursor.index] if self.combo_cursor.index < self.combos_on_table.size() else null
+var first_combo: Combo :
+	get(): return self.combos_on_table[0] if self.combos_on_table.size() > 0 else null
+var last_combo: Combo :
+	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
-var round_count := 2
+# TODO: move in player config
+@onready var round_count: int = 2 :
+	set(val):
+		round_count = val
+		self.round_counter.text = str(val)
+@onready var round_counter: Label = $"Round counter" as Label
+@onready var reroll_count: int = 4 :
+	set(val):
+		reroll_count = val
+		self.reroll_button.text = 'Reroll: %s' % [val]
+@onready var reroll_button: Button = $"Reroll button" as Button
+
+var earned_money: int = 0
 
 var effects: Array[Effect] = []
 var used_effects: Array[Effect]= []
@@ -29,11 +52,6 @@ var used_effects: Array[Effect]= []
 # If `true` allow to play card by pressing `Enter` or `Space`
 # TODO: move to config file
 var is_turn_based_mode := true 
-
-enum BATTLE_STAGE {
-	ROUND_PREPARATION,
-	ROUND_PLAYING,
-}
 
 signal next_card_key_pressed
 
@@ -55,12 +73,11 @@ func _ready() -> void:
 		combo_exit = self.on_combo_exit,
 	})
 
-	# self.next_card_key_pressed.connect(func (): print('input'))
+	self.reroll_count = 4
+	self.round_count = 2
 
 	Game.battle = self
-	self.round_counter.text = str(self.round_count)
 	Events.battle_started.emit()
-	# self.start_round_preparation()
 
 
 func _input(event: InputEvent) -> void:
@@ -72,45 +89,21 @@ func start_round_preparation() -> void:
 	self.start_button.disabled = false
 	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
-	var configs := [
-		{
-			'card_name': 'fist',
-			'type': Card.BODY_PART.ARM_STRIKE,
-			'points': 2,
-			'multiplier': 1,
-		},
-		{
-			'card_name': 'knee strike',
-			'type': Card.BODY_PART.LEG_STRIKE,
-			'points': 3,
-			'multiplier': 1,
-		},
-		{
-			'card_name': 'elbow',
-			'type': Card.BODY_PART.ARM_STRIKE,
-			'points': 5,
-			'multiplier': 1,
-		},
-		{
-			'card_name': 'fist',
-			'type': Card.BODY_PART.ARM_STRIKE,
-			'points': 2,
-			'multiplier': 1,
-		},
-	]
-	var spawn_pos := Vector2(350, 200)
 
-	for i in len(configs):
-		self.spawn_card(i, configs[i], spawn_pos)
-		spawn_pos.x += 150
+	var hand_size := PlayerConfig.hand_size - self.hand.card_count
+	var confs := self.get_hand_configs(hand_size)
+	for c in confs:
+		self.spawn_card(c)
 
-	var first_card := self.first_card
-	var e := Effects.get_effect('Second breath')
-	first_card.bind_effect(e)
+	print('container card count: ', self.hand.card_count)
 
 
 # TODO: move `check_combos()` in round preparation stage
 func start_round() -> void:
+	self.cards_on_table = self.table.get_cards()
+	if self.cards_on_table.size() == 0: return 
+
+
 	self.start_button.disabled = true
 	self.check_combos()
 
@@ -128,33 +121,41 @@ func start_round() -> void:
 
 
 func end_round() -> void:
+	Events.round_exit.emit()
+
 	self.round_counter.text = str(self.round_count)
 	self.timer.stop()
 
 	await self.counter.update_round_score()
 	await get_tree().create_timer(1).timeout
-	for e in self.effects:
-		if e.activation_time == Effect.ACTIVATION_TIME.ROUND_END:
-			e.activate()
 
 	self.combos_on_table.clear()
+
+	var card_names := self.cards_on_table.map(func (c: Card): return c.card_name)
+	self.deck_dict = self.deck_dict.filter(func (conf: Dictionary): return conf.Name not in card_names)
+	self.played_cards.append_array(self.cards_on_table)
+	self.cards_on_table.clear()
+	self.table.remove_cards()
+
+	self.card_cursor.reset()
 	self.combo_cursor.reset()
 
-	for card in self.cards_on_table:
-		card.queue_free()
-	self.cards_on_table.clear()
-	self.card_cursor.reset()
-
 	self.effects.clear()
+	self.used_effects.clear()
 
-	Events.round_exit.emit()
+	if self.round_count != 0:
+		self.start_round_preparation()
+	else:
+		Events.battle_ended.emit()
+		print('battle end')
+
 
 
 func play_card() -> void:
 	var card := self.cur_card
 	var combo := self.cur_combo
 
-	if combo and card == combo.start_card:
+	if combo and card == combo.first_card:
 		Events.combo_started.emit(combo)
 
 	Events.card_started.emit(card);\
@@ -166,9 +167,8 @@ func play_card() -> void:
 	if self.is_all_effects_activated_on(card):
 		Events.card_exit.emit(card)
 
-	if combo and card == combo.end_card:
+	if combo and card == combo.last_card:
 		Events.combo_ended.emit(combo)
-		# combo.apply_effect()	
 		if self.is_all_effects_activated_on(combo):
 			Events.combo_exit.emit(combo)
 
@@ -181,19 +181,42 @@ func play_card() -> void:
 		self.play_card()
 
 
-func spawn_card(index: int, config: Dictionary, pos: Vector2) -> void:
-	var card := CardFactory.create_with_binding(
-		self,
+func spawn_card(conf: Dictionary) -> void:
+	var card := CardFactory.create(
 		func (c: Card) -> void:
-			c.index = index
-			c.add_tags(config)
-			c.position = pos
+			c.set_main_props(conf)
 	)
-	self.cards_on_table.append(card)
+	self.hand.add_card(card)
+	self.cards_in_hand.append(card)
+
+
+func reroll() -> void:
+	self.reroll_count -= 1
+
+	var size := self.hand.card_count
+	var configs := self.get_hand_configs(size)
+	self.hand.remove_all_cards()
+	for c in configs:
+		self.spawn_card(c)
+
+	if self.reroll_count == 0:
+		self.reroll_button.disabled = true
+
+
+func get_hand_configs(size: int) -> Array[Dictionary]:
+	var hand_confs: Array[Dictionary]
+	hand_confs.assign(
+		Utils.get_array_with_uniq_nums(
+			size, self.deck_dict.size() - 1
+		)\
+		.map(func (el: int): return self.deck_dict[el])
+	)
+	return hand_confs
 
 
 func check_combos() -> void:
 	var i := 0
+	var combo_idx := 0
 	var step: int
 	while i < self.cards_on_table.size():
 		step = 1
@@ -203,8 +226,11 @@ func check_combos() -> void:
 				self.cards_on_table.slice(i)
 			)
 			if combo != null:
+				combo.index = combo_idx
 				self.combos_on_table.append(combo)
+
 				step = combo.length
+				combo_idx += 1
 				break
 		i += step
 
@@ -224,16 +250,26 @@ func apply_effect(e: Effect, to: Variant) -> void:
 	self.add_effect(e)
 
 
-func _filter_effects(filter: Callable, args: Array) -> Array[Effect]:
-	return filter.bindv(args).call(self.effects)
+func _get_filtered_effects(effects: Array[Effect], filter: Callable, args: Array) -> Array[Effect]:
+	return filter.bindv(args).call(effects)
 
-
-func activate_filtered_effects(filter: Callable, args: Array) -> void:
-	var effects := self._filter_effects(filter, args)
+func activate_effects(effects: Array[Effect]) -> void:
 	for e in effects:
-		print('activate')
+		print('activated')
 		e.activate()
 
+func activate_filtered_effects(filter: Callable, args: Array) -> void:
+	var effects := self._get_filtered_effects(self.effects, filter, args)
+	self.activate_effects(effects)
+
+func reset_effects(effects: Array[Effect]) -> void:
+	for e in effects:
+		e.reset()
+
+func reset_filtered_effects(filter: Callable, args: Array) -> void:
+	var effects := self._get_filtered_effects(self.used_effects, filter, args)
+	for e in effects:
+		e.reset()
 
 func is_all_effects_activated_on(target: Variant) -> bool:
 	return Utils.Filter.BY_TARGET(self.effects, target).size() == 0
@@ -241,32 +277,53 @@ func is_all_effects_activated_on(target: Variant) -> bool:
 
 func get_effects_from(obj: Variant) -> Array[Effect]:
 	const TYPE := Effect.TARGET_TYPE
-	var arr: Array[Effect] = []
+	var effects: Array[Effect] = []
 	for e: Effect in obj.effects:
 		match e.target_type:
 			TYPE.SELF_CARD, TYPE.SELF_COMBO:
-				self.effects.append(e.set_target(e.caster))
+				effects.append(e.set_target(e.caster))
+
 			TYPE.NEXT_CARD:
 				var i: int = e.caster.index + 1
 				if (i < self.cards_on_table.size()):
-					self.effects.append(e.set_target(self.cards_on_table[i]))
+					effects.append(e.set_target(self.cards_on_table[i]))
 			TYPE.PREV_CARD:
 				var i: int = e.caster.index - 1
 				if (i > -1):
-					self.effects.append(e.set_target(self.cards_on_table[i]))
+					effects.append(e.set_target(self.cards_on_table[i]))
 			TYPE.FIRST_CARD:
-				self.effects.append(e.set_target(self.first_card))
+				effects.append(e.set_target(self.first_card))
+			TYPE.LAST_CARD:
+				effects.append(e.set_target(self.last_card))
 			TYPE.CARD_IN_COMBO:
 				for c: Card in e.caster.cards:
-					self.effects.append(e.set_target(c))
-			
+					effects.append(e.set_target(c))
+			TYPE.FIRST_CARD_IN_COMBO:
+				effects.append(e.set_target(e.caster.first_card))
+			TYPE.LAST_CARD_IN_COMBO:
+				effects.append(e.set_target(e.caster.last_card))
+
+			TYPE.NEXT_COMBO:
+				var i: int = e.caster.index + 1
+				if (i < self.combos_on_table.size()):
+					effects.append(e.set_target(self.combos_on_table[i]))
+			TYPE.PREV_COMBO:
+				var i: int = e.caster.index - 1
+				if (i > -1):
+					effects.append(e.set_target(self.combos_on_table[i]))
+			TYPE.FIRST_COMBO:
+				self.effects.append(e.set_target(self.first_combo))
+			TYPE.LAST_COMBO:
+				effects.append(e.set_target(self.last_combo))
+
 			TYPE.CARD_CURSOR:
-					self.effects.append(e.set_target(self.card_cursor))
+				effects.append(e.set_target(self.card_cursor))
 			TYPE.COMBO_CURSOR:
-					self.effects.append(e.set_target(self.combo_cursor))
+				effects.append(e.set_target(self.combo_cursor))
+
 			_:
-				Utils.throw_error('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER')
-	return arr
+				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER')
+	return effects
 
 
 func collect_all_effects() -> void:
@@ -280,78 +337,66 @@ func on_round_preparation_started() -> void: pass
 func on_round_started() -> void:
 	# TODO: move segment in round preparation segment
 	for c in self.combos_on_table:
-		self.counter.add(c.points, c.multiplier)
+		self.counter.add(c.points, c.factor)
 	
 	self.collect_all_effects()
-	print('effects: ', self.effects.size())
-	for e in self.effects:
-		print(e.name)
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_START]
 	)
-
 func on_round_ended() -> void:
+	self.reset_filtered_effects(
+		Utils.Filter.BY_RESET_TIME,
+		[Effect.RESET_TIME.ROUND]
+	)
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_END]
 	)
-
 # TODO: clear totems effects
 func on_round_exit() -> void:
-	self.effects.clear()
-	self.used_effects.clear()
-
-	if self.round_count != 0:
-		self.start_round_preparation()
-	else:
-		Events.battle_ended.emit()
-		print('battle end')
-
+	pass
 
 func on_card_started(c: Card) -> void:
 	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_TARGET,
+		Utils.Filter.BY_ACTIVATION_ON_CARD,
 		[Effect.ACTIVATION_TIME.CARD_START, c]
 	)
-	
-
 func on_card_ended(c: Card) -> void:
 	c.scale = Vector2.ONE
 	self.card_cursor.move_foward()
 
 	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_TARGET,
+		Utils.Filter.BY_ACTIVATION_ON_CARD,
 		[Effect.ACTIVATION_TIME.CARD_END, c]
 	)
-	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_CASTER,
-		[Effect.ACTIVATION_TIME.CARD_END, c]
-	)
-	
-
 func on_card_exit(c: Card) -> void:
-	c.reset_effects()
-
+	self.reset_filtered_effects(
+		Utils.Filter.BY_RESET_ON_CARD,
+		[c]
+	)
 
 func on_combo_started(c: Combo) -> void:
 	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_CASTER,
+		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_START, c]
 	)
-	
-
 func on_combo_ended(c: Combo) -> void:
 	self.combo_cursor.move_foward()
 
 	self.activate_filtered_effects(
-		Utils.Filter.BY_ACTIVATION_TIME_AND_CASTER,
+		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_END, c]
 	)
-
 func on_combo_exit(c: Combo) -> void:
-	c.reset_effects()
-
+	self.reset_filtered_effects(
+		Utils.Filter.BY_RESET_ON_COMBO,
+		[c]
+	)
 
 func on_effect_applyed(e: Effect) -> void: pass
 func on_effect_activated(e: Effect) -> void: pass
+
+
+func on_battle_ended() -> void:
+	self.earned_money += self.round_count

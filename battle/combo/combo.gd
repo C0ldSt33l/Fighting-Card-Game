@@ -2,24 +2,23 @@ class_name Combo
 
 const MAX_LVL := 2
 
+var index: int
+
 var name: String
 var description: String
 
 var price: int
-var points: int
-var multiplier: int
+var point: int
+var factor: int
 
-var upgrade_lvl := 1
+var upgrade_lvl: int = 1
 
 var cards: Array[Card] = []
-var start_card: Card :
-	set(val): return
+var first_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[0]
-var end_card: Card :
-	set(val): return
+var last_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[-1]
 var length: int :
-	set(val): return
 	get(): return self.cards.size()
 
 var effects: Array[Effect]
@@ -36,8 +35,6 @@ func _init(
 		self[p] = props[p]
 	self.cards = cards
 	self.bind_effect(effect)
-		# BUG: will cause error if target is not set
-
 	Events.obj_created.emit(self)
 
 

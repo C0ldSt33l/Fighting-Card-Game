@@ -1,18 +1,18 @@
 class_name Counter
-extends Node2D
+extends Control
 
-@onready var score_panel := $Panel as Panel
+@onready var score_panel: Panel = $Panel as Panel
 
-@onready var panel_points := $Panel/Panel_point as Panel
-@onready var label_points := $Panel/Panel_point/points as Label
+@onready var panel_points: Panel = $Panel/Panel_point as Panel
+@onready var label_points: Label = $Panel/Panel_point/points as Label
 
-@onready var panel_mult := $Panel/panel_mult as Panel
-@onready var label_multiplier := $Panel/panel_mult/multiplier as Label
+@onready var panel_mult: Panel = $Panel/panel_mult as Panel
+@onready var label_multiplier: Label = $Panel/panel_mult/multiplier as Label
 
-@onready var label_x := $Panel/X as Label
+@onready var label_x: Label = $Panel/X as Label
 
-@onready var round_score_panel := $final_points as Panel
-@onready var round_score_label := $final_points/final_point as Label
+@onready var round_score_panel: Panel = $final_points as Panel
+@onready var round_score_label: Label = $final_points/final_point as Label
 
 @onready var points: int = 0 :
 	set = set_points
@@ -24,10 +24,10 @@ extends Node2D
 
 
 func _ready() -> void:
-	self.label_points.text = str(0)	
-	self.label_multiplier.text = str(0)	
+	self.points = 0
+	self.multiplier = 0
 
-	round_score_panel.visible = false
+	self.round_score_panel.visible = false
 	
 
 func set_points(val: int) -> void:

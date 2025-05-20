@@ -3,9 +3,10 @@
 /android/
 
 # IDE
-
+.idea
 .vscode
 
 # Code
 override.cfg
 battle_todos.md
+DB

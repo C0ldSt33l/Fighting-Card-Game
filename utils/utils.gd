@@ -7,6 +7,12 @@ class Filter:
 				return e.activation_time == time
 		)
 
+	static func BY_RESET_TIME(effects: Array[Effect], time: Effect.RESET_TIME) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.reset_time == time
+		)
+
 	static func BY_CASTER(effects: Array[Effect], caster: Variant) -> Array[Effect]:
 		return effects.filter(
 			func (e: Effect) -> bool:
@@ -50,6 +56,30 @@ class Filter:
 				return e.activation_time == time and e.caster == caster and e.target == target
 		)
 
+	static func BY_ACTIVATION_ON_CARD(effects: Array[Effect], time: Effect.ACTIVATION_TIME, c: Card) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.activation_time == time and (e.caster == c if e.target is not Card else e.target == c)
+		)
+
+	static func BY_ACTIVATION_ON_COMBO(effects: Array[Effect], time: Effect.ACTIVATION_TIME, c: Combo) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.activation_time == time and (e.caster == c if e.target is not Combo else e.target == c)
+		)
+
+	static func BY_RESET_ON_CARD(effects: Array[Effect], c: Card) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.reset_time == Effect.RESET_TIME.CARD and (e.caster == c if e.target is not Card else e.target == c)
+		)
+
+	static func BY_RESET_ON_COMBO(effects: Array[Effect], c: Combo) -> Array[Effect]:
+		return effects.filter(
+			func (e: Effect) -> bool:
+				return e.reset_time == Effect.RESET_TIME.COMBO and (e.caster == c if e.target is not Combo else e.target == c)
+		)
+
 static func exlude_array(from: Array, what: Array) -> Array:
 	var res := from.filter(
 		func (el) -> bool:
@@ -58,7 +88,16 @@ static func exlude_array(from: Array, what: Array) -> Array:
 	return res
 
 
-static func throw_error(err_text: String) -> void:
+static func get_array_with_uniq_nums(size: int, max: int) -> Array[int]:
+	var arr: Array[int] = []
+	while arr.size() < size:
+		var n := randi_range(0, max)
+		if n not in arr:
+			arr.append(n)
+	return arr
+
+
+static func panic(err_text: String) -> void:
 	var nil = null
 	print(err_text)
 	nil.error
