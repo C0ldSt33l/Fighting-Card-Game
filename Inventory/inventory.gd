@@ -19,7 +19,7 @@ func _ready() -> void:  # Явно задаем размер
 	gridContainer.set_anchors_preset(Control.PRESET_HCENTER_WIDE)
 	
 	gridContainer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gridContainer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	gridContainer.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	
 	tmp = Sql.select_all_type_cards_with_tags('BATTLE')
 	ALL_cards_with_tags = tmp
@@ -43,7 +43,6 @@ func _input(event: InputEvent) -> void:
 					if is_sell_popup_active:
 						clear_sell_popup()
 					
-					clear_sell_popup()
 					show_sell_popup(obj, mouse_pos)
 					break
 
@@ -102,13 +101,16 @@ func create_combo(ComboInfo: Dictionary)->_Combo_:
 	return combo
 
 func _on_cards_pressed() -> void:
+	gridContainer.columns = 4
 	for child in gridContainer.get_children():
+		gridContainer.remove_child(child)
 		child.queue_free()
 	
 	for child_data in PlayerConfig.player_available_cards:
 		var card = create_card(child_data)
 		gridContainer.add_child(card)
-		print("Card added:", card.name)  # Отладочный вывод
+		print("Card added:", card.name) 
+	print(gridContainer.get_child_count()) # Отладочный вывод
 	arrange_cards()
 	pass 
 
@@ -134,6 +136,7 @@ func show_sell_popup(obj,Position: Vector2):
 func on_yes_pressed():
 	if selected_object:
 		gridContainer.remove_child(selected_object)
+		
 		selected_object.queue_free()
 		#нужно добавить удаление объекта из файла игрока 
 		var money : int  = 0 
@@ -147,7 +150,9 @@ func on_no_pressed():
 func clear_sell_popup():
 	if has_node("SellPopup"):
 		var obj = $SellPopup
-		obj.queue_free()
+		self.remove_child(obj)
+		#obj.queue_free()
+		
 	selected_object = null
 	is_sell_popup_active = false
 	
