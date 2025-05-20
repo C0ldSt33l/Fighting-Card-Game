@@ -3,6 +3,8 @@ extends Node2D
 @onready var scrollContainer = $Panel/ScrollContainer
 @onready var gridContainer = $Panel/ScrollContainer/GridContainer
 
+
+
 @export var card_per_row : int = 4
 
 var selected_object = null
@@ -88,6 +90,7 @@ func create_card(CardInfo: Dictionary)-> BaseCard:
 	card.scale = Vector2(0.66,0.66)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		
 	return card
 
 func create_combo(ComboInfo: Dictionary)->_Combo_:

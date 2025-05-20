@@ -7,4 +7,5 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	self.set_drag_preview(
 		DragNDropPreview.new(data.duplicate())
 	)
+	Events.drag_start.emit(data)
 	return data
