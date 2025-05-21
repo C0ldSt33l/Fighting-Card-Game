@@ -13,5 +13,5 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	self.held_data = data
 	self.add_child(self.held_data)
 	
-	#data.get_parent().remove_child(data)
+	data.get_parent().remove_child(data)
 	Events.drag_complete.emit(held_data,self.get_parent())
