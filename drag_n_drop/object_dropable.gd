@@ -3,6 +3,7 @@ class_name ObjectDropable
 
 var held_data = null
 var check: Callable
+var manage_data: Callable
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:

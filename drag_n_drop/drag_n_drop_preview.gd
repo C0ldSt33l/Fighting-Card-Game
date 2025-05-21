@@ -11,7 +11,7 @@ func _init(data: Control) -> void:
 	data.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)
 	self.add_child(self.data)
 
-
-func _physics_process(delta: float) -> void:
-	var tween := get_tree().create_tween()
-	tween.tween_property(self, 'position', get_global_mouse_position(), self.delta)
+#
+#func _physics_process(delta: float) -> void:
+	#var tween := get_tree().create_tween()
+	#tween.tween_property(self, 'position', get_global_mouse_position(), self.delta)

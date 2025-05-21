@@ -26,25 +26,25 @@
   },
   "tags": [
    {
-    "Description": null,
-    "Name": "KI",
-    "Type": "ENERGY",
-    "effect": [
-     {
-      "Activation_time": "CARD_END",
-      "Args": "{ [50, 10] }",
-      "Check_name": "check_cursor ",
-      "Description": "Add points and multiplier to score after card is played",
-      "Func_name": "counter_add_points_and_multiplier",
-      "Limit": 1,
-      "Name": "Extra points",
-      "Target": "SCORE",
-      "id": 1,
-      "id_effect": 1,
-      "id_tag": 1
-     }
-    ],
-    "id": 1
+	"Description": null,
+	"Name": "KI",
+	"Type": "ENERGY",
+	"effect": [
+	 {
+	  "Activation_time": "CARD_END",
+	  "Args": "{ [50, 10] }",
+	  "Check_name": "check_cursor ",
+	  "Description": "Add points and multiplier to score after card is played",
+	  "Func_name": "counter_add_points_and_multiplier",
+	  "Limit": 1,
+	  "Name": "Extra points",
+	  "Target": "SCORE",
+	  "id": 1,
+	  "id_effect": 1,
+	  "id_tag": 1
+	 }
+	],
+	"id": 1
    }
   ]
  },
