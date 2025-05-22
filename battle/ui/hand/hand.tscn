@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cp47xxnw14oip"]
+[gd_scene load_steps=3 format=3 uid="uid://cp47xxnw14oip"]
 
 [ext_resource type="Script" path="res://battle/ui/hand/hand.gd" id="1_bvbxc"]
+[ext_resource type="PackedScene" uid="uid://frgofpu2jt4a" path="res://battle/ui/card sotrer/card sorter.tscn" id="2_ec17v"]
 
 [node name="Hand" type="Control"]
 layout_mode = 3
@@ -12,6 +13,13 @@ offset_bottom = -548.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bvbxc")
+
+[node name="Card sorter" parent="." instance=ExtResource("2_ec17v")]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 204.0
+offset_right = 456.0
+offset_bottom = 204.0
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1
@@ -28,6 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+rotation = 0.00238497
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10

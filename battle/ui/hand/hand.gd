@@ -4,6 +4,7 @@ extends Control
 @onready var background: Panel = $Background as Panel
 @onready var margins: MarginContainer = $MarginContainer as MarginContainer
 @onready var cards: GridContainer = $MarginContainer/GridContainer as GridContainer
+@onready var card_sorter: CardSorter = $"Card sorter" as CardSorter
 
 var card_count_per_row: int = PlayerConfig.hand_size
 

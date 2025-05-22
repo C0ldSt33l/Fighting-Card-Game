@@ -1,14 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://frgofpu2jt4a"]
+[gd_scene load_steps=2 format=3 uid="uid://frgofpu2jt4a"]
 
 [ext_resource type="Script" path="res://battle/ui/card sotrer/card sorter.gd" id="1_55lxw"]
-[ext_resource type="Script" path="res://battle/ui/card filter/card sorter.gd" id="1_paod0"]
 
 [node name="Card sorter" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -440.0
+offset_right = -600.0
 offset_bottom = -440.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -19,13 +18,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 40.0
-offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Filter button" type="Button" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 focus_mode = 0
 text = "Filter"
@@ -34,7 +30,6 @@ text = "Filter"
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
-script = ExtResource("1_paod0")
 
 [node name="By value" type="Button" parent="VBoxContainer/Filter modes"]
 layout_mode = 2
