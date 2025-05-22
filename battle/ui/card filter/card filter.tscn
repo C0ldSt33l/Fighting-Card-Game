@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://frgofpu2jt4a"]
+
+[ext_resource type="Script" path="res://battle/ui/card filter/card filter.gd" id="1_oxv0r"]
+
+[node name="Card filter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -440.0
+offset_bottom = -440.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oxv0r")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 40.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Filter button" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+focus_mode = 0
+text = "Filter"
+
+[node name="Filter modes" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="By value button" type="Button" parent="VBoxContainer/Filter modes"]
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "By value"
+
+[node name="By type button" type="Button" parent="VBoxContainer/Filter modes"]
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "By type"
