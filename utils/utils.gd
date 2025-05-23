@@ -1,5 +1,6 @@
 class_name Utils
 
+## Namespace for funcs that filter `Array[Effect]`
 class Filter:
 	static func BY_ACTIVATION_TIME(effects: Array[Effect], time: Effect.ACTIVATION_TIME) -> Array[Effect]:
 		return effects.filter(

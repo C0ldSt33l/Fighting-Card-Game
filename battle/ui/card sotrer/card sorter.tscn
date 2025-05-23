@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://frgofpu2jt4a"]
+
+[ext_resource type="Script" path="res://battle/ui/card sotrer/card sorter.gd" id="1_55lxw"]
+
+[node name="Card sorter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -600.0
+offset_bottom = -440.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_55lxw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sort button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+text = "Sort"
+
+[node name="Sort modes" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="By value" type="Button" parent="VBoxContainer/Sort modes"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+toggle_mode = true
+text = "By value"
+
+[node name="By type" type="Button" parent="VBoxContainer/Sort modes"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+toggle_mode = true
+text = "By type"
+
+[connection signal="pressed" from="VBoxContainer/Sort modes/By value" to="." method="_on_by_value_pressed"]
+[connection signal="pressed" from="VBoxContainer/Sort modes/By type" to="." method="_on_by_type_pressed"]
