@@ -24,7 +24,7 @@ func remove_card() -> void:
 
 func on_drag_completed(data: Variant, where: Variant) -> void:
 	if self != where: return
-	var c: Card = data.duplicate()
+	var c: Card = data
 	self.panel.add_child(c)
 	c.size = c.background.size
 	c.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)

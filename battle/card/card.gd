@@ -145,7 +145,3 @@ func _on_background_gui_input(event: InputEvent) -> void:
 func _get_drag_data(at_position: Vector2) -> Variant:
 	print('drag working in root node')
 	return self
-
-
-func _to_string() -> String:
-	return 'this card'
