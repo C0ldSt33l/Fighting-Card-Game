@@ -26,21 +26,33 @@ offset_bottom = 254.0
 [node name="Panel" type="Panel" parent="."]
 offset_left = 160.0
 offset_top = 61.0
-offset_right = 1045.0
-offset_bottom = 650.0
+offset_right = 1040.0
+offset_bottom = 417.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
 layout_mode = 0
 offset_right = 893.0
-offset_bottom = 588.0
+offset_bottom = 456.0
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
+metadata/_edit_lock_ = true
 
 [node name="GridContainer" type="GridContainer" parent="Panel/ScrollContainer"]
 custom_minimum_size = Vector2(885, 599)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/v_separation = 10
+
+[node name="upgradePanel" type="Panel" parent="."]
+offset_left = 298.0
+offset_top = 424.0
+offset_right = 924.0
+offset_bottom = 637.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="upgradePanel"]
+layout_mode = 0
+offset_right = 612.0
+offset_bottom = 208.0
 
 [connection signal="pressed" from="Cards" to="." method="_on_cards_pressed"]
 [connection signal="pressed" from="Combos" to="." method="_on_combos_pressed"]

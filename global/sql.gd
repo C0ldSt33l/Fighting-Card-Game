@@ -5,7 +5,7 @@ var database : SQLite
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	database = SQLite.new()
-	database.path = "C:/Users/syche/Desktop/_Config.db"
+	database.path = "res://DB/_Config.db"
 	database.open_db()
 	pass # Replace with function body.
 

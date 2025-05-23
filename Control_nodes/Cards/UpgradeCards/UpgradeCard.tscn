@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfoq2v78hadnl"]
+[gd_scene load_steps=4 format=3 uid="uid://bfoq2v78hadnl"]
 
 [ext_resource type="PackedScene" uid="uid://d04aw4r1xnnix" path="res://Control_nodes/Cards/ConsumableCards/ConsumableCard.tscn" id="1_4tci7"]
 [ext_resource type="Script" path="res://Control_nodes/Cards/UpgradeCards/upgrade_card.gd" id="2_hfugg"]
+[ext_resource type="Script" path="res://drag_n_drop/dragable.gd" id="3_lcysh"]
 
 [node name="UpgradeCard" instance=ExtResource("1_4tci7")]
 script = ExtResource("2_hfugg")
+
+[node name="Background" parent="." index="0"]
+script = ExtResource("3_lcysh")
 
 [node name="Name" parent="Background" index="0"]
 offset_left = 1.0

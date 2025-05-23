@@ -26,9 +26,25 @@ var Type: String:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
+	Events.drag_complete.connect(get_upgrade)
+	Background.check = func(data):return true
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	pass
+
+func get_upgrade(c: BaseCard,where:BattleCard) -> void:
+	print(c.Target)
+	if self != where or not c.Target.contains("CARD"):
+		return
+	print(Background.get_children().size())
+	var data = c.return_all_tags()
+	print("start tags")
+	print(self.tags)
+	self.tags.append_array(data.tags)
+	self.remove_child(c)
+	print("add tags")
+	print(self.tags)
 	pass

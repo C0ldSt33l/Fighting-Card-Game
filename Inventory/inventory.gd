@@ -2,6 +2,8 @@ extends Node2D
 
 @onready var scrollContainer = $Panel/ScrollContainer
 @onready var gridContainer = $Panel/ScrollContainer/GridContainer
+@onready var hboxContainer = $upgradePanel/HBoxContainer
+
 
 @export var card_per_row : int = 4
 
@@ -11,7 +13,8 @@ var is_sell_popup_active = false
 var tmp
 var ALL_cards_with_tags
 
-
+var battleCard
+var upgrade_card
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:  # Явно задаем размер
@@ -21,10 +24,9 @@ func _ready() -> void:  # Явно задаем размер
 	gridContainer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	gridContainer.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	
-	tmp = Sql.select_all_type_cards_with_tags('BATTLE')
-	ALL_cards_with_tags = tmp
-	tmp = Sql.select_all_type_cards_with_tags('UPGRADE')
-	ALL_cards_with_tags.append_array(tmp)
+	battleCard = Sql.select_all_type_cards_with_tags('BATTLE')
+	upgrade_card = Sql.select_all_type_cards_with_tags('UPGRADE')
+	
 	
 	gridContainer.columns = card_per_row
 	upgradeInventory()
@@ -49,12 +51,16 @@ func _input(event: InputEvent) -> void:
 func upgradeInventory():
 	for child in gridContainer.get_children():
 		child.queue_free()
-	
-	for child_data in ALL_cards_with_tags:
+		
+	for child_data in battleCard:
 		var card = create_card(child_data)
 		gridContainer.add_child(card)
 		print("Card added:", card.name)  # Отладочный вывод
-	arrange_cards()
+		
+	for data in upgrade_card:
+		var card = create_card(data)
+		hboxContainer.add_child(card)
+	
 	var n =0
 	print(gridContainer.get_child_count())
 
@@ -88,6 +94,7 @@ func create_card(CardInfo: Dictionary)-> BaseCard:
 	card.scale = Vector2(0.66,0.66)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		
 	return card
 
 func create_combo(ComboInfo: Dictionary)->_Combo_:

@@ -42,6 +42,8 @@ signal hand_updated()
 
 # SHOP EVENTS
 
+signal drag_start(c: Variant)
+signal drag_complete(c: Variant, where: Variant)
 
 func connect_events(event_to_func: Dictionary) -> void:
 	for e in event_to_func:
