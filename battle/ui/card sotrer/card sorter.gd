@@ -1,8 +1,8 @@
 extends Control
 class_name CardSorter 
 
-@onready var sort_btn: Button = $"VBoxContainer/Filter button" as Button
-@onready var sort_modes: HBoxContainer = $"VBoxContainer/Filter modes" as HBoxContainer
+@onready var sort_btn: Button = $"VBoxContainer/Sort button" as Button
+@onready var sort_modes: HBoxContainer = $"VBoxContainer/Sort modes" as HBoxContainer
 var sort_mode_btns: Array[Button] :
 		get():
 			var btns: Array[Button]

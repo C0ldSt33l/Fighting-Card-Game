@@ -21,30 +21,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Filter button" type="Button" parent="VBoxContainer"]
+[node name="Sort button" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
-text = "Filter"
+text = "Sort"
 
-[node name="Filter modes" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Sort modes" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="By value" type="Button" parent="VBoxContainer/Filter modes"]
+[node name="By value" type="Button" parent="VBoxContainer/Sort modes"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 toggle_mode = true
 text = "By value"
 
-[node name="By type" type="Button" parent="VBoxContainer/Filter modes"]
+[node name="By type" type="Button" parent="VBoxContainer/Sort modes"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 toggle_mode = true
 text = "By type"
 
-[connection signal="pressed" from="VBoxContainer/Filter modes/By value" to="." method="_on_by_value_pressed"]
-[connection signal="pressed" from="VBoxContainer/Filter modes/By type" to="." method="_on_by_type_pressed"]
+[connection signal="pressed" from="VBoxContainer/Sort modes/By value" to="." method="_on_by_value_pressed"]
+[connection signal="pressed" from="VBoxContainer/Sort modes/By type" to="." method="_on_by_type_pressed"]
