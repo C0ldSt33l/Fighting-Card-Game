@@ -54,15 +54,5 @@ offset_top = 400.0
 offset_right = 1152.0
 offset_bottom = 648.0
 
-[node name="Reroll button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 320.0
-offset_top = 472.0
-offset_right = 448.0
-offset_bottom = 520.0
-focus_mode = 0
-text = "Reroll"
-
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Start button" to="." method="start_round" flags=3]
-[connection signal="pressed" from="Reroll button" to="." method="reroll"]

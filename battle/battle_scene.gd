@@ -9,7 +9,6 @@ extends Control
 @onready var table: Table = $Table as Table
 
 @onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
-var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
@@ -32,17 +31,17 @@ var first_combo: Combo :
 var last_combo: Combo :
 	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
+@onready var round_counter: Label = $"Round counter" as Label
 # TODO: move in player config
 @onready var round_count: int = 2 :
 	set(val):
 		round_count = val
 		self.round_counter.text = str(val)
-@onready var round_counter: Label = $"Round counter" as Label
+@onready var reroll_btn: Button = (self.hand as Hand).reroll_btn
 @onready var reroll_count: int = 4 :
 	set(val):
 		reroll_count = val
-		self.reroll_button.text = 'Reroll: %s' % [val]
-@onready var reroll_button: Button = $"Reroll button" as Button
+		self.reroll_btn.text = 'Reroll: %s' % [val] 
 
 var earned_money: int = 0
 
@@ -73,6 +72,8 @@ func _ready() -> void:
 		combo_exit = self.on_combo_exit,
 	})
 
+	#TODO: move init seg in separate func
+	self.reroll_btn.pressed.connect(self.reroll)
 	self.reroll_count = 4
 	self.round_count = 2
 
@@ -200,7 +201,7 @@ func reroll() -> void:
 		self.spawn_card(c)
 
 	if self.reroll_count == 0:
-		self.reroll_button.disabled = true
+		self.reroll_btn.disabled = true
 
 
 func get_hand_configs(size: int) -> Array[Dictionary]:

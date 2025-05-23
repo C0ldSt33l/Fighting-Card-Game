@@ -39,6 +39,17 @@ layout_mode = 2
 theme_override_constants/h_separation = 120
 columns = 4
 
-[node name="Card sorter" parent="VBoxContainer" instance=ExtResource("2_ec17v")]
+[node name="Button container" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Reroll btn" type="Button" parent="VBoxContainer/Button container"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Reroll: "
+
+[node name="Card sorter" parent="VBoxContainer/Button container" instance=ExtResource("2_ec17v")]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3

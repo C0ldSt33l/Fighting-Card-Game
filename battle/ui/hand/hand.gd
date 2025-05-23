@@ -1,11 +1,10 @@
 class_name Hand
 extends Control
 
-@onready var background: Panel = $VBoxContainer/Panel as Panel
-@onready var margins: MarginContainer = $VBoxContainer/Panel/MarginContainer as MarginContainer
 @onready var card_container: GridContainer = $VBoxContainer/Panel/MarginContainer/GridContainer as GridContainer
-@onready var card_sorter: CardSorter = $"VBoxContainer/Card sorter" as CardSorter
-@onready var v_box_container: VBoxContainer = $VBoxContainer
+
+@onready var card_sorter: CardSorter = $"VBoxContainer/Button container/Card sorter" as CardSorter
+@onready var reroll_btn: Button = $'VBoxContainer/Button container/Reroll btn' as Button
 
 var card_count_per_row: int = PlayerConfig.hand_size
 
@@ -21,8 +20,6 @@ var card_count: int :
 func _ready() -> void:
 	self.card_container.columns = self.card_count_per_row
 	self.card_sorter.sort_btn.pressed.connect(self.sort_cards)
-	print(self.size)
-	#self.v_box_container.add_theme_constant_override('Separation', self.size.y / 2)
 
 
 func add_card(c: Card) -> void:
