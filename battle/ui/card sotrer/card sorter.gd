@@ -18,6 +18,8 @@ func _ready() -> void:
 	for b in self.sort_mode_btns:
 		b.button_group = self.sort_mode_grp
 		b.custom_minimum_size.x = self.size.x / 2
+	self.sort_mode_btns[0].button_pressed = true
+	self.sort_mode_btns[0].pressed.emit()
 
 
 func _on_by_value_pressed() -> void:
