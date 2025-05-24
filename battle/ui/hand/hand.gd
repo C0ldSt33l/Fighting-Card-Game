@@ -1,27 +1,38 @@
 class_name Hand
 extends Control
 
-@onready var background: Panel = $Background as Panel
-@onready var margins: MarginContainer = $MarginContainer as MarginContainer
-@onready var cards: GridContainer = $MarginContainer/GridContainer as GridContainer
+@onready var card_container: GridContainer = $VBoxContainer/Panel/MarginContainer/GridContainer as GridContainer
+
+@onready var card_sorter: CardSorter = $"VBoxContainer/Button container/Card sorter" as CardSorter
+@onready var reroll_btn: Button = $'VBoxContainer/Button container/Reroll btn' as Button
 
 var card_count_per_row: int = PlayerConfig.hand_size
 
+var cards: Array[Card] :
+	get():
+		var cs: Array[Card]
+		cs.assign(self.card_container.get_children())
+		return cs
 var card_count: int :
-	get(): return self.cards.get_child_count()
+	get(): return self.card_container.get_child_count()
 
 
 func _ready() -> void:
-	self.cards.columns = self.card_count_per_row
-	self.background.custom_minimum_size = self.size
-	self.margins.custom_minimum_size = self.size
+	self.card_container.columns = self.card_count_per_row
+	self.card_sorter.sort_btn.pressed.connect(self.sort_cards)
 
 
 func add_card(c: Card) -> void:
-	self.cards.add_child(c)
+	self.card_container.add_child(c)
 
 
 func remove_all_cards() -> void:
-	var cards := self.cards.get_children()
-	for c in cards:
-		self.cards.remove_child(c)
+	for c in self.cards:
+		self.card_container.remove_child(c)
+
+
+func sort_cards() -> void:
+	var cards := self.cards
+	cards.sort_custom(self.card_sorter.sort_func)
+	for pos in len(cards):
+		self.card_container.move_child(cards[pos], pos)

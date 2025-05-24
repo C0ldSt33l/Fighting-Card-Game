@@ -43,26 +43,16 @@ offset_bottom = 40.0
 [node name="Table" parent="." instance=ExtResource("3_aygk4")]
 layout_mode = 1
 offset_left = 448.0
-offset_top = 320.0
+offset_top = 256.0
 offset_right = 1152.0
-offset_bottom = 420.0
+offset_bottom = 356.0
 
 [node name="Hand" parent="." instance=ExtResource("4_va1qn")]
 layout_mode = 1
 offset_left = 448.0
-offset_top = 432.0
+offset_top = 400.0
 offset_right = 1152.0
-offset_bottom = 576.0
-
-[node name="Reroll button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 450.0
-offset_top = 592.0
-offset_right = 578.0
-offset_bottom = 640.0
-focus_mode = 0
-text = "Reroll"
+offset_bottom = 648.0
 
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Start button" to="." method="start_round" flags=3]
-[connection signal="pressed" from="Reroll button" to="." method="reroll"]
