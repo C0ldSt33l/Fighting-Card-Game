@@ -23,13 +23,12 @@ func create_card(CardInfo: Dictionary) -> BaseCard:
 	)
 
 	card.scale = Vector2(0.66, 0.66)
-
-	# Подписываемся на события наведения
-	card.mouse_filter = Control.MOUSE_FILTER_STOP
-	card.mouse_entered.connect(Callable(self, "_on_card_mouse_enter").bindv([card]))
-	card.mouse_exited.connect(Callable(self, "_on_card_mouse_exited").bindv([card]))	
-	objs.append(card)
 	add_child(card)
+	objs.append(card)
+	# Подписываемся на события наведения
+	card.Background.mouse_entered.connect(Callable(self, "_on_card_mouse_enter").bindv([card]))
+	card.Background.mouse_exited.connect(Callable(self, "_on_card_mouse_exited").bindv([card]))    	
+
 	return card
 
 
