@@ -1,4 +1,7 @@
-[gd_scene format=3 uid="uid://mnm6d0m2u0hx"]
+[gd_scene load_steps=3 format=3 uid="uid://mnm6d0m2u0hx"]
+
+[ext_resource type="Script" path="res://battle/choose enemy/chosoe_enemy.gd" id="1_pjgjy"]
+[ext_resource type="PackedScene" uid="uid://bnahkya0rw85b" path="res://battle/choose enemy/enemy card/enemy_card.tscn" id="1_wkb6m"]
 
 [node name="Chosoe enemy" type="Control"]
 layout_mode = 3
@@ -7,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_pjgjy")
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1
@@ -23,9 +27,22 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -240.0
+offset_top = -112.0
+offset_right = 240.0
+offset_bottom = 112.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Enemy card1" parent="Enemy card container" instance=ExtResource("1_wkb6m")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Enemy card2" parent="Enemy card container" instance=ExtResource("1_wkb6m")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Enemy card3" parent="Enemy card container" instance=ExtResource("1_wkb6m")]
+layout_mode = 2
+size_flags_horizontal = 3

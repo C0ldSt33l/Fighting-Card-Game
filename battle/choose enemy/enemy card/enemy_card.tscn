@@ -1,16 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://bnahkya0rw85b"]
+[gd_scene load_steps=4 format=3 uid="uid://bnahkya0rw85b"]
 
 [ext_resource type="Texture2D" uid="uid://c0irvgey5knic" path="res://assets/tmp enemy/enemy.jpg" id="1_32m5o"]
+[ext_resource type="Script" path="res://battle/choose enemy/enemy card/enemy_card.gd" id="1_vbipi"]
+[ext_resource type="StyleBox" uid="uid://mr6sclmmmyrn" path="res://battle/choose enemy/enemy card/enemy card style.tres" id="2_x47cf"]
 
 [node name="Enemy card" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -976.0
-offset_bottom = -408.0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = -960.0
+offset_bottom = -400.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_vbipi")
+metadata/_edit_group_ = true
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1
@@ -19,6 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_x47cf")
 
 [node name="Margins" type="MarginContainer" parent="Background"]
 layout_mode = 1
@@ -51,3 +58,6 @@ stretch_mode = 4
 layout_mode = 2
 text = "Score: 800"
 horizontal_alignment = 1
+
+[connection signal="mouse_entered" from="Background" to="." method="_on_background_mouse_entered"]
+[connection signal="mouse_exited" from="Background" to="." method="_on_background_mouse_exited"]
