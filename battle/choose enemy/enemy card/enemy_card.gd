@@ -25,8 +25,9 @@ class_name EnemyCard
 
 @onready var enemy_name: String = 'Enemy' :
 	set(val):
-		enemy_name = val
-		self.name_lbl.text = val
+		var capitalized := val.capitalize()
+		enemy_name = capitalized
+		self.name_lbl.text = capitalized 
 @onready var name_lbl: Label = $"Background/Margins/Content container/Name" as Label
 @onready var image: Texture2D : 
 	set(val): self.image_rect.texture = val
@@ -50,11 +51,11 @@ func _ready() -> void:
 func setup(
 	name: String,
 	image_path: String,
-	require_score: int
+	required_score: int
 ) -> void:
 	self.enemy_name = name
 	# self.image = load(image_path)
-	self.required_score = require_score
+	self.required_score = required_score
 	
 
 func get_enemy_data() -> Dictionary:
