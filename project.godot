@@ -32,6 +32,8 @@ Settings="*res://main_menu/SettingsConf.gd"
 [display]
 
 window/subwindows/embed_subwindows=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [dotnet]
 
