@@ -69,7 +69,12 @@ var EFFECTS := {
 		'Mulitply score at the end of round',
 		Effect.ACTIVATION_TIME.ROUND_END,
 		Effect.RESET_TIME.ROUND,
-
+		counter_multiply_points_and_multiplier,
+		Effect.TYPE.BUFF,
+		Effect.TARGET_TYPE.SCORE,
+		1,
+		[2, 2]
+	)
 }
 
 # EFFECT FUNCS
@@ -91,7 +96,11 @@ static func counter_multiply_points_and_multiplier(
 ) -> void:
 	c.mult(points, mult)
 
-static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> void:
+static func card_add_points_and_mulitplier(
+	c: Card,
+	points: int,
+	mult: int
+) -> void:
 	c.points += points
 	c.multiplier += mult
 
@@ -102,9 +111,13 @@ static func card_play_prev_card(c: Cursor) -> void:
 static func card_play_again(c: Cursor) -> void:
 	c.move_back()
 
-static func card_mult_card_points_and_mult(c: Card, points_mult: int, mult_mult: int) -> void:
-	c.points *= points_mult
-	c.multiplier *= mult_mult
+static func card_mult_card_points_and_mult(
+	c: Card,
+	p_mult: int,
+	m_mult: int
+) -> void:
+	c.points *= p_mult
+	c.multiplier *= m_mult
 
 static func combo_play_again(c: Combo) -> void:
 	Game.battle.combo_cursor.move_back()

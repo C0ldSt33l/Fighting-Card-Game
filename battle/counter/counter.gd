@@ -63,9 +63,9 @@ func sub(points: int, mult: int) -> void:
 	self.multiplier -= mult
 
 
-func mult(p_times: int, m_times: int) -> void:
-	self.points *= p_times
-	self.multiplier *= m_times
+func mult(p_mult: int, m_mult: int) -> void:
+	self.points *= p_mult
+	self.multiplier *= m_mult
 
 
 func show_score_panel() -> void:

@@ -95,8 +95,9 @@ func start_round_preparation() -> void:
 	var confs := self.get_hand_configs(hand_size)
 	for c in confs:
 		self.spawn_card(c)
-
-	print('container card count: ', self.hand.card_count)
+	
+	var e := Effects.get_effect('Multiplying')
+	self.cards_in_hand[0].bind_effect(e)
 
 
 # TODO: move `check_combos()` in round preparation stage
@@ -173,7 +174,11 @@ func play_card() -> void:
 		if self.is_all_effects_activated_on(combo):
 			Events.combo_exit.emit(combo)
 
+	print('card index: ', card.index)
+	print('cards on table: ', self.cards_on_table.size() - 1)
+
 	if card.index == self.cards_on_table.size() - 1:
+		print('end round fuck you')
 		Events.round_ended.emit()
 
 	if self.card_cursor.index == self.cards_on_table.size():
@@ -322,8 +327,11 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 			TYPE.COMBO_CURSOR:
 				effects.append(e.set_target(self.combo_cursor))
 
+			TYPE.SCORE:
+				effects.append(e.set_target(self.counter))
+
 			_:
-				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER')
+				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER: target type: %s' % [str(TYPE.keys()[e.target_type])])
 	return effects
 
 
@@ -346,6 +354,7 @@ func on_round_started() -> void:
 		[Effect.ACTIVATION_TIME.ROUND_START]
 	)
 func on_round_ended() -> void:
+	print('round is end')
 	self.reset_filtered_effects(
 		Utils.Filter.BY_RESET_TIME,
 		[Effect.RESET_TIME.ROUND]
