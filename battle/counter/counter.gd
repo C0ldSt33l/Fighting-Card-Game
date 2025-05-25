@@ -63,6 +63,11 @@ func sub(points: int, mult: int) -> void:
 	self.multiplier -= mult
 
 
+func mult(p_times: int, m_times: int) -> void:
+	self.points *= p_times
+	self.multiplier *= m_times
+
+
 func show_score_panel() -> void:
 	self.round_score_panel.hide()
 	self.round_score_label.hide()
@@ -76,9 +81,15 @@ func hide_score_panel() -> void:
 func show_final_score_panel() -> void:
 	self.round_score_panel.show()
 	self.round_score_panel.size.x = 0
-	while(self.round_score_panel.size.x < self.score_panel.size.x):
-		await get_tree().create_timer(0.01).timeout
-		round_score_panel.size.x =round_score_panel.size.x + 4
+	await create_tween().tween_property(
+		self.round_score_panel,
+		'size:x',
+		self.score_panel.size.x,
+		2
+	).finished
+	# while(self.round_score_panel.size.x < self.score_panel.size.x):
+	# 	await get_tree().create_timer(0.01).timeout
+	# 	round_score_panel.size.x =round_score_panel.size.x + 4
 	self.round_score_label.show()
 
 
@@ -87,6 +98,3 @@ func update_round_score()-> void:
 	await self.show_final_score_panel()	
 	self.round_score = self.points * self.multiplier
 	self.zero_score()
-	
-	
-	

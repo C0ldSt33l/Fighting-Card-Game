@@ -62,7 +62,6 @@ func _ready() -> void:
 
 		#TODO: make it depend on run progression (enemy rarity/type, lvl or etc.)
 		c.image_rect.modulate += colors[i]
-		print(colors[i])
 		var col := colors[i]
 		col.s = 100
 		col.v = 0.5
