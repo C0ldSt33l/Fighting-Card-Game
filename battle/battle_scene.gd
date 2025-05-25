@@ -3,12 +3,14 @@ extends Control
 
 
 @onready var timer: Timer = $Timer as Timer
-@onready var counter: Counter = $Counter as Counter
 @onready var start_button: Button = $"Start button" as Button
-@onready var hand: Hand = $Hand as Hand
-@onready var table: Table = $Table as Table
+
+@onready var counter: Counter = $Counter as Counter
+@onready var required_score: int = 2
 
 @onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
+@onready var hand: Hand = $Hand as Hand
+@onready var table: Table = $Table as Table
 
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
@@ -130,6 +132,11 @@ func end_round() -> void:
 
 	await self.counter.update_round_score()
 	await get_tree().create_timer(1).timeout
+
+	#NOTE: maybe it will await so show reward screen takes time
+	if self.counter.total_score >= self.required_score:
+		Events.battle_ended.emit()
+		return
 
 	self.combos_on_table.clear()
 

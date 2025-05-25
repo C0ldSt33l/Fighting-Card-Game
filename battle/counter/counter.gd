@@ -97,4 +97,5 @@ func show_final_score_panel() -> void:
 func update_round_score()-> void:
 	await self.show_final_score_panel()	
 	self.round_score = self.points * self.multiplier
+	self.total_score += self.round_score
 	self.zero_score()

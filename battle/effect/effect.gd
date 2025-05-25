@@ -8,9 +8,7 @@ var description: String
 var action: Callable
 var args: Array
 
-# TODO: this is shit
-# activation_time should has obj that is trigger
-# and his state to activate effect
+
 enum ACTIVATION_TIME {
 	ROUND_START,
 	ROUND_END,
