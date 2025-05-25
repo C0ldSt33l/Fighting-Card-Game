@@ -47,7 +47,7 @@ signal choosed(c: EnemyCard)
 
 func _ready() -> void:
 	self.stylebox = self.stylebox.duplicate()
-	print('ref: ', self)
+	pass
 
 
 ## Call this func after adding this node to another

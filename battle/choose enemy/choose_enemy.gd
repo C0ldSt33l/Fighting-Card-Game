@@ -37,23 +37,66 @@ var enemy_cards: Array[EnemyCard] :
 		cards.assign(self.enemy_card_container.get_children())
 		return cards
 
+@onready var enemy_card_1: EnemyCard = $"Enemy card container/Enemy card1"
+
+const CARD_SCENE := preload("res://battle/choose enemy/enemy card/enemy_card.tscn")
+
+signal animation_started
+
 
 func _ready() -> void:
-	const colors: Array[Color] = [
+	self.animation_started.connect(self.start_opening_animation)
+
+	var colors: Array[Color] = [
 		Color.RED,
 		Color.BLUE,
 		Color.GREEN,
 	]
+	colors.shuffle()
 	self.enemy_confs.shuffle()
 	var confs: Array[Dictionary] = self.enemy_confs.slice(0, 3)
 	for i in len(self.enemy_cards):
 		var c := self.enemy_cards[i]
 		var d := confs[i]
 		c.setup(d.enemy_name, d.image_path, randi_range(1, 1000))
+
 		#TODO: make it depend on run progression (enemy rarity/type, lvl or etc.)
 		c.image_rect.modulate += colors[i]
-
+		print(colors[i])
+		var col := colors[i]
+		col.s = 100
+		col.v = 0.5
+		c.stylebox.bg_color = col
 		c.choosed.connect(self.on_enemy_choosed)
+
+	await get_tree().process_frame
+	self.animation_started.emit()
+
+
+
+
+# func _process(delta):
+# 	self.enemy_cards[0].position.y -= 1
+
+
+func start_opening_animation() -> void:
+	var card_final_pos_y := self.enemy_cards[0].position.y
+	for c in self.enemy_cards:
+		c.position.y += get_window().size.y / 2 + self.enemy_cards[0].size.y
+	for i in len(self.enemy_cards):
+		var c := self.enemy_cards[i]
+		create_tween().tween_property(
+			c,
+			'rotation',
+			180,
+			2
+		)
+		await create_tween().tween_property(
+			c,
+			'position:y',
+			card_final_pos_y,
+			2
+		).finished
 
 
 func on_enemy_choosed(ec: EnemyCard) -> void:
