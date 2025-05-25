@@ -32,7 +32,7 @@ offset_bottom = 417.0
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
 layout_mode = 0
 offset_right = 893.0
-offset_bottom = 456.0
+offset_bottom = 356.0
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 metadata/_edit_lock_ = true
