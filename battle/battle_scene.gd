@@ -177,7 +177,7 @@ func play_card() -> void:
 	print('card index: ', card.index)
 	print('cards on table: ', self.cards_on_table.size() - 1)
 
-	if card.index == self.cards_on_table.size() - 1:
+	if self.card_cursor.index == self.cards_on_table.size():
 		print('end round fuck you')
 		Events.round_ended.emit()
 
