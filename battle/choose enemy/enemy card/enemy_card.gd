@@ -39,12 +39,15 @@ class_name EnemyCard
 		self.required_score_lbl.text = 'Score: %s' % [val]
 @onready var required_score_lbl: Label = $"Background/Margins/Content container/Required score"
 
+var is_mouse_inside: bool = false
+
 
 signal choosed(c: EnemyCard)
 
 
 func _ready() -> void:
 	self.stylebox = self.stylebox.duplicate()
+	print('ref: ', self)
 
 
 ## Call this func after adding this node to another
@@ -67,8 +70,24 @@ func get_enemy_data() -> Dictionary:
 
 
 func _on_background_mouse_entered() -> void:
+	self.is_mouse_inside = true
 	self.border_width = 5
 
 
 func _on_background_mouse_exited() -> void:
+	self.is_mouse_inside = false
 	self.border_width = 0
+
+
+func _on_background_gui_input(event: InputEvent) -> void:
+	if self.is_mouse_inside and event.is_action_pressed('click'):
+		self.choosed.emit(self)
+
+func _to_string() -> String:
+	return '<%s#%s>{ name: %s, image: %s, score: %s }' % [
+		'Enemy card',
+		self.get_instance_id(),
+		self.enemy_name,
+		self.image,
+		self.required_score
+	]

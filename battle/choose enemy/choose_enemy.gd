@@ -52,3 +52,9 @@ func _ready() -> void:
 		c.setup(d.enemy_name, d.image_path, randi_range(1, 1000))
 		#TODO: make it depend on run progression (enemy rarity/type, lvl or etc.)
 		c.image_rect.modulate += colors[i]
+
+		c.choosed.connect(self.on_enemy_choosed)
+
+
+func on_enemy_choosed(ec: EnemyCard) -> void:
+	print('enemy choosed')
