@@ -28,6 +28,7 @@ Effects="*res://global/effects.gd"
 Game="*res://global/game.gd"
 Events="*res://global/events.gd"
 Settings="*res://main_menu/SettingsConf.gd"
+SceneManager="*res://global/scene_manager.gd"
 
 [display]
 

@@ -12,9 +12,12 @@ offset_bottom = 120.0
 script = ExtResource("1_174wl")
 
 [node name="Background" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 120.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("2_bm3rt")
 
 [node name="MarginContainer" type="MarginContainer" parent="Background"]
