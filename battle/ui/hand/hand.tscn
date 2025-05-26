@@ -36,7 +36,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/Panel/MarginContainer"]
 layout_mode = 2
-theme_override_constants/h_separation = 120
+theme_override_constants/h_separation = 30
 columns = 4
 
 [node name="Button container" type="HBoxContainer" parent="VBoxContainer"]

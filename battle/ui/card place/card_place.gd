@@ -21,7 +21,7 @@ func get_card() -> Card:
 
 func add_card(c: Card) -> void:
 	self.panel.add_child(c)
-	c.size = self.card.background.size
+	# c.size = self.card.background.size
 	c.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)
 
 	self.card = c

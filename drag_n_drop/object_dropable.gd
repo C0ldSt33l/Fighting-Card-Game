@@ -1,6 +1,7 @@
 extends Control
 class_name ObjectDropable
 
+var held_data: Variant
 var check: Callable
 
 
