@@ -9,7 +9,9 @@ const PLACE_SCENE := preload("res://battle/ui/card place/card_place.tscn")
 
 func _ready() -> void:
 	for i in self.place_count:
-		self.places.add_child(PLACE_SCENE.instantiate())
+		var p: CardPlace = PLACE_SCENE.instantiate()
+		self.places.add_child(p)
+		p.index = i
 
 
 func get_cards() -> Array[Card]:

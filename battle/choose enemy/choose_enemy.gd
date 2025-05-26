@@ -37,7 +37,6 @@ var enemy_cards: Array[EnemyCard] :
 		cards.assign(self.enemy_card_container.get_children())
 		return cards
 
-@onready var enemy_card_1: EnemyCard = $"Enemy card container/Enemy card1"
 
 const CARD_SCENE := preload("res://battle/choose enemy/enemy card/enemy_card.tscn")
 

@@ -4,6 +4,7 @@ class_name CardPlace
 const SIZE: Vector2i = Vector2i(40, 40)
 
 @onready var panel: ObjectDropable = $Panel as ObjectDropable 
+var index: int = -1
 
 
 func _ready() -> void:
