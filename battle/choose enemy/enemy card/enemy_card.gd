@@ -69,6 +69,12 @@ func get_enemy_data() -> Dictionary:
 	}
 
 
+func connect_mouse_signals() -> void:
+	self.background.mouse_entered.connect(self._on_background_mouse_entered)
+	self.background.mouse_exited.connect(self._on_background_mouse_exited)
+	self.background.gui_input.connect(self._on_background_gui_input)
+
+
 func _on_background_mouse_entered() -> void:
 	self.is_mouse_inside = true
 	self.border_width = 5
@@ -82,6 +88,7 @@ func _on_background_mouse_exited() -> void:
 func _on_background_gui_input(event: InputEvent) -> void:
 	if self.is_mouse_inside and event.is_action_pressed('click'):
 		self.choosed.emit(self)
+
 
 func _to_string() -> String:
 	return '<%s#%s>{ name: %s, image: %s, score: %s }' % [

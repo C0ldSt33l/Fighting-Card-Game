@@ -40,12 +40,9 @@ var enemy_cards: Array[EnemyCard] :
 
 const CARD_SCENE := preload("res://battle/choose enemy/enemy card/enemy_card.tscn")
 
-signal animation_started
 
 
 func _ready() -> void:
-	self.animation_started.connect(self.start_opening_animation)
-
 	var colors: Array[Color] = [
 		Color.RED,
 		Color.BLUE,
@@ -68,13 +65,10 @@ func _ready() -> void:
 		c.choosed.connect(self.on_enemy_choosed)
 
 	await get_tree().process_frame
-	self.animation_started.emit()
+	await self.start_opening_animation()
 
-
-
-
-# func _process(delta):
-# 	self.enemy_cards[0].position.y -= 1
+	for c in self.enemy_cards:
+		c.connect_mouse_signals()
 
 
 func start_opening_animation() -> void:
@@ -83,12 +77,6 @@ func start_opening_animation() -> void:
 		c.position.y += get_window().size.y / 2 + self.enemy_cards[0].size.y
 	for i in len(self.enemy_cards):
 		var c := self.enemy_cards[i]
-		create_tween().tween_property(
-			c,
-			'rotation',
-			180,
-			2
-		)
 		await create_tween().tween_property(
 			c,
 			'position:y',

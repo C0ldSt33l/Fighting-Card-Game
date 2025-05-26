@@ -37,4 +37,3 @@ func on_drag_completed(data: Variant, where: Variant) -> void:
 	if self != where: return
 
 	self.add_card(data)
-
