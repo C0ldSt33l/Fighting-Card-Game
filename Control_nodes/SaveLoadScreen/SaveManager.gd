@@ -4,12 +4,18 @@ extends Node
 
 const SAVE_PATH = "user://saves/"
 
+var cards = []
+var combos = []
+var totems = []
+
 var data = {
 	"Money":PlayerConfig.hand_money,
-	"Cards":PlayerConfig.player_available_cards,
-	"Combo":PlayerConfig.player_available_combos,
-	"Totem":PlayerConfig.player_available_totems
+	"Cards":cards,
+	"Combo":combos,
+	"Totem":totems
 }
+
+
 
 
 func _ready() -> void:
@@ -18,9 +24,12 @@ func _ready() -> void:
 # Сохранить данные
 func save_game(name: String):
 	var file_path = SAVE_PATH + name + ".json"
-
-	var json_string = JSON.stringify(data, "  ")  # 2 spaces for pretty-print
 	
+	cards.append_array(PlayerConfig.player_available_cards)
+	combos.append_array(PlayerConfig.player_available_combos)
+	totems.append_array(PlayerConfig.player_available_totems)
+		
+	var json_string = JSON.stringify(data, "  ")  # 2 spaces for pretty-print
 	# Open and write to file
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	if not file:
@@ -61,6 +70,7 @@ func get_saves() -> Array:
 		return []
 
 	var saves = []
+	dir.list_dir_begin()
 	var file = dir.get_next()
 	print(file)
 	while file != "":

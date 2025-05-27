@@ -3,7 +3,6 @@ extends Control
 @onready var PackName : Label = $PackName
 const MAX_DISPLAYED_CARDS = 3
 
-
 var objects : Array = []
 
 var data := {}
@@ -38,11 +37,11 @@ func return_all_tags()-> Dictionary:
 var spawnPos: Vector2
 
 class DoublyLinkedListNode:
-	var data: Dictionary
+	var data
 	var prev: DoublyLinkedListNode = null
 	var next: DoublyLinkedListNode = null
 	
-	func _init(data: Dictionary):
+	func _init(data):
 		self.data = data
 
 var head: DoublyLinkedListNode = null
@@ -95,6 +94,16 @@ func move_right():
 		current = current.next
 		update_displayed_cards()
 
+func print_all_objects():
+	print("=== Все объекты в списке ===")
+	var node = head  # Начинаем с головы списка
+	var index = 0
+	while node != null:
+		print("Объект %d: %s" % [index, node.data])
+		node = node.next  # Переходим к следующему узлу
+		index += 1
+	print("=== Всего объектов: %d ===" % index)
+
 func add_objects()->void:
 	var res = Sql.select_objects_in_pack_by_id(1) #!!!!!!!!!!!!!!!!!!!!!!
 	for i in res: 
@@ -140,7 +149,5 @@ func create_combo(ComboInfo: Dictionary)->_Combo_:
 func _ready() -> void:
 	add_objects()
 	open_pack()
-	if head:
-		current = head
-		update_displayed_cards()
+	print_all_objects()
 	

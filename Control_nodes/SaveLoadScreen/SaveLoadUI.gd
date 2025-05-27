@@ -17,9 +17,10 @@ func refresh_saves():
 	var saves = Save_Manager.get_saves()
 	for save_name in saves:
 		var slot = save_slot_template.instantiate()
-		slot.set_save_name(save_name)
 		SavesListContainer.add_child(slot)
-	
+		slot.name = save_name
+		slot.button.text = save_name
+		slot.button.pressed.connect(on_save_button_input.bind(save_name))
 	if mode == "save":
 		add_add_new_button()
 
@@ -31,8 +32,12 @@ func add_add_new_button():
 	slot.button.text = "+"
 
 func _on_add_button_gui_input():
-	var name = "save_%d" % (Save_Manager.get_saves().size() + 1)
+	var name = "save_%s" % [Save_Manager.get_saves().size() + 1]
 	if mode == "save":
 		Events.save_game.emit(name)
 		refresh_saves()
 	selected_save_name = name
+
+func on_save_button_input(name: String):
+	if mode == "save":
+		Events.save_game.emit(name)
