@@ -77,7 +77,7 @@ func _ready() -> void:
 	Events.drag_completed.connect(
 		func (f, s):
 			print('-----------------')
-			for p: CardPlace in self.table.places.get_children():
+			for p: CardPlace in self.table.card_places_container.get_children():
 				print('c: ', p.card)
 				print('d: ', p.panel.held_data)
 				print()
