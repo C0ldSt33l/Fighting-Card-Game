@@ -74,14 +74,14 @@ func _ready() -> void:
 		combo_exit = self.on_combo_exit,
 	})
 
-	Events.drag_completed.connect(
-		func (f, s):
-			print('-----------------')
-			for p: CardPlace in self.table.card_places_container.get_children():
-				print('c: ', p.card)
-				print('d: ', p.panel.held_data)
-				print()
-	)
+	# Events.drag_completed.connect(
+	# 	func (f, s):
+	# 		print('-----------------')
+	# 		for p: CardPlace in self.table.card_places_container.get_children():
+	# 			print('c: ', p.card)
+	# 			print('d: ', p.panel.held_data)
+	# 			print()
+	# )
 
 	#TODO: move init seg in separate func
 	self.reroll_btn.pressed.connect(self.reroll)

@@ -254,4 +254,3 @@ func connect_battle_signals() -> void:
 		score_multiplier_updated = self.score_multiplier_updated_log ,
 		score_total_score_updated = self.score_total_score_updated_log ,
 	})
-

@@ -2,6 +2,7 @@ extends Control
 class_name Combo
 
 const MAX_LVL := 2
+@onready var panel_container: HBoxContainer = $PanelContainer as HBoxContainer
 
 var index: int
 
@@ -19,24 +20,25 @@ var first_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[0]
 var last_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[-1]
-var length: int :
-	get(): return self.cards.size()
+@export var length: int = 1
 
 var effects: Array[Effect]
 
 
 func _init(
-	name: String,
-	props: Dictionary,
-	effect: Effect,
-	cards: Array[Card],
+	name: String = '',
+	conf: Dictionary = {},
+	effect: Effect = Effects.get_effect('Feint'),
+	cards: Array[Card] = []
 ) -> void:
-	self.combo_name = name
-	for p in props:
-		self[p] = props[p]
-	self.cards = cards
-	self.bind_effect(effect)
-	Events.obj_created.emit(self)
+	pass
+
+
+func _ready() -> void:
+	if self.length > 1:
+		var p: Panel = self.panel_container.get_child(0)
+		for i in length - 1:
+			self.panel_container.add_child(p.duplicate())
 
 
 func count_card_by_tag(tag: String) -> int:
