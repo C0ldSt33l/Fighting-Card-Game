@@ -43,7 +43,7 @@ const SCORE_FACTOR_CHANGE_PLACEHOLDER := 'Score: factor ' + NUMBER_CHANGE_PLACEH
 const SCORE_TOTAL_SCORE_CHANGE_PLACEHOLDER := 'Score: total score ' + NUMBER_CHANGE_PLACEHOLDER
 
 '''
-Possible colorful log elements:
+Possible Utils.colorful log elements:
 - log type: ?
 - obj name: white
 - obj type: ? (maybe yellow)
@@ -69,32 +69,32 @@ func put_text(text: String) -> void:
 func obj_created_log(obj: Variant) -> void:
 	var type_and_name := self.get_obj_type_and_name(obj)
 	self.put_text(OBJ_CREATED_PLACEHOLDER % [
-		colorful(type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(type_and_name[1], OBJ_NAME_COLOR),
 	]) 
 
 func obj_has_destroyed_log(obj: Variant) -> void:
 	var type_and_name := self.get_obj_type_and_name(obj)
 	self.put_text(OBJ_DESTROYED_PLACEHOLDER % [
-		colorful(type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(type_and_name[1], OBJ_NAME_COLOR),
 	])
 
 func obj_prop_changed_log(obj: Variant, prop: StringName, old: Variant, new: Variant) -> void:
 	var type := self.get_obj_type_and_name(obj)[0]
 	self.put_text(OBJ_PROP_CHANGE_PLACEHOLDER % [
-		colorful(type, OBJ_TYPE_COLOR),
-		colorful(prop, Color.WHITE),
-		colorful(str(old), SCORE_OLD_VAL_COLOR),
-		colorful(str(new), SCORE_NEW_VAL_COLOR),
+		Utils.colorful(type, OBJ_TYPE_COLOR),
+		Utils.colorful(prop, Color.WHITE),
+		Utils.colorful(str(old), SCORE_OLD_VAL_COLOR),
+		Utils.colorful(str(new), SCORE_NEW_VAL_COLOR),
 	])
 
 
 func battle_started_log():
-	self.put_text(colorful(BATTLE_STARTED_PLACEHOLDER, Color.WHITE))
+	self.put_text(Utils.colorful(BATTLE_STARTED_PLACEHOLDER, Color.WHITE))
 
 func battle_ended_log():
-	self.put_text(colorful(BATTLE_ENDED_PLACEHOLDER, Color.WHITE))
+	self.put_text(Utils.colorful(BATTLE_ENDED_PLACEHOLDER, Color.WHITE))
 
 
 func round_preparation_started_log():
@@ -113,48 +113,48 @@ func round_exit_log():
 func card_started_log(c: Card) -> void:
 	var type_and_name := self.get_obj_type_and_name(c)
 	self.put_text(CARD_STARTED_PLACEHOLDER % [
-		colorful(type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(type_and_name[1], OBJ_NAME_COLOR),
-		colorful(str(c.point), OBJ_PROP_COLOR),
-		colorful(str(c.factor), OBJ_PROP_COLOR),
+		Utils.colorful(type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(str(c.point), OBJ_PROP_COLOR),
+		Utils.colorful(str(c.factor), OBJ_PROP_COLOR),
 	])
 
 func card_ended_log(c: Card) -> void:
 	var type_and_name := self.get_obj_type_and_name(c)
 	self.put_text(CARD_ENDED_PLACEHOLDER % [
-		colorful(type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(type_and_name[1], OBJ_NAME_COLOR),
 	])
 
 func card_exit_log(c: Card) -> void:
 	var type_and_name := self.get_obj_type_and_name(c)
 	self.put_text(EXIT_FROM_PLACEHOLDER % [
-		colorful(type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(type_and_name[1], OBJ_NAME_COLOR),
 	])
 
 
 func combo_started_log(c: Combo) -> void:
 	var type_and_name := self.get_obj_type_and_name(c)
 	self.put_text(COMBO_STARTED_PLACEHOLDER % [
-		colorful(type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(type_and_name[1], OBJ_NAME_COLOR),
-		colorful(str(c.point), OBJ_PROP_COLOR),
-		colorful(str(c.factor), OBJ_PROP_COLOR),
+		Utils.colorful(type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(str(c.point), OBJ_PROP_COLOR),
+		Utils.colorful(str(c.factor), OBJ_PROP_COLOR),
 	])
 
 func combo_ended_log(c: Combo) -> void:
 	var type_and_name := self.get_obj_type_and_name(c)
 	self.put_text(COMBO_ENDED_PLACEHOLDER % [
-		colorful(type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(type_and_name[1], OBJ_NAME_COLOR),
 	])
 
 func combo_exit_log(c: Combo) -> void:
 	var type_and_name := self.get_obj_type_and_name(c)
 	self.put_text(EXIT_FROM_PLACEHOLDER % [
-		colorful(type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(type_and_name[1], OBJ_NAME_COLOR),
 	])
 
 
@@ -163,47 +163,47 @@ func effect_applyed_log(e: Effect) -> void:
 	var target_type_and_name := self.get_obj_type_and_name(e.target)
 	var caster_type_and_name := self.get_obj_type_and_name(e.caster)
 	self.put_text(EFFECT_APPLYED_PLACEHOLDER % [
-		colorful(effect_type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(effect_type_and_name[1], OBJ_NAME_COLOR),	
-		colorful(target_type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(target_type_and_name[1], OBJ_NAME_COLOR),
-		colorful(caster_type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(caster_type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(effect_type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(effect_type_and_name[1], OBJ_NAME_COLOR),	
+		Utils.colorful(target_type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(target_type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(caster_type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(caster_type_and_name[1], OBJ_NAME_COLOR),
 	])
 
 func effect_activated_log(e: Effect) -> void:
 	var effect_type_and_name := self.get_obj_type_and_name(e)
 	var target_type_and_name := self.get_obj_type_and_name(e.target)
 	self.put_text(EFFECT_ACTIVATED_PLACEHOLDER % [
-		colorful(effect_type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(effect_type_and_name[1], OBJ_NAME_COLOR),	
-		colorful(target_type_and_name[0], OBJ_TYPE_COLOR),
-		colorful(target_type_and_name[1], OBJ_NAME_COLOR),
+		Utils.colorful(effect_type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(effect_type_and_name[1], OBJ_NAME_COLOR),	
+		Utils.colorful(target_type_and_name[0], OBJ_TYPE_COLOR),
+		Utils.colorful(target_type_and_name[1], OBJ_NAME_COLOR),
 	])
 
 
 func score_points_updated_log(old: int, new: int, diff: int) -> void:
 	var diff_color := SCORE_NEGATIVE_DIFF_COLOR if diff < 0 else SCORE_DIFF_COLOR
 	self.put_text(SCORE_POINTS_CHANGE_PLACEHOLDER % [
-		colorful(str(old), SCORE_OLD_VAL_COLOR),
-		colorful(str(new), SCORE_NEW_VAL_COLOR),
-		colorful(str(diff), diff_color),
+		Utils.colorful(str(old), SCORE_OLD_VAL_COLOR),
+		Utils.colorful(str(new), SCORE_NEW_VAL_COLOR),
+		Utils.colorful(str(diff), diff_color),
 	])
 
 func score_multiplier_updated_log(old: int, new: int, diff: int) -> void:
 	var diff_color := SCORE_NEGATIVE_DIFF_COLOR if diff < 0 else SCORE_DIFF_COLOR
 	self.put_text(SCORE_FACTOR_CHANGE_PLACEHOLDER % [
-		colorful(str(old), SCORE_OLD_VAL_COLOR),
-		colorful(str(new), SCORE_NEW_VAL_COLOR),
-		colorful(str(diff), diff_color),
+		Utils.colorful(str(old), SCORE_OLD_VAL_COLOR),
+		Utils.colorful(str(new), SCORE_NEW_VAL_COLOR),
+		Utils.colorful(str(diff), diff_color),
 	])
 
 func score_total_score_updated_log(old: int, new: int, diff: int) -> void:
 	var diff_color := SCORE_NEGATIVE_DIFF_COLOR if diff < 0 else SCORE_DIFF_COLOR
 	self.put_text(SCORE_TOTAL_SCORE_CHANGE_PLACEHOLDER % [
-		colorful(str(old), SCORE_OLD_VAL_COLOR),
-		colorful(str(new), SCORE_NEW_VAL_COLOR),
-		colorful(str(diff), diff_color),
+		Utils.colorful(str(old), SCORE_OLD_VAL_COLOR),
+		Utils.colorful(str(new), SCORE_NEW_VAL_COLOR),
+		Utils.colorful(str(diff), diff_color),
 	])
 
 
@@ -213,6 +213,8 @@ func get_obj_type_and_name(obj: Variant) -> Array[String]:
 	match obj_type:
 		'Card':
 			obj_name = (obj as Card).card_name
+		'Combo':
+			obj_name = (obj as Combo).combo_name
 		# NOTE: this case for cursors
 		'Cursor':
 			obj_name = 'CardCursor' if obj.type == Cursor.TYPE.CARDS else 'ComboCursor'
@@ -253,6 +255,3 @@ func connect_battle_signals() -> void:
 		score_total_score_updated = self.score_total_score_updated_log ,
 	})
 
-
-static func colorful(text: String, c: Color) -> String:
-	return '[color=#%s]%s[/color]' % [c.to_html(), text]

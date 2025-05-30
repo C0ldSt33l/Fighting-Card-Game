@@ -97,6 +97,9 @@ static func get_array_with_uniq_nums(size: int, max: int) -> Array[int]:
 			arr.append(n)
 	return arr
 
+static func colorful(text: String, c: Color) -> String:
+	return '[color=#%s]%s[/color]' % [c.to_html(), text]
+
 
 static func panic(err_text: String) -> void:
 	var nil = null

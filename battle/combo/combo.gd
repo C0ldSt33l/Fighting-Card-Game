@@ -1,10 +1,11 @@
+extends Control
 class_name Combo
 
 const MAX_LVL := 2
 
 var index: int
 
-var name: String
+var combo_name: String
 var description: String
 
 var price: int
@@ -30,7 +31,7 @@ func _init(
 	effect: Effect,
 	cards: Array[Card],
 ) -> void:
-	self.name = name
+	self.combo_name = name
 	for p in props:
 		self[p] = props[p]
 	self.cards = cards
