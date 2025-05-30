@@ -26,9 +26,12 @@ func _ready() -> void:
 
 func __setup_card_places() -> void:
 	for i in self.card_place_count:
-		var p: CardPlace = CARD_PLACE_SCENE.instantiate()
-		self.card_places_container.add_child(p)
-		p.index = i
+		Utils.Factory.create_with_binding(
+			self.card_places_container,
+			CARD_PLACE_SCENE,
+			func (p: CardPlace):
+				p.index = i
+		)
 
 
 func __setup_combo_places() -> void:
@@ -39,9 +42,12 @@ func __setup_combo_places() -> void:
 		combo_idxs.append(i)
 
 	for idx in combo_idxs:
-		var p: ComboPlace = COMBO_PLACE_SCENE.instantiate()
-		self.combo_places_container.add_child(p)
-		p.index = idx
+		Utils.Factory.create_with_binding(
+			self.combo_places_container,
+			COMBO_PLACE_SCENE,
+			func (p: ComboPlace):
+				p.index = idx
+		)
 
 
 func __setup_combo_place_container() -> void:

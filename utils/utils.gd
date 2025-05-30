@@ -81,6 +81,18 @@ class Filter:
 				return e.reset_time == Effect.RESET_TIME.COMBO and (e.caster == c if e.target is not Combo else e.target == c)
 		)
 
+class Factory:
+	static func create(scene: PackedScene, modifier: Callable) -> Node:
+		var obj := scene.instantiate()
+		modifier.call(obj)
+		return obj
+
+	static func create_with_binding(parent: Node, scene: PackedScene, modifier) -> Node:
+		var obj := create(scene, modifier)
+		parent.add_child(obj)
+		return obj
+
+
 static func exlude_array(from: Array, what: Array) -> Array:
 	var res := from.filter(
 		func (el) -> bool:
