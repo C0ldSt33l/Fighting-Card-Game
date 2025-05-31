@@ -20,23 +20,15 @@ var factor: int
 
 var upgrade_lvl: int = 1
 
+@export var length: int = 1
+var pattern: Array[Dictionary]		
 var cards: Array[Card] = []
 var first_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[0]
 var last_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[-1]
-@export var length: int = 1
 
 var effects: Array[Effect]
-
-
-func _init(
-	name: String = '',
-	conf: Dictionary = {},
-	effect: Effect = Effects.get_effect('Feint'),
-	cards: Array[Card] = []
-) -> void:
-	pass
 
 
 func _ready() -> void:
@@ -52,9 +44,6 @@ func _ready() -> void:
 		'panel',
 		last_panel_stylebox
 	)
-
-	await get_tree().create_timer(1).timeout
-	self.scale -= Vector2(0.5, 0.5)
 
 
 func count_card_by_tag(tag: String) -> int:

@@ -16,22 +16,22 @@ var COMBOS := {
 		],
 		'effect': 'Multiplier+'
 	},
-	# 'Big Combo':
-	# {
-	# 	'props': {
-	# 		'description': 'big Started combo',
-	# 		'price': 25,
-	# 		'points': 10,
-	# 		'factor': 2,
-	# 	},
-	# 	'patterns':
-	# 	[
-	# 		{ 'card_name': 'fist' },
-	# 		{ 'card_name': 'knee strike' },
-	# 		{ 'card_name': 'elbow' },
-	# 	],
-	# 	'effect': 'Card enchancment'
-	# }
+	'Big Combo':
+	{
+		'props': {
+			'description': 'big Started combo',
+			'price': 25,
+			'points': 10,
+			'factor': 2,
+		},
+		'patterns':
+		[
+			{ 'card_name': 'fist' },
+			{ 'card_name': 'knee strike' },
+			{ 'card_name': 'elbow' },
+		],
+		'effect': 'Card enchancment'
+	}
 }
 
 

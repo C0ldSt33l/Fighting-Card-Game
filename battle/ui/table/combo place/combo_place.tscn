@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b3fho4jdnmy7a"]
 
-[ext_resource type="Script" path="res://battle/ui/combo place/combo_place.gd" id="1_8vcyc"]
+[ext_resource type="Script" path="res://battle/ui/table/combo place/combo_place.gd" id="1_7uyh2"]
 [ext_resource type="Script" path="res://drag_n_drop/object_dropable.gd" id="1_x3ebf"]
 
 [node name="Combo place" type="Control"]
@@ -9,7 +9,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 20.0
 offset_bottom = 20.0
-script = ExtResource("1_8vcyc")
+script = ExtResource("1_7uyh2")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

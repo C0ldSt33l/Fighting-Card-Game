@@ -7,6 +7,7 @@ var card_places: Array[CardPlace] :
 		var a: Array[CardPlace]
 		a.assign(self.card_places_container.get_children())
 		return a
+
 @onready var combo_places_container: HBoxContainer = $VBoxContainer/MarginContainer/ComboPlaces as HBoxContainer
 var combo_places: Array[ComboPlace] :
 	get():
@@ -15,8 +16,8 @@ var combo_places: Array[ComboPlace] :
 		return a
 var card_place_count: int = PlayerConfig.hand_size
 
-const CARD_PLACE_SCENE := preload("res://battle/ui/card place/card_place.tscn")
-const COMBO_PLACE_SCENE := preload("res://battle/ui/combo place/combo_place.tscn")
+var CARD_PLACE_TEMPLATE: CardPlace = preload("res://battle/ui/table/card place/card_place.tscn").instantiate() as CardPlace
+var COMBO_PLACE_TEMPLATE: ComboPlace = preload("res://battle/ui/table/combo place/combo_place.tscn").instantiate() as ComboPlace
 
 
 func _ready() -> void:
@@ -28,7 +29,7 @@ func __setup_card_places() -> void:
 	for i in self.card_place_count:
 		Utils.Factory.create_with_binding(
 			self.card_places_container,
-			CARD_PLACE_SCENE,
+			CARD_PLACE_TEMPLATE,
 			func (p: CardPlace):
 				p.index = i
 		)
@@ -44,7 +45,7 @@ func __setup_combo_places() -> void:
 	for idx in combo_idxs:
 		Utils.Factory.create_with_binding(
 			self.combo_places_container,
-			COMBO_PLACE_SCENE,
+			COMBO_PLACE_TEMPLATE,
 			func (p: ComboPlace):
 				p.index = idx
 		)

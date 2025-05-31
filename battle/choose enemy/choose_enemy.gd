@@ -86,4 +86,6 @@ func start_opening_animation() -> void:
 
 
 func on_enemy_choosed(ec: EnemyCard) -> void:
+	#TODO: move in new scene:
+	#choose enemy -> loading -> battle
 	print('enemy choosed')
