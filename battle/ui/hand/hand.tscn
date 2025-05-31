@@ -8,13 +8,13 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -264.0
-offset_bottom = -328.0
+offset_right = -448.0
+offset_bottom = -424.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bvbxc")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,34 +22,45 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="PanelContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1.5
+size_flags_stretch_ratio = 2.0
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/Panel"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/Panel/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="HBoxContainer/VBoxContainer/Panel/MarginContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 30
 columns = 4
 
-[node name="Button container" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Button container" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Reroll btn" type="Button" parent="VBoxContainer/Button container"]
+[node name="Reroll btn" type="Button" parent="HBoxContainer/VBoxContainer/Button container"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "Reroll: "
 
-[node name="Card sorter" parent="VBoxContainer/Button container" instance=ExtResource("2_ec17v")]
+[node name="Card sorter" parent="HBoxContainer/VBoxContainer/Button container" instance=ExtResource("2_ec17v")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Combo Panel" type="Panel" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Combo Container" type="VBoxContainer" parent="HBoxContainer/Combo Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

@@ -116,9 +116,7 @@ func start_round() -> void:
 	self.cards_on_table = self.table.get_cards()
 	if self.cards_on_table.size() == 0: return 
 
-
 	self.start_button.disabled = true
-	self.check_combos()
 
 	Events.round_started.emit()
 	self.round_count -= 1
@@ -234,32 +232,6 @@ func get_hand_configs(size: int) -> Array[Dictionary]:
 		.map(func (el: int): return self.deck_dict[el])
 	)
 	return hand_confs
-
-
-func check_combos() -> void:
-	var i := 0
-	var combo_idx := 0
-	var step: int
-	while i < self.cards_on_table.size():
-		step = 1
-		for combo_name in self.available_combos:
-			var combo := self.create_combo(
-				combo_name,
-				self.cards_on_table.slice(i)
-			)
-			if combo != null:
-				combo.index = combo_idx
-				self.combos_on_table.append(combo)
-
-				step = combo.length
-				combo_idx += 1
-				break
-		i += step
-
-
-func create_combo(name: StringName, cards: Array[Card]) -> Combo:
-	var combo := ComboFactory.create(name, cards)
-	return combo
 
 
 func add_effect(e: Effect) -> void:

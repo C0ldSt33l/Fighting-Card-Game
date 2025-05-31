@@ -1,10 +1,10 @@
 class_name Hand
 extends Control
 
-@onready var card_container: GridContainer = $VBoxContainer/Panel/MarginContainer/GridContainer as GridContainer
+@onready var card_container: GridContainer = $HBoxContainer/VBoxContainer/Panel/MarginContainer/GridContainer as GridContainer
 
-@onready var card_sorter: CardSorter = $"VBoxContainer/Button container/Card sorter" as CardSorter
-@onready var reroll_btn: Button = $'VBoxContainer/Button container/Reroll btn' as Button
+@onready var card_sorter: CardSorter = $"HBoxContainer/VBoxContainer/Button container/Card sorter" as CardSorter
+@onready var reroll_btn: Button = $'HBoxContainer/VBoxContainer/Button container/Reroll btn' as Button
 
 var card_count_per_row: int = PlayerConfig.hand_size
 

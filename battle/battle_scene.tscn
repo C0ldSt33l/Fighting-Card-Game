@@ -42,10 +42,10 @@ offset_bottom = 40.0
 
 [node name="Table" parent="." instance=ExtResource("3_aygk4")]
 layout_mode = 1
-offset_left = 448.0
-offset_top = 256.0
-offset_right = 1152.0
-offset_bottom = 356.0
+offset_left = 443.0
+offset_top = 184.0
+offset_right = 1147.0
+offset_bottom = 284.0
 
 [node name="Hand" parent="." instance=ExtResource("4_va1qn")]
 layout_mode = 1
