@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cp47xxnw14oip"]
+[gd_scene load_steps=4 format=3 uid="uid://cp47xxnw14oip"]
 
 [ext_resource type="Script" path="res://battle/ui/hand/hand.gd" id="1_bvbxc"]
+[ext_resource type="PackedScene" uid="uid://c6tjx4a3bn260" path="res://battle/combo/combo.tscn" id="2_d1k6k"]
 [ext_resource type="PackedScene" uid="uid://frgofpu2jt4a" path="res://battle/ui/card sotrer/card sorter.tscn" id="2_ec17v"]
 
 [node name="Hand" type="Control"]
@@ -22,8 +23,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Combo Panel" type="Panel" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Combo Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+
+[node name="Combo Container" type="VBoxContainer" parent="HBoxContainer/Combo Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Combo" parent="HBoxContainer/Combo Panel/MarginContainer/Combo Container" instance=ExtResource("2_d1k6k")]
+layout_mode = 2
+
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
 
 [node name="Panel" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -56,11 +79,3 @@ text = "Reroll: "
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="Combo Panel" type="Panel" parent="HBoxContainer"]
-layout_mode = 2
-
-[node name="Combo Container" type="VBoxContainer" parent="HBoxContainer/Combo Panel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0

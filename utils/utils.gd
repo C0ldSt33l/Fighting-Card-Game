@@ -82,12 +82,12 @@ class Filter:
 		)
 
 class Factory:
-	static func create(scene: PackedScene, modifier: Callable) -> Node:
+	static func create(scene: PackedScene, modifier: Callable = func (o): return o) -> Node:
 		var obj := scene.instantiate()
 		modifier.call(obj)
 		return obj
 
-	static func create_with_binding(parent: Node, scene: PackedScene, modifier) -> Node:
+	static func create_with_binding(parent: Node, scene: PackedScene, modifier: Callable = func (o): return o) -> Node:
 		var obj := create(scene, modifier)
 		parent.add_child(obj)
 		return obj

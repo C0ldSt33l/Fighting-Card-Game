@@ -3,6 +3,11 @@ class_name Combo
 
 const MAX_LVL := 2
 @onready var panel_container: HBoxContainer = $PanelContainer as HBoxContainer
+var panels: Array[Panel] :
+	get():
+		var a: Array[Panel]
+		a.assign(self.panel_container.get_children())
+		return a
 
 var index: int
 
@@ -39,6 +44,17 @@ func _ready() -> void:
 		var p: Panel = self.panel_container.get_child(0)
 		for i in length - 1:
 			self.panel_container.add_child(p.duplicate())
+	
+	var last_panel := self.panels[-1]
+	var last_panel_stylebox := StyleBoxFlat.new()
+	last_panel_stylebox.bg_color = Color.RED
+	last_panel.add_theme_stylebox_override(
+		'panel',
+		last_panel_stylebox
+	)
+
+	await get_tree().create_timer(1).timeout
+	self.scale -= Vector2(0.5, 0.5)
 
 
 func count_card_by_tag(tag: String) -> int:
