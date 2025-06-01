@@ -215,21 +215,17 @@ func spawn_card(conf: Dictionary) -> void:
 	self.cards_in_hand.append(card)
 
 func spawn_combo(name: String, conf: Dictionary) -> void:
-	var combo := Utils.Factory.create(
+	var combo: Combo = Utils.Factory.create(
 		self.COMBO_TEMPLATE,
 		func (c: Combo):
-			print('pattern before: ', c.pattern)
 			c.combo_name = name
 			c.pattern.append_array(conf.pattern)
-			# c.length = conf.pattern.size()
 			c.effects.append(Effects.get_effect(conf.effect))
 			for p in conf.props:
 				c[p] = conf.props[p]
-
-			c.scale /= 2
 	)
-	print('pattern after: ', combo.pattern)
 	self.hand.add_combo(combo)
+	combo.make_little_view()
 
 
 func reroll() -> void:

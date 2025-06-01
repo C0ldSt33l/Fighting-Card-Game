@@ -47,6 +47,16 @@ func _ready() -> void:
 	)
 
 
+func make_default_view() -> void:
+	self.custom_minimum_size *= 2
+	self.panel_container.scale *= 2
+
+
+func make_little_view() -> void:
+	self.custom_minimum_size /= 2
+	self.panel_container.scale /= 2
+
+
 func count_card_by_tag(tag: String) -> int:
 	var count := 0
 	for c in self.cards:
