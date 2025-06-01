@@ -12,6 +12,7 @@ extends Control
 @onready var hand: Hand = $Hand as Hand
 @onready var table: Table = $Table as Table
 
+var CARD_TEMPLATE: Card = preload("res://battle/card/card.tscn").instantiate() as Card
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
 var card_cursor: Cursor = Cursor.new(Cursor.TYPE.CARDS)
@@ -23,7 +24,8 @@ var last_card: Card :
 	get(): return self.cards_on_table[-1] if self.cards_on_table.size() > 0 else null
 var played_cards: Array[Card] = []
 
-var available_combos: Array = Combos.COMBOS.keys()
+var COMBO_TEMPLATE: Combo = preload("res://battle/combo/combo.tscn").instantiate() as Combo
+var available_combos: Dictionary = Combos.COMBOS
 var combos_on_table: Array[Combo] = []
 var combo_cursor: Cursor = Cursor.new(Cursor.TYPE.COMBOS)
 var cur_combo: Combo :
@@ -50,9 +52,9 @@ var earned_money: int = 0
 var effects: Array[Effect] = []
 var used_effects: Array[Effect]= []
 
-# If `true` allow to play card by pressing `Enter` or `Space`
 # TODO: move to config file
-var is_turn_based_mode := true 
+# If `true` allow to play card by pressing `Enter` or `Space`
+var is_turn_based_mode: bool = true 
 
 signal next_card_key_pressed
 
@@ -106,6 +108,9 @@ func start_round_preparation() -> void:
 	var confs := self.get_hand_configs(hand_size)
 	for c in confs:
 		self.spawn_card(c)
+
+	for combo_name in self.available_combos:
+		self.spawn_combo(combo_name, self.available_combos[combo_name])
 	
 	var e := Effects.get_effect('Multiplying')
 	self.cards_in_hand[0].bind_effect(e)
@@ -208,6 +213,23 @@ func spawn_card(conf: Dictionary) -> void:
 	)
 	self.hand.add_card(card)
 	self.cards_in_hand.append(card)
+
+func spawn_combo(name: String, conf: Dictionary) -> void:
+	var combo := Utils.Factory.create(
+		self.COMBO_TEMPLATE,
+		func (c: Combo):
+			print('pattern before: ', c.pattern)
+			c.combo_name = name
+			c.pattern.append_array(conf.pattern)
+			# c.length = conf.pattern.size()
+			c.effects.append(Effects.get_effect(conf.effect))
+			for p in conf.props:
+				c[p] = conf.props[p]
+
+			c.scale /= 2
+	)
+	print('pattern after: ', combo.pattern)
+	self.hand.add_combo(combo)
 
 
 func reroll() -> void:

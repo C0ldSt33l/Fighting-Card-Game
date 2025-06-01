@@ -1,37 +1,45 @@
 extends Node
 
-var COMBOS := {
-	'Standart Combo':
-	{
+const COMBOS := {
+	'Standart Combo': {
 		'props': {
 			'description': 'Started combo',
 			'price': 15,
-			'points': 10,
+			'point': 10,
 			'factor': 2,
 		},
-		'patterns':
-		[
+		'pattern': [
 			{ 'card_name': 'kick' },
-			{ 'type': Card.BODY_PART.LEG },
+			{ 'body_part': Card.BODY_PART.LEG },
 		],
-		'effect': 'Multiplier+'
+		'effect': 'Multiplying'
 	},
-	'Big Combo':
-	{
+	'Big Combo': {
 		'props': {
 			'description': 'big Started combo',
 			'price': 25,
-			'points': 10,
+			'point': 10,
 			'factor': 2,
 		},
-		'patterns':
-		[
+		'pattern': [
 			{ 'card_name': 'fist' },
 			{ 'card_name': 'knee strike' },
 			{ 'card_name': 'elbow' },
 		],
 		'effect': 'Card enchancment'
-	}
+	},
+	'Shord combo': {
+		'props': {
+			'description': 'Made of one card',
+			'price': 5,
+			'point': 5,
+			'factor': 1,
+		},
+		'pattern': [
+			{ 'body_part': Card.BODY_PART.HAND },
+		],
+		'effect': 'First strike'
+	},
 }
 
 
@@ -39,12 +47,12 @@ func get_combo_props(name: String) -> Dictionary:
 	return self.COMBOS[name]['props']
 
 
-func get_combo_patterns(name: String) -> Array[Dictionary]:
+func get_combo_pattern(name: String) -> Array[Dictionary]:
 	var patterns: Array[Dictionary]
-	patterns.assign(self.COMBOS[name]['patterns'])
+	patterns.assign(self.COMBOS[name]['pattern'])
 	return patterns
 
 
 func get_combo_effect(name: String) -> Effect:
 	var effect_name := self.COMBOS[name]['effect'] as String
-	return Effects.EFFECTS[effect_name].clone()
+	return Effects.get_effect(effect_name)

@@ -24,21 +24,23 @@ func _ready() -> void:
 
 
 func add_card(c: Card) -> void:
-	self.card_segment.card_container.add_child(c)
+	self.card_segment.add_card(c)
+
+
+func add_card_at_pos(c: Card, pos: int) -> void:
+	self.card_segment.add_card_at_pos(c, pos)
 
 
 func remove_card(c: Card) -> void:
-	self.card_segment.card_container.remove_child(c)
+	self.card_segment.remove_card(c)
 
 
-func remove_card_by_pos(pos: int):
-	var c := self.card_segment.card_container.get_child(pos)
-	self.card_segment.card_container.remove_child(c)
+func remove_card_at_pos(pos: int):
+	self.card_segment.remove_card_at_pos(pos)
 
 
 func remove_all_cards() -> void:
-	for c in self.cards:
-		self.remove_card(c)
+	self.card_segment.remove_all_cards()
 
 
 func sort_cards(f: Callable) -> void:
@@ -46,3 +48,23 @@ func sort_cards(f: Callable) -> void:
 	cards.sort_custom(f)
 	for pos in len(cards):
 		self.card_segment.card_container.move_child(cards[pos], pos)
+
+
+func add_combo(c: Combo) -> void:
+	self.combo_seqment.add_combo(c)
+
+
+func add_combo_at_pos(c: Combo, pos: int) -> void:
+	self.combo_seqment.add_combo_at_pos(c, pos)
+
+
+func remove_combo(c: Combo) -> void:
+	self.combo_seqment.remove_combo(c)
+
+
+func remove_combo_at_pos(pos: int) -> void:
+	self.combo_seqment.remove_combo_at_pos(pos)
+
+
+func remove_all_combos() -> void:
+	self.combo_seqment.remove_all_combos()

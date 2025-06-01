@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://7rw0lvvk3h3e"]
+[gd_scene load_steps=2 format=3 uid="uid://7rw0lvvk3h3e"]
 
 [ext_resource type="Script" path="res://battle/ui/hand/combo segment/combo_seqment.gd" id="1_ec8t0"]
-[ext_resource type="PackedScene" uid="uid://c6tjx4a3bn260" path="res://battle/combo/combo.tscn" id="1_wua7x"]
 
 [node name="Combo seqment" type="Control"]
 custom_minimum_size = Vector2(170, 200)
@@ -35,7 +34,4 @@ theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 
 [node name="Combo Container" type="VBoxContainer" parent="Background/MarginContainer"]
-layout_mode = 2
-
-[node name="Combo" parent="Background/MarginContainer/Combo Container" instance=ExtResource("1_wua7x")]
 layout_mode = 2

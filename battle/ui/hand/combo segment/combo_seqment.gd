@@ -17,3 +17,22 @@ func _ready() -> void:
 
 func add_combo(c: Combo) -> void:
 	self.combo_container.add_child(c)
+
+
+func add_combo_at_pos(c: Combo, pos: int) -> void:
+	self.combo_container.add_child(c)
+	self.combo_container.move_child(c, pos)
+
+
+func remove_combo(c: Combo) -> void:
+	self.combo_container.remove_child(c)
+
+
+func remove_combo_at_pos(pos: int) -> void:
+	var c := self.combo_container.get_child(pos)
+	self.combo_container.remove_child(c)
+
+
+func remove_all_combos() -> void:
+	for c in self.combos:
+		self.combo_container.remove_child(c)

@@ -20,8 +20,8 @@ var factor: int
 
 var upgrade_lvl: int = 1
 
-@export var length: int = 1
-var pattern: Array[Dictionary]		
+var pattern: Array[Dictionary] = []
+@onready var length: int = self.pattern.size()
 var cards: Array[Card] = []
 var first_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[0]
@@ -34,6 +34,7 @@ var effects: Array[Effect]
 func _ready() -> void:
 	if self.length > 1:
 		var p: Panel = self.panel_container.get_child(0)
+		p.scale = self.scale
 		for i in length - 1:
 			self.panel_container.add_child(p.duplicate())
 	
