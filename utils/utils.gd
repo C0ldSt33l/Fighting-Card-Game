@@ -1,5 +1,6 @@
 class_name Utils
 
+## Namespace for funcs that filter `Array[Effect]`
 class Filter:
 	static func BY_ACTIVATION_TIME(effects: Array[Effect], time: Effect.ACTIVATION_TIME) -> Array[Effect]:
 		return effects.filter(
@@ -80,6 +81,18 @@ class Filter:
 				return e.reset_time == Effect.RESET_TIME.COMBO and (e.caster == c if e.target is not Combo else e.target == c)
 		)
 
+class Factory:
+	static func create(scene: Node, modifier: Callable = func (o): return o) -> Node:
+		var obj := scene.duplicate()
+		modifier.call(obj)
+		return obj
+
+	static func create_with_binding(parent: Node, scene: Node, modifier: Callable = func (o): return o) -> Node:
+		var obj := create(scene, modifier)
+		parent.add_child(obj)
+		return obj
+
+
 static func exlude_array(from: Array, what: Array) -> Array:
 	var res := from.filter(
 		func (el) -> bool:
@@ -95,6 +108,9 @@ static func get_array_with_uniq_nums(size: int, max: int) -> Array[int]:
 		if n not in arr:
 			arr.append(n)
 	return arr
+
+static func colorful(text: String, c: Color) -> String:
+	return '[color=#%s]%s[/color]' % [c.to_html(), text]
 
 
 static func panic(err_text: String) -> void:

@@ -2,12 +2,10 @@ extends Control
 class_name Card
 
 @onready var background: Panel = $Background as Panel
-@onready var name_label: Label = $Background/Name as Label
-@onready var type_label: Label = $Background/Type as Label
-@onready var dmg_label: Label = $Background/DMG as Label
+@onready var name_label: Label = $Background/MarginContainer/VBoxContainer/Name as Label
+@onready var type_label: Label = $Background/MarginContainer/VBoxContainer/Type as Label
+@onready var dmg_label: Label = $Background/MarginContainer/VBoxContainer/DMG as Label
 
-var is_dragging: bool = false
-var is_mouse_inside: bool = false
 
 enum BODY_PART {
 	HAND,
@@ -68,6 +66,9 @@ func _ready() -> void:
 	self.type_label.text = 'Type: %s' % [str(BODY_PART.keys()[self.body_part])]
 	self.dmg_label.text = 'Point: %s' % [str(self.point)]
 
+
+	# self.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)
+
 	Events.obj_created.emit(self)
 
 	
@@ -127,25 +128,3 @@ func bind_effect_arr(effs: Array[Effect]) -> void:
 
 func _exit_tree() -> void:
 	Events.obj_destroyed.emit(self)
-
-func _on_mouse_entered() -> void:
-	self.is_mouse_inside = true
-	self.background
-
-
-func _on_mouse_exited() -> void:
-	self.is_mouse_inside = false
-
-
-func _on_background_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed('click'):
-		pass
-
-
-func _get_drag_data(at_position: Vector2) -> Variant:
-	print('drag working in root node')
-	return self
-
-
-func _to_string() -> String:
-	return 'this card'

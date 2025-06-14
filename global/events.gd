@@ -12,7 +12,6 @@ signal obj_destroyed(obj: Variant)
 
 signal rerolled()
 
-signal obj_draged(obj: Variant)
 
 # BATTLE EVENTS
 signal battle_started()
@@ -42,6 +41,8 @@ signal hand_updated()
 
 # SHOP EVENTS
 
+signal drag_started(data: Variant, from: Variant)
+signal drag_completed(data: Variant, where: Variant)
 
 func connect_events(event_to_func: Dictionary) -> void:
 	for e in event_to_func:

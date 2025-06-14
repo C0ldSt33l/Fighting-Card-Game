@@ -3,14 +3,16 @@ extends Control
 
 
 @onready var timer: Timer = $Timer as Timer
-@onready var counter: Counter = $Counter as Counter
 @onready var start_button: Button = $"Start button" as Button
+
+@onready var counter: Counter = $Counter as Counter
+@onready var required_score: int = 2
+
+@onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
 @onready var hand: Hand = $Hand as Hand
 @onready var table: Table = $Table as Table
 
-@onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
-var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-
+var CARD_TEMPLATE: Card = preload("res://battle/card/card.tscn").instantiate() as Card
 var cards_on_table: Array[Card] = []
 var cards_in_hand: Array[Card] = []
 var card_cursor: Cursor = Cursor.new(Cursor.TYPE.CARDS)
@@ -22,7 +24,8 @@ var last_card: Card :
 	get(): return self.cards_on_table[-1] if self.cards_on_table.size() > 0 else null
 var played_cards: Array[Card] = []
 
-var available_combos: Array = Combos.COMBOS.keys()
+var COMBO_TEMPLATE: Combo = preload("res://battle/combo/combo.tscn").instantiate() as Combo
+var available_combos: Dictionary = Combos.COMBOS
 var combos_on_table: Array[Combo] = []
 var combo_cursor: Cursor = Cursor.new(Cursor.TYPE.COMBOS)
 var cur_combo: Combo :
@@ -32,26 +35,26 @@ var first_combo: Combo :
 var last_combo: Combo :
 	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
+@onready var round_counter: Label = $"Round counter" as Label
 # TODO: move in player config
 @onready var round_count: int = 2 :
 	set(val):
 		round_count = val
 		self.round_counter.text = str(val)
-@onready var round_counter: Label = $"Round counter" as Label
+@onready var reroll_btn: Button = (self.hand as Hand).reroll_btn
 @onready var reroll_count: int = 4 :
 	set(val):
 		reroll_count = val
-		self.reroll_button.text = 'Reroll: %s' % [val]
-@onready var reroll_button: Button = $"Reroll button" as Button
+		self.reroll_btn.text = 'Reroll: %s' % [val] 
 
 var earned_money: int = 0
 
 var effects: Array[Effect] = []
 var used_effects: Array[Effect]= []
 
-# If `true` allow to play card by pressing `Enter` or `Space`
 # TODO: move to config file
-var is_turn_based_mode := true 
+# If `true` allow to play card by pressing `Enter` or `Space`
+var is_turn_based_mode: bool = true 
 
 signal next_card_key_pressed
 
@@ -73,6 +76,17 @@ func _ready() -> void:
 		combo_exit = self.on_combo_exit,
 	})
 
+	# Events.drag_completed.connect(
+	# 	func (f, s):
+	# 		print('-----------------')
+	# 		for p: CardPlace in self.table.card_places_container.get_children():
+	# 			print('c: ', p.card)
+	# 			print('d: ', p.panel.held_data)
+	# 			print()
+	# )
+
+	#TODO: move init seg in separate func
+	self.reroll_btn.pressed.connect(self.reroll)
 	self.reroll_count = 4
 	self.round_count = 2
 
@@ -95,7 +109,11 @@ func start_round_preparation() -> void:
 	for c in confs:
 		self.spawn_card(c)
 
-	print('container card count: ', self.hand.card_count)
+	for combo_name in self.available_combos:
+		self.spawn_combo(combo_name, self.available_combos[combo_name])
+	
+	var e := Effects.get_effect('Multiplying')
+	self.cards_in_hand[0].bind_effect(e)
 
 
 # TODO: move `check_combos()` in round preparation stage
@@ -103,9 +121,7 @@ func start_round() -> void:
 	self.cards_on_table = self.table.get_cards()
 	if self.cards_on_table.size() == 0: return 
 
-
 	self.start_button.disabled = true
-	self.check_combos()
 
 	Events.round_started.emit()
 	self.round_count -= 1
@@ -128,6 +144,11 @@ func end_round() -> void:
 
 	await self.counter.update_round_score()
 	await get_tree().create_timer(1).timeout
+
+	#NOTE: maybe it will await so show reward screen takes time
+	if self.counter.total_score >= self.required_score:
+		Events.battle_ended.emit()
+		return
 
 	self.combos_on_table.clear()
 
@@ -172,7 +193,11 @@ func play_card() -> void:
 		if self.is_all_effects_activated_on(combo):
 			Events.combo_exit.emit(combo)
 
-	if card.index == self.cards_on_table.size() - 1:
+	print('card index: ', card.index)
+	print('cards on table: ', self.cards_on_table.size() - 1)
+
+	if self.card_cursor.index == self.cards_on_table.size():
+		print('end round fuck you')
 		Events.round_ended.emit()
 
 	if self.card_cursor.index == self.cards_on_table.size():
@@ -189,6 +214,19 @@ func spawn_card(conf: Dictionary) -> void:
 	self.hand.add_card(card)
 	self.cards_in_hand.append(card)
 
+func spawn_combo(name: String, conf: Dictionary) -> void:
+	var combo: Combo = Utils.Factory.create(
+		self.COMBO_TEMPLATE,
+		func (c: Combo):
+			c.combo_name = name
+			c.pattern.append_array(conf.pattern)
+			c.effects.append(Effects.get_effect(conf.effect))
+			for p in conf.props:
+				c[p] = conf.props[p]
+	)
+	self.hand.add_combo(combo)
+	combo.make_little_view()
+
 
 func reroll() -> void:
 	self.reroll_count -= 1
@@ -200,7 +238,7 @@ func reroll() -> void:
 		self.spawn_card(c)
 
 	if self.reroll_count == 0:
-		self.reroll_button.disabled = true
+		self.reroll_btn.disabled = true
 
 
 func get_hand_configs(size: int) -> Array[Dictionary]:
@@ -212,32 +250,6 @@ func get_hand_configs(size: int) -> Array[Dictionary]:
 		.map(func (el: int): return self.deck_dict[el])
 	)
 	return hand_confs
-
-
-func check_combos() -> void:
-	var i := 0
-	var combo_idx := 0
-	var step: int
-	while i < self.cards_on_table.size():
-		step = 1
-		for combo_name in self.available_combos:
-			var combo := self.create_combo(
-				combo_name,
-				self.cards_on_table.slice(i)
-			)
-			if combo != null:
-				combo.index = combo_idx
-				self.combos_on_table.append(combo)
-
-				step = combo.length
-				combo_idx += 1
-				break
-		i += step
-
-
-func create_combo(name: StringName, cards: Array[Card]) -> Combo:
-	var combo := ComboFactory.create(name, cards)
-	return combo
 
 
 func add_effect(e: Effect) -> void:
@@ -321,8 +333,11 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 			TYPE.COMBO_CURSOR:
 				effects.append(e.set_target(self.combo_cursor))
 
+			TYPE.SCORE:
+				effects.append(e.set_target(self.counter))
+
 			_:
-				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER')
+				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER: target type: %s' % [str(TYPE.keys()[e.target_type])])
 	return effects
 
 
@@ -345,6 +360,7 @@ func on_round_started() -> void:
 		[Effect.ACTIVATION_TIME.ROUND_START]
 	)
 func on_round_ended() -> void:
+	print('round is end')
 	self.reset_filtered_effects(
 		Utils.Filter.BY_RESET_TIME,
 		[Effect.RESET_TIME.ROUND]

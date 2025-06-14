@@ -1,27 +1,70 @@
 class_name Hand
 extends Control
 
-@onready var background: Panel = $Background as Panel
-@onready var margins: MarginContainer = $MarginContainer as MarginContainer
-@onready var cards: GridContainer = $MarginContainer/GridContainer as GridContainer
+@onready var combo_seqment: ComboSeqment = $"HBoxContainer/Combo seqment" as ComboSeqment
+@onready var combos: Array[Combo] :
+	get(): return self.combo_seqment.combos
 
 var card_count_per_row: int = PlayerConfig.hand_size
 
-var card_count: int :
-	get(): return self.cards.get_child_count()
+@onready var card_segment: CardSegment = $"HBoxContainer/Card Segment" as CardSegment
+@onready var cards: Array[Card] :
+	get(): return self.card_segment.cards
+@onready var card_count: int :
+	get(): return self.card_segment.card_container.get_child_count()
+
+@onready var reroll_btn: Button = self.card_segment.reroll_btn
+@onready var sort_btn
 
 
 func _ready() -> void:
-	self.cards.columns = self.card_count_per_row
-	self.background.custom_minimum_size = self.size
-	self.margins.custom_minimum_size = self.size
+	self.card_segment.card_container.columns = self.card_count_per_row
+	# self.card_sorter.sort_btn.pressed.connect(self.sort_cards)
+	self.card_segment.card_sorter.card_sorted.connect(self.sort_cards)
 
 
 func add_card(c: Card) -> void:
-	self.cards.add_child(c)
+	self.card_segment.add_card(c)
+
+
+func add_card_at_pos(c: Card, pos: int) -> void:
+	self.card_segment.add_card_at_pos(c, pos)
+
+
+func remove_card(c: Card) -> void:
+	self.card_segment.remove_card(c)
+
+
+func remove_card_at_pos(pos: int):
+	self.card_segment.remove_card_at_pos(pos)
 
 
 func remove_all_cards() -> void:
-	var cards := self.cards.get_children()
-	for c in cards:
-		self.cards.remove_child(c)
+	self.card_segment.remove_all_cards()
+
+
+func sort_cards(f: Callable) -> void:
+	var cards := self.cards
+	cards.sort_custom(f)
+	for pos in len(cards):
+		self.card_segment.card_container.move_child(cards[pos], pos)
+
+
+func add_combo(c: Combo) -> void:
+	self.combo_seqment.add_combo(c)
+
+
+func add_combo_at_pos(c: Combo, pos: int) -> void:
+	self.combo_seqment.add_combo_at_pos(c, pos)
+
+
+func remove_combo(c: Combo) -> void:
+	self.combo_seqment.remove_combo(c)
+
+
+func remove_combo_at_pos(pos: int) -> void:
+	self.combo_seqment.remove_combo_at_pos(pos)
+
+
+func remove_all_combos() -> void:
+	self.combo_seqment.remove_all_combos()

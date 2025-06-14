@@ -6,7 +6,7 @@ var EFFECTS := {
 		'Add points and multiplier to score after card is played',
 		Effect.ACTIVATION_TIME.CARD_END,
 		Effect.RESET_TIME.CARD,
-		counter_add_points_and_multipier,
+		counter_add_points_and_multiplier,
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.SCORE,
 		1,
@@ -64,6 +64,17 @@ var EFFECTS := {
 		Effect.TARGET_TYPE.CARD_CURSOR,
 		1,
 	),
+	'Multiplying': Effect.new(
+		'Multiplying',
+		'Mulitply score at the end of round',
+		Effect.ACTIVATION_TIME.ROUND_END,
+		Effect.RESET_TIME.ROUND,
+		counter_multiply_points_and_multiplier,
+		Effect.TYPE.BUFF,
+		Effect.TARGET_TYPE.SCORE,
+		1,
+		[2, 2]
+	)
 }
 
 # EFFECT FUNCS
@@ -71,10 +82,25 @@ var EFFECTS := {
 # NOTE: effect func name convetion
 # TypeName_ActionName(obj: TypeName)
 
-static func counter_add_points_and_multipier(c: Counter, points: int, mult: int) -> void:
+static func counter_add_points_and_multiplier(
+	c: Counter,
+	points: int,
+	mult: int
+) -> void:
 	c.add(points, mult)
 
-static func card_add_points_and_mulitplier(c: Card, points: int, mult: int) -> void:
+static func counter_multiply_points_and_multiplier(
+	c: Counter,
+	points: int,
+	mult: int
+) -> void:
+	c.mult(points, mult)
+
+static func card_add_points_and_mulitplier(
+	c: Card,
+	points: int,
+	mult: int
+) -> void:
 	c.points += points
 	c.multiplier += mult
 
@@ -85,9 +111,13 @@ static func card_play_prev_card(c: Cursor) -> void:
 static func card_play_again(c: Cursor) -> void:
 	c.move_back()
 
-static func card_mult_card_points_and_mult(c: Card, points_mult: int, mult_mult: int) -> void:
-	c.points *= points_mult
-	c.multiplier *= mult_mult
+static func card_mult_card_points_and_mult(
+	c: Card,
+	p_mult: int,
+	m_mult: int
+) -> void:
+	c.points *= p_mult
+	c.multiplier *= m_mult
 
 static func combo_play_again(c: Combo) -> void:
 	Game.battle.combo_cursor.move_back()

@@ -1,10 +1,17 @@
+extends Control
 class_name Combo
 
 const MAX_LVL := 2
+@onready var panel_container: HBoxContainer = $PanelContainer as HBoxContainer
+var panels: Array[Panel] :
+	get():
+		var a: Array[Panel]
+		a.assign(self.panel_container.get_children())
+		return a
 
 var index: int
 
-var name: String
+var combo_name: String
 var description: String
 
 var price: int
@@ -13,29 +20,41 @@ var factor: int
 
 var upgrade_lvl: int = 1
 
+var pattern: Array[Dictionary] = []
+@onready var length: int = self.pattern.size()
 var cards: Array[Card] = []
 var first_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[0]
 var last_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[-1]
-var length: int :
-	get(): return self.cards.size()
 
 var effects: Array[Effect]
 
 
-func _init(
-	name: String,
-	props: Dictionary,
-	effect: Effect,
-	cards: Array[Card],
-) -> void:
-	self.name = name
-	for p in props:
-		self[p] = props[p]
-	self.cards = cards
-	self.bind_effect(effect)
-	Events.obj_created.emit(self)
+func _ready() -> void:
+	if self.length > 1:
+		var p: Panel = self.panel_container.get_child(0)
+		p.scale = self.scale
+		for i in length - 1:
+			self.panel_container.add_child(p.duplicate())
+	
+	var last_panel := self.panels[-1]
+	var last_panel_stylebox := StyleBoxFlat.new()
+	last_panel_stylebox.bg_color = Color.RED
+	last_panel.add_theme_stylebox_override(
+		'panel',
+		last_panel_stylebox
+	)
+
+
+func make_default_view() -> void:
+	self.custom_minimum_size *= 2
+	self.panel_container.scale *= 2
+
+
+func make_little_view() -> void:
+	self.custom_minimum_size /= 2
+	self.panel_container.scale /= 2
 
 
 func count_card_by_tag(tag: String) -> int:
