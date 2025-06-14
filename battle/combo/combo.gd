@@ -16,7 +16,7 @@ var factor: int
 
 var upgrade_lvl: int = 1
 
-var pattern: Array[Dictionary] = []
+@export var pattern: Array[Dictionary] = []
 @onready var length: int = self.pattern.size()
 var cards: Array[Card] = []
 var first_card: Card :
@@ -28,15 +28,9 @@ var effects: Array[Effect]
 
 
 func _ready() -> void:
-	self.custom_minimum_size.x *= self.length
+	self.texture_rect.size.x *= self.length
 
-	print('combo lenght: ', self.length)
-	print('combo size: ', self.size)
-	print('combo minsize: ', self.custom_minimum_size)
-	print('text size: ', self.texture_rect.size)
-	print('text minsize: ', self.texture_rect.custom_minimum_size)
-	print('-----------------------------------')
-	
+
 	#var last_panel := self.panels[-1]
 	#var last_panel_stylebox := StyleBoxFlat.new()
 	#last_panel_stylebox.bg_color = Color.RED
@@ -47,12 +41,13 @@ func _ready() -> void:
 
 
 func make_default_view() -> void:
-	self.custom_minimum_size *= 2
+	self.custom_minimum_size = Vector2.ONE
+	self.texture_rect.scale = Vector2.ONE
 
 
 func make_little_view() -> void:
-	# self.custom_minimum_size /= 2
-	self.texture_rect.scale /= 2
+	self.custom_minimum_size = Vector2(0.5, 0.5)
+	self.texture_rect.scale = Vector2(0.5, 0.5)
 
 
 func count_card_by_tag(tag: String) -> int:

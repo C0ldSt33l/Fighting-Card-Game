@@ -11,6 +11,7 @@ anchors_preset = 0
 offset_right = 130.0
 offset_bottom = 40.0
 script = ExtResource("1_mqv5t")
+pattern = Array[Dictionary]([{}, {}])
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
