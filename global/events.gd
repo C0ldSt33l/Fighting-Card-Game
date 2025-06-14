@@ -12,7 +12,6 @@ signal obj_destroyed(obj: Variant)
 
 signal rerolled()
 
-signal obj_draged(obj: Variant)
 
 # BATTLE EVENTS
 signal battle_started()
@@ -42,8 +41,8 @@ signal hand_updated()
 
 # SHOP EVENTS
 
-signal drag_start(c: Variant)
-signal drag_complete(c: Variant, where: Variant)
+signal drag_started(data: Variant, from: Variant)
+signal drag_completed(data: Variant, where: Variant)
 
 #SAVE lOAD EVENTS
 

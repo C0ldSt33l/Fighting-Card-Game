@@ -1,26 +1,91 @@
 extends Control
 class_name Table
 
-@onready var places: HBoxContainer = $PanelContainer/MarginContainer/Places as HBoxContainer
-var place_count: int = PlayerConfig.hand_size
+@onready var card_places_container: HBoxContainer = $VBoxContainer/PanelContainer/MarginContainer/CardPlaces as HBoxContainer
+var card_places: Array[CardPlace] :
+	get():
+		var a: Array[CardPlace]
+		a.assign(self.card_places_container.get_children())
+		return a
 
-const PLACE_SCENE := preload("res://battle/ui/card place/card_place.tscn")
+@onready var combo_places_container: HBoxContainer = $VBoxContainer/MarginContainer/ComboPlaces as HBoxContainer
+var combo_places: Array[ComboPlace] :
+	get():
+		var a: Array[ComboPlace]
+		a.assign(self.combo_places_container.get_children())
+		return a
+var card_place_count: int = PlayerConfig.hand_size
+
+var CARD_PLACE_TEMPLATE: CardPlace = preload("res://battle/ui/table/card place/card_place.tscn").instantiate() as CardPlace
+var COMBO_PLACE_TEMPLATE: ComboPlace = preload("res://battle/ui/table/combo place/combo_place.tscn").instantiate() as ComboPlace
 
 
 func _ready() -> void:
-	for i in self.place_count:
-		self.places.add_child(PLACE_SCENE.instantiate())
+	self.__setup_card_places()
+	self.__setup_combo_places()
 
+
+func __setup_card_places() -> void:
+	for i in self.card_place_count:
+		Utils.Factory.create_with_binding(
+			self.card_places_container,
+			CARD_PLACE_TEMPLATE,
+			func (p: CardPlace):
+				p.index = i
+		)
+
+
+func __setup_combo_places() -> void:
+	self.__setup_combo_place_container()
+	var combo_idxs: Array[float] = [0]
+	for i in range(1, self.card_place_count):
+		combo_idxs.append(i - 0.5)
+		combo_idxs.append(i)
+
+	for idx in combo_idxs:
+		Utils.Factory.create_with_binding(
+			self.combo_places_container,
+			COMBO_PLACE_TEMPLATE,
+			func (p: ComboPlace):
+				p.index = idx
+		)
+
+
+func __setup_combo_place_container() -> void:
+	self.combo_places_container.add_theme_constant_override(
+		'separation',
+		self.card_places_container.get_theme_constant('separation') / 2
+	)
+	$VBoxContainer/MarginContainer.add_theme_constant_override(
+		'margin_left',
+		$VBoxContainer/PanelContainer/MarginContainer
+			.get_theme_constant('margin_left') + self.card_places[0].size.x / 4
+	)
+	
 
 func get_cards() -> Array[Card]:
 	var cards: Array[Card]
-	for p: CardPlace in self.places.get_children():
-		var card := p.get_card()
-		if card:
-			cards.append(card)
+	for p in self.card_places:
+		var c := p.card
+		if c:
+			cards.append(c)
 	return cards
 
 
 func remove_cards() -> void:
-	for p: CardPlace in self.places.get_children():
+	for p in self.card_places:
 		p.remove_card()
+
+
+func get_combos() -> Array[Combo]:
+	var combos: Array[Combo]
+	for p in self.combo_places:
+		var c := p.combo
+		if c:
+			combos.append(c)
+	return combos
+
+
+func remove_combos() -> void:
+	for p in self.combo_places:
+		p.remove_combo()

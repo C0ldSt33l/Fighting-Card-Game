@@ -10,7 +10,7 @@ var sort_mode_btns: Array[Button] :
 			return btns
 var sort_mode_grp: ButtonGroup = ButtonGroup.new()
 
-var sort_func: Callable
+signal card_sorted(f: Callable)
 
 
 func _ready() -> void:
@@ -23,11 +23,12 @@ func _ready() -> void:
 
 
 func _on_by_value_pressed() -> void:
-	self.sort_func = self.sort_cards_by_value
+	self.card_sorted.emit(self.sort_cards_by_value)
 
 
 func _on_by_type_pressed() -> void:
-	self.sort_func = self.sort_cards_by_type
+	self.card_sorted.emit(self.sort_cards_by_type)
+
 
 static func sort_cards_by_value(f: Card, s: Card) -> bool:
 	return f.point > s.point
