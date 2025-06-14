@@ -16,7 +16,6 @@ func unlock_node(node: SkillNode):
 		child.update_visibility()
 
 func try_unlock_node(node: SkillNode):
-	# Проверяем, можно ли разблокировать узел (достаточно денег и есть разблокированный родитель)
 	if money >= node.price and (node.has_unlocked_parent() or node.is_start_node):
 		money -= node.price
 		unlock_node(node)

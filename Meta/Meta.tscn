@@ -45,10 +45,9 @@ offset_bottom = 354.0
 parent_nodes = [NodePath("../SkillNode3")]
 child_nodes = [NodePath("../SkillNode7")]
 
-[node name="SkillNode6" parent="." node_paths=PackedStringArray("parent_nodes") instance=ExtResource("1_plmxj")]
+[node name="SkillNode6" parent="." instance=ExtResource("1_plmxj")]
 offset_left = 1260.0
 offset_right = 1260.0
-parent_nodes = [NodePath("../SkillNode4")]
 
 [node name="SkillNode7" parent="." node_paths=PackedStringArray("parent_nodes") instance=ExtResource("1_plmxj")]
 offset_left = 1263.0
