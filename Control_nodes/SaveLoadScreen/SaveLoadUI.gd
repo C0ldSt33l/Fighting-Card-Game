@@ -41,3 +41,5 @@ func _on_add_button_gui_input():
 func on_save_button_input(name: String):
 	if mode == "save":
 		Events.save_game.emit(name)
+	if mode == "load":
+		Events.load_game.emit(name)

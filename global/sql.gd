@@ -64,8 +64,9 @@ func select_typed_card_by_id(type:String, id:int)->Dictionary:
 	var query = "SELECT * from " + type + "_CARDS c where c.id = "+str(id)
 	database.query(query)
 	var card = database.query_result
-	card[0]['TypeCard'] = type
-	var tags = select_tag_cards(card[0].id,type)
+	card = card[0] #to dict
+	card['TypeCard'] = type
+	var tags = select_tag_cards(card.id,type)
 	res = {
 			"card":card,
 			"tags":tags
@@ -123,7 +124,8 @@ func select_combo_by_id(id:int)->Array:
 
 func select_combo_by_id_with_tags(id:int)->Dictionary:
 	var combo = select_combo_by_id(id)
-	var tags = select_combos_tag(combo[0].id)
+	combo = combo[0]
+	var tags = select_combos_tag(combo.id)
 	return {
 		"combo":combo,
 		"tags":tags

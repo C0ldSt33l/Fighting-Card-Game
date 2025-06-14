@@ -48,6 +48,7 @@ signal drag_complete(c: Variant, where: Variant)
 #SAVE lOAD EVENTS
 
 signal save_game(SaveName: String)
+signal load_game(Name: String)
 
 func connect_events(event_to_func: Dictionary) -> void:
 	for e in event_to_func:

@@ -20,7 +20,7 @@ var data = {
 
 func _ready() -> void:
 	Events.save_game.connect(save_game)
-
+	Events.load_game.connect(load_game)
 # Сохранить данные
 func save_game(name: String):
 	var file_path = SAVE_PATH + name + ".json"

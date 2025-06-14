@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://837nd7u85rqg"]
+
+[ext_resource type="PackedScene" uid="uid://bqvr63654t2v2" path="res://Meta/SkillNode/SkillNode.tscn" id="1_plmxj"]
+
+[node name="Meta" type="Node2D"]
+
+[node name="SkillNode" parent="." node_paths=PackedStringArray("child_nodes") instance=ExtResource("1_plmxj")]
+offset_left = 21.0
+offset_top = 11.0
+offset_right = 21.0
+offset_bottom = 11.0
+name_text = "Start Node"
+Start_node = true
+child_nodes = [NodePath("../SkillNode2"), NodePath("../SkillNode3")]
+
+[node name="SkillNode2" parent="." node_paths=PackedStringArray("parent_nodes", "child_nodes") instance=ExtResource("1_plmxj")]
+offset_left = 424.0
+offset_top = 9.0
+offset_right = 424.0
+offset_bottom = 9.0
+parent_nodes = [NodePath("../SkillNode")]
+child_nodes = [NodePath("../SkillNode4")]
+
+[node name="SkillNode3" parent="." node_paths=PackedStringArray("parent_nodes", "child_nodes") instance=ExtResource("1_plmxj")]
+offset_left = 430.0
+offset_top = 349.0
+offset_right = 430.0
+offset_bottom = 349.0
+parent_nodes = [NodePath("../SkillNode")]
+child_nodes = [NodePath("../SkillNode5")]
+
+[node name="SkillNode4" parent="." node_paths=PackedStringArray("parent_nodes", "child_nodes") instance=ExtResource("1_plmxj")]
+offset_left = 830.0
+offset_top = 8.0
+offset_right = 830.0
+offset_bottom = 8.0
+parent_nodes = [NodePath("../SkillNode2")]
+child_nodes = [NodePath("../SkillNode6")]
+
+[node name="SkillNode5" parent="." node_paths=PackedStringArray("parent_nodes", "child_nodes") instance=ExtResource("1_plmxj")]
+offset_left = 840.0
+offset_top = 354.0
+offset_right = 840.0
+offset_bottom = 354.0
+parent_nodes = [NodePath("../SkillNode3")]
+child_nodes = [NodePath("../SkillNode7")]
+
+[node name="SkillNode6" parent="." node_paths=PackedStringArray("parent_nodes") instance=ExtResource("1_plmxj")]
+offset_left = 1260.0
+offset_right = 1260.0
+parent_nodes = [NodePath("../SkillNode4")]
+
+[node name="SkillNode7" parent="." node_paths=PackedStringArray("parent_nodes") instance=ExtResource("1_plmxj")]
+offset_left = 1263.0
+offset_top = 356.0
+offset_right = 1263.0
+offset_bottom = 356.0
+parent_nodes = [NodePath("../SkillNode5")]
