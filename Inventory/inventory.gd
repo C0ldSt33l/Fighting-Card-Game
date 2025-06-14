@@ -63,25 +63,6 @@ func upgradeInventory():
 	
 	var n =0
 	print(gridContainer.get_child_count())
-
-func arrange_cards():
-	var parent_rect = gridContainer.get_rect()
-	var card_count = ALL_cards_with_tags.size()
-	var columns = gridContainer.columns
-	var rows = ceil(card_count / float(columns))
-	
-	var available_width = parent_rect.size.x / columns
-	var available_height = parent_rect.size.y / rows
-	
-	var base_card_size = Vector2(200, 300)
-	
-	var scale_x = available_width / base_card_size.x
-	var scale_y = available_height / base_card_size.y
-	var scale = min(scale_x, scale_y)
-	
-	for child in gridContainer.get_children():
-		if child is BaseCard:
-			child.scale = Vector2(scale, scale)
 	
 func create_card(CardInfo: Dictionary)-> BaseCard:
 	var card := CardCreator.create(CardInfo.card['TypeCard'],
@@ -118,7 +99,6 @@ func _on_cards_pressed() -> void:
 		gridContainer.add_child(card)
 		print("Card added:", card.name) 
 	print(gridContainer.get_child_count()) # Отладочный вывод
-	arrange_cards()
 	pass 
 
 func show_sell_popup(obj,Position: Vector2):

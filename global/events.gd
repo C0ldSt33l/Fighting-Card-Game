@@ -44,6 +44,10 @@ signal hand_updated()
 signal drag_started(data: Variant, from: Variant)
 signal drag_completed(data: Variant, where: Variant)
 
+#SAVE lOAD EVENTS
+
+signal save_game(SaveName: String)
+
 func connect_events(event_to_func: Dictionary) -> void:
 	for e in event_to_func:
 		self[e].connect(event_to_func[e])
