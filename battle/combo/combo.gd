@@ -28,7 +28,7 @@ var effects: Array[Effect]
 
 
 func _ready() -> void:
-	self.texture_rect.size.x *= self.length
+	self.custom_minimum_size.x *= self.length
 
 
 	#var last_panel := self.panels[-1]
@@ -41,13 +41,11 @@ func _ready() -> void:
 
 
 func make_default_view() -> void:
-	self.custom_minimum_size = Vector2.ONE
-	self.texture_rect.scale = Vector2.ONE
+	self.texture_rect.scale *= 2
 
 
 func make_little_view() -> void:
-	self.custom_minimum_size = Vector2(0.5, 0.5)
-	self.texture_rect.scale = Vector2(0.5, 0.5)
+	self.texture_rect.scale /= 2
 
 
 func count_card_by_tag(tag: String) -> int:

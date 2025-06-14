@@ -9,12 +9,13 @@ var combo: Combo = null
 func _ready() -> void:
 	Events.drag_completed.connect(self.on_drag_completed)
 	self.panel.check = func(data: Variant) -> bool:
-		return data is Card
+		return data is Combo
 
 
 func add_combo(c: Combo) -> void:
-	# self.panel.add_child(c)
-	# c.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)
+	c.make_default_view()
+	self.panel.add_child(c)
+	c.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)
 
 	self.combo = c
 
