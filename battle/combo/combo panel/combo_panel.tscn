@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://ci115j851iu6"]
+
+[ext_resource type="Script" path="res://battle/combo/combo panel/combo_panel.gd" id="1_ecy1h"]
+
+[node name="Combo panel" type="Panel"]
+custom_minimum_size = Vector2(130, 40)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1022.0
+offset_bottom = -608.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ecy1h")

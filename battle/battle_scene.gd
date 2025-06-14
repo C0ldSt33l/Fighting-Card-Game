@@ -111,6 +111,7 @@ func start_round_preparation() -> void:
 
 	for combo_name in self.available_combos:
 		self.spawn_combo(combo_name, self.available_combos[combo_name])
+	var last_combo := self.hand.combos[-1]
 	
 	var e := Effects.get_effect('Multiplying')
 	self.cards_in_hand[0].bind_effect(e)
@@ -225,7 +226,7 @@ func spawn_combo(name: String, conf: Dictionary) -> void:
 				c[p] = conf.props[p]
 	)
 	self.hand.add_combo(combo)
-	combo.make_little_view()
+	# combo.make_little_view()
 
 
 func reroll() -> void:

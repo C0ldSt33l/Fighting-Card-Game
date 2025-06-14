@@ -2,14 +2,10 @@ extends Control
 class_name Combo
 
 const MAX_LVL := 2
-@onready var panel_container: HBoxContainer = $PanelContainer as HBoxContainer
-var panels: Array[Panel] :
-	get():
-		var a: Array[Panel]
-		a.assign(self.panel_container.get_children())
-		return a
+@onready var texture_rect: TextureRect = $TextureRect
 
-var index: int
+var idx: int
+var pos_idx: float
 
 var combo_name: String
 var description: String
@@ -32,29 +28,31 @@ var effects: Array[Effect]
 
 
 func _ready() -> void:
-	if self.length > 1:
-		var p: Panel = self.panel_container.get_child(0)
-		p.scale = self.scale
-		for i in length - 1:
-			self.panel_container.add_child(p.duplicate())
+	self.custom_minimum_size.x *= self.length
+
+	print('combo lenght: ', self.length)
+	print('combo size: ', self.size)
+	print('combo minsize: ', self.custom_minimum_size)
+	print('text size: ', self.texture_rect.size)
+	print('text minsize: ', self.texture_rect.custom_minimum_size)
+	print('-----------------------------------')
 	
-	var last_panel := self.panels[-1]
-	var last_panel_stylebox := StyleBoxFlat.new()
-	last_panel_stylebox.bg_color = Color.RED
-	last_panel.add_theme_stylebox_override(
-		'panel',
-		last_panel_stylebox
-	)
+	#var last_panel := self.panels[-1]
+	#var last_panel_stylebox := StyleBoxFlat.new()
+	#last_panel_stylebox.bg_color = Color.RED
+	#last_panel.add_theme_stylebox_override(
+		#'panel',
+		#last_panel_stylebox
+	#)
 
 
 func make_default_view() -> void:
 	self.custom_minimum_size *= 2
-	self.panel_container.scale *= 2
 
 
 func make_little_view() -> void:
-	self.custom_minimum_size /= 2
-	self.panel_container.scale /= 2
+	# self.custom_minimum_size /= 2
+	self.texture_rect.scale /= 2
 
 
 func count_card_by_tag(tag: String) -> int:

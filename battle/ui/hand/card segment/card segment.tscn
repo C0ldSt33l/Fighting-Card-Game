@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://battle/ui/hand/card segment/card_segment.gd" id="1_2eh7u"]
 [ext_resource type="PackedScene" uid="uid://frgofpu2jt4a" path="res://battle/ui/hand/card sotrer/card sorter.tscn" id="1_mcmwu"]
 
-[node name="Control" type="Control"]
+[node name="Card segment" type="Control"]
 custom_minimum_size = Vector2(700, 250)
 layout_mode = 3
 anchors_preset = 15
