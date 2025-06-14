@@ -26,7 +26,7 @@ var Type: String:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
-	Events.drag_complete.connect(get_upgrade)
+	Events.drag_completed.connect(get_upgrade)
 	Background.check = func(data):return true
 	pass # Replace with function body.
 

@@ -7,7 +7,11 @@
 
 [node name="Battle scene" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_437rl")
 
 [node name="Timer" type="Timer" parent="."]
@@ -42,17 +46,21 @@ offset_bottom = 40.0
 
 [node name="Table" parent="." instance=ExtResource("3_aygk4")]
 layout_mode = 1
-offset_left = 448.0
-offset_top = 256.0
-offset_right = 1152.0
-offset_bottom = 356.0
+offset_left = 200.0
+offset_top = -64.0
+offset_right = 200.0
+offset_bottom = -64.0
 
 [node name="Hand" parent="." instance=ExtResource("4_va1qn")]
 layout_mode = 1
-offset_left = 448.0
-offset_top = 400.0
-offset_right = 1152.0
-offset_bottom = 648.0
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = -256.0
+offset_right = 1150.0
+offset_bottom = 0.0
+grow_vertical = 0
 
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Start button" to="." method="start_round" flags=3]
