@@ -41,11 +41,11 @@ func _ready() -> void:
 
 
 func make_default_view() -> void:
-	self.texture_rect.scale *= 2
+	self.texture_rect.scale = Vector2.ONE
 
 
 func make_little_view() -> void:
-	self.texture_rect.scale /= 2
+	self.texture_rect.scale = Vector2(0.5, 0.5)
 
 
 func count_card_by_tag(tag: String) -> int:
