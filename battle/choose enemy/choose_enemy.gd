@@ -43,6 +43,7 @@ const CARD_SCENE := preload("res://battle/choose enemy/enemy card/enemy_card.tsc
 
 
 func _ready() -> void:
+	print('win res: ', DisplayServer.window_get_size())
 	var colors: Array[Color] = [
 		Color.RED,
 		Color.BLUE,
@@ -89,3 +90,5 @@ func on_enemy_choosed(ec: EnemyCard) -> void:
 	#TODO: move in new scene:
 	#choose enemy -> loading -> battle
 	print('enemy choosed')
+	SceneManager.__last_scene_type = SceneManager.SCENE.CHOOSE_ENEMY 
+	SceneManager.call_deferred('open_new_scene_by_name', SceneManager.SCENE.LOADING)
