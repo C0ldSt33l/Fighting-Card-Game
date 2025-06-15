@@ -13,3 +13,5 @@ var cards_in_hand: Array[_Card_] # for what it need?
 var hand_size: int = 5
 
 var player_power: int
+
+var enemy_data: EnemyData = null

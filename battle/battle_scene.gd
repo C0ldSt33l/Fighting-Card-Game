@@ -6,7 +6,7 @@ extends Control
 @onready var start_button: Button = $"Start button" as Button
 
 @onready var counter: Counter = $Counter as Counter
-@onready var required_score: int = 2
+@onready var required_score: int = PlayerConfig.enemy_data.required_score
 
 @onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
 @onready var hand: Hand = $Hand as Hand
@@ -87,8 +87,11 @@ func _ready() -> void:
 
 	#TODO: move init seg in separate func
 	self.reroll_btn.pressed.connect(self.reroll)
+	# TODO: add this props in player config
 	self.reroll_count = 4
 	self.round_count = 2
+
+	print('EMEMY SCORE: ', self.required_score)
 
 	Game.battle = self
 	Events.battle_started.emit()

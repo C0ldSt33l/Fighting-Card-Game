@@ -61,14 +61,6 @@ func setup(
 	self.required_score = required_score
 	
 
-func get_enemy_data() -> Dictionary:
-	return {
-		enemy_name = self.enemy_name,
-		image = self.image,
-		required_score = self.required_score,
-	}
-
-
 func connect_mouse_signals() -> void:
 	self.background.mouse_entered.connect(self._on_background_mouse_entered)
 	self.background.mouse_exited.connect(self._on_background_mouse_exited)
@@ -88,6 +80,15 @@ func _on_background_mouse_exited() -> void:
 func _on_background_gui_input(event: InputEvent) -> void:
 	if self.is_mouse_inside and event.is_action_pressed('click'):
 		self.choosed.emit(self)
+
+
+func get_enemy_data() -> EnemyData:
+	return EnemyData.new(
+		self.enemy_name,
+		self.image,
+		self.required_score,
+		[]
+	)
 
 
 func _to_string() -> String:
