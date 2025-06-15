@@ -16,10 +16,7 @@ func _ready() -> void:
 	pass
 
 func add_combo(c: Combo) -> void:
-	var wrapper := Control.new()
-	wrapper.custom_minimum_size = c.custom_minimum_size
-	wrapper.add_child(c)
-	self.combo_container.add_child(wrapper)
+	self.combo_container.add_child(c)
 
 
 func add_combo_at_pos(c: Combo, pos: int) -> void:
@@ -39,3 +36,11 @@ func remove_combo_at_pos(pos: int) -> void:
 func remove_all_combos() -> void:
 	for c in self.combos:
 		self.combo_container.remove_child(c)
+
+
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	return data is Combo
+
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	self.add_combo(data)

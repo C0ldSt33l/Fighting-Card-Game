@@ -231,14 +231,8 @@ func spawn_combo(name: String, conf: Dictionary) -> void:
 				c[p] = conf.props[p]
 	)
 	self.hand.add_combo(combo)
-	combo.make_little_view()
-	print('combo lenght: ', combo.length)
-	print('combo size: ', combo.size)
-	print('combo minsize: ', combo.custom_minimum_size)
-	print('text size: ', combo.texture_rect.size)
-	print('text minsize: ', combo.texture_rect.custom_minimum_size)
-	print('-----------------------------------')
-	
+	# combo.make_little_view()
+
 
 func reroll() -> void:
 	self.reroll_count -= 1
