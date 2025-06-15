@@ -6,7 +6,8 @@ extends Control
 @onready var start_button: Button = $"Start button" as Button
 
 @onready var counter: Counter = $Counter as Counter
-@onready var required_score: int = PlayerConfig.enemy_data.required_score
+#TODO: add another enemy props and init it in `_ready()`
+@onready var required_score: int = 2
 
 @onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
 @onready var hand: Hand = $Hand as Hand
@@ -427,3 +428,4 @@ func on_effect_activated(e: Effect) -> void: pass
 
 func on_battle_ended() -> void:
 	self.earned_money += self.round_count
+	PlayerConfig.enemy_data = null

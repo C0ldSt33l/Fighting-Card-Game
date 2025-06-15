@@ -17,15 +17,6 @@ script = ExtResource("1_437rl")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 
-[node name="Start button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 912.0
-offset_top = 39.0
-offset_right = 1107.0
-offset_bottom = 118.0
-focus_mode = 0
-text = "START"
-
 [node name="Round counter" type="Label" parent="."]
 layout_mode = 0
 offset_left = 408.0
@@ -61,6 +52,15 @@ offset_top = -256.0
 offset_right = 1150.0
 offset_bottom = 0.0
 grow_vertical = 0
+
+[node name="Start button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 912.0
+offset_top = 39.0
+offset_right = 1107.0
+offset_bottom = 118.0
+focus_mode = 0
+text = "START"
 
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Start button" to="." method="start_round" flags=3]
