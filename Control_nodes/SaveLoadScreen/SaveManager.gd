@@ -2,6 +2,8 @@
 class_name SaveManager
 extends Node
 
+@export var mode: String = "load"
+
 const SAVE_PATH = "user://saves/"
 
 var cards = []
@@ -78,3 +80,7 @@ func get_saves() -> Array:
 			saves.append(file.get_basename())
 		file = dir.get_next()
 	return saves
+
+func auto_save():
+	var name = "save_%s" % [get_saves().size() + 1]
+	Events.save_game.emit(name)

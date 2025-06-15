@@ -13,8 +13,8 @@ var is_sell_popup_active = false
 var tmp
 var ALL_cards_with_tags
 
-var battleCard
-var upgrade_card
+var battleCard:Array = []
+var upgrade_card:Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:  # Явно задаем размер
@@ -90,16 +90,14 @@ func create_combo(ComboInfo: Dictionary)->_Combo_:
 
 func _on_cards_pressed() -> void:
 	gridContainer.columns = 4
-	for child in gridContainer.get_children():
-		gridContainer.remove_child(child)
-		child.queue_free()
-	
+	battleCard.clear()
+	upgrade_card.clear()
 	for child_data in PlayerConfig.player_available_cards:
-		var card = create_card(child_data)
-		gridContainer.add_child(card)
-		print("Card added:", card.name) 
-	print(gridContainer.get_child_count()) # Отладочный вывод
-	pass 
+		if child_data.card['TypeCard'] == "BATTLE":
+			battleCard.append(child_data)
+		if child_data.card['TypeCard'] == "UPGRADE":
+			upgrade_card.append(child_data)
+	upgradeInventory()
 
 func show_sell_popup(obj,Position: Vector2):
 	var sell_popup_scene = preload("res://Inventory/SellPopup/SellPopup.tscn")

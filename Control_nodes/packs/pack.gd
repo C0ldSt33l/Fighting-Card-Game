@@ -1,6 +1,6 @@
 extends Control
 @onready var Background : Panel = $Background
-@onready var PackName : Label = $PackName
+@onready var PackName : Label = $Background/PackName
 const MAX_DISPLAYED_CARDS = 5
 
 var objects : Array = []
@@ -133,6 +133,7 @@ func add_objects()->void:
 				print("totem")
 
 func open_pack()-> void:
+	Background.visible = false
 	var random_objects = []
 	for i in range(0,15):
 		add_obj(objects[randi() % objects.size()])
@@ -142,11 +143,13 @@ func open_pack()-> void:
 		
 	var confirm_button = Button.new()
 	add_child(confirm_button)
-	confirm_button.text = "Выбрать все карты"
+	confirm_button.text = "Выбрать"
 	confirm_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	confirm_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	confirm_button.modulate = Color.CRIMSON
 	confirm_button.pressed.connect(confirm_button_pressed)
+	confirm_button.position = get_viewport_rect().size / 2 - confirm_button.size
+	print(confirm_button.position)
 
 func create_card(CardInfo: Dictionary)-> BaseCard:
 	var card := CardCreator.create(CardInfo.card['TypeCard'],
