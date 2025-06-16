@@ -9,8 +9,7 @@ var card: Card = null
 
 func _ready() -> void:
 	Events.drag_completed.connect(self.on_drag_completed)
-	self.panel.check = func(data: Variant) -> bool:
-		return data is Card
+
 
 
 func add_card(c: Card) -> void:

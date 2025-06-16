@@ -26,9 +26,11 @@ var last_card: Card :
 
 var effects: Array[Effect]
 
+const MIN_SIZE: Vector2 = Vector2(130, 40)
+
 
 func _ready() -> void:
-	self.custom_minimum_size.x *= self.length
+	self.custom_minimum_size.x = MIN_SIZE.x * self.length
 
 
 	#var last_panel := self.panels[-1]

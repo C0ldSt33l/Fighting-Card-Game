@@ -13,7 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_f335x")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,30 +21,43 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Sort button" type="Button" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-focus_mode = 0
-text = "Sort"
+theme_override_font_sizes/font_size = 50
+text = "Сортировка"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Sort modes" type="HBoxContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Sort modes" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="By value" type="Button" parent="VBoxContainer/Sort modes"]
+[node name="By strenth" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/Sort modes"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
+theme_override_font_sizes/font_size = 50
 toggle_mode = true
-text = "By value"
+text = "Сила"
 
-[node name="By type" type="Button" parent="VBoxContainer/Sort modes"]
+[node name="By type" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/Sort modes"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 toggle_mode = true
 text = "By type"
 
-[connection signal="pressed" from="VBoxContainer/Sort modes/By value" to="." method="_on_by_value_pressed"]
-[connection signal="pressed" from="VBoxContainer/Sort modes/By type" to="." method="_on_by_type_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/Sort modes/By strenth" to="." method="_on_by_value_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/Sort modes/By type" to="." method="_on_by_type_pressed"]

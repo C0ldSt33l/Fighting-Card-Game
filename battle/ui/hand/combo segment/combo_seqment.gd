@@ -16,31 +16,38 @@ func _ready() -> void:
 	pass
 
 func add_combo(c: Combo) -> void:
-	self.combo_container.add_child(c)
+	var wrapper := DraggableWrap.new(c)
+	self.combo_container.add_child(wrapper)
 
 
 func add_combo_at_pos(c: Combo, pos: int) -> void:
-	self.combo_container.add_child(c)
-	self.combo_container.move_child(c, pos)
+	var wrapper := DraggableWrap.new(c)
+	self.combo_container.add_child(wrapper)
+	self.combo_container.move_child(wrapper, pos)
 
 
 func remove_combo(c: Combo) -> void:
-	self.combo_container.remove_child(c)
+	for w in self.combo_container.get_children():
+		if w.get_child(0) == c:
+			w.remove_child(c)
+			self.combo_container.remove_child(w)
+			break
 
 
 func remove_combo_at_pos(pos: int) -> void:
-	var c := self.combo_container.get_child(pos)
-	self.combo_container.remove_child(c)
+	var w := self.combo_container.get_child(pos)
+	self.combo_container.remove_child(w)
 
 
 func remove_all_combos() -> void:
-	for c in self.combos:
-		self.combo_container.remove_child(c)
+	for w in self.combo_container.get_children():
+		self.combo_container.remove_child(w)
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	return data is Combo
+	return data.data is Combo
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	self.add_combo(data)
+	data.from.remove_combo()
+	self.add_combo(data.data)

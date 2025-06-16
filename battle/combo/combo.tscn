@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6tjx4a3bn260"]
+[gd_scene load_steps=3 format=3 uid="uid://c6tjx4a3bn260"]
 
 [ext_resource type="Script" path="res://battle/combo/combo.gd" id="1_mqv5t"]
 [ext_resource type="Texture2D" uid="uid://f1633sr2fv0" path="res://assets/ui/combo/combo_panel.png" id="2_fn6er"]
-[ext_resource type="Script" path="res://battle/combo/texture_rect.gd" id="3_360mi"]
 
 [node name="Combo" type="Control"]
 z_index = 1
@@ -12,6 +11,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 130.0
 offset_bottom = 40.0
+mouse_filter = 2
 script = ExtResource("1_mqv5t")
 pattern = Array[Dictionary]([{}, {}])
 
@@ -22,6 +22,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("2_fn6er")
 stretch_mode = 1
-script = ExtResource("3_360mi")
