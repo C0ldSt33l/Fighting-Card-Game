@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4op28w4ujsrs"
-path="res://.godot/imported/lokot.png-d7e78a4826b1a2a0ab968a9ba80aebd5.ctex"
+uid="uid://cosysmwbyl8sv"
+path="res://.godot/imported/thenar.png-f052f3ba67cee73d9b464ca7392ef3ab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/card/icons/lokot.png"
-dest_files=["res://.godot/imported/lokot.png-d7e78a4826b1a2a0ab968a9ba80aebd5.ctex"]
+source_file="res://assets/ui/card/icons/thenar.png"
+dest_files=["res://.godot/imported/thenar.png-f052f3ba67cee73d9b464ca7392ef3ab.ctex"]
 
 [params]
 

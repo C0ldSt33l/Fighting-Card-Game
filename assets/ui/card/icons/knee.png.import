@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cosysmwbyl8sv"
-path="res://.godot/imported/ladon.png-1da44a6a345bd802b7578c53022e38be.ctex"
+uid="uid://bvn3rcmr72otg"
+path="res://.godot/imported/knee.png-c3b7f59005f794b1cb79d9693eacb5fb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/card/icons/ladon.png"
-dest_files=["res://.godot/imported/ladon.png-1da44a6a345bd802b7578c53022e38be.ctex"]
+source_file="res://assets/ui/card/icons/knee.png"
+dest_files=["res://.godot/imported/knee.png-c3b7f59005f794b1cb79d9693eacb5fb.ctex"]
 
 [params]
 

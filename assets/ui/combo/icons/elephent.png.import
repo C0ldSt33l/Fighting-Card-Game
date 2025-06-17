@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c33fvehgsbe0v"
-path="res://.godot/imported/paper.png-df845f8aca4648022262c2a3e9e52265.ctex"
+uid="uid://duuncyspovuop"
+path="res://.godot/imported/elephent.png-03d8dc1c10c5ee7cee80620f55c73c31.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/card/textures/paper.png"
-dest_files=["res://.godot/imported/paper.png-df845f8aca4648022262c2a3e9e52265.ctex"]
+source_file="res://assets/ui/combo/icons/elephent.png"
+dest_files=["res://.godot/imported/elephent.png-03d8dc1c10c5ee7cee80620f55c73c31.ctex"]
 
 [params]
 

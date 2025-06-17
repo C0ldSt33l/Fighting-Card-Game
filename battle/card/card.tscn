@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7wnxs3jd7ek"]
+[gd_scene load_steps=5 format=3 uid="uid://c7wnxs3jd7ek"]
 
 [ext_resource type="Script" path="res://battle/card/card.gd" id="1_174wl"]
+[ext_resource type="Texture2D" uid="uid://cd5h373qvrocd" path="res://assets/ui/materials/wood.png" id="2_htulr"]
 [ext_resource type="Texture2D" uid="uid://s6h4tgtseil7" path="res://assets/ui/card/icons/hand.png" id="2_humot"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_784jb"]
+texture = ExtResource("2_htulr")
 
 [node name="Card" type="Control"]
 custom_minimum_size = Vector2(100, 120)
@@ -20,6 +24,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_784jb")
 
 [node name="MarginContainer" type="MarginContainer" parent="Background"]
 layout_mode = 1
@@ -35,7 +40,7 @@ layout_mode = 2
 mouse_filter = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+[node name="point lbl" type="Label" parent="Background/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 35
@@ -43,6 +48,6 @@ text = "5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="Background/MarginContainer/VBoxContainer"]
+[node name="body part icon" type="TextureRect" parent="Background/MarginContainer/VBoxContainer"]
 layout_mode = 2
 texture = ExtResource("2_humot")

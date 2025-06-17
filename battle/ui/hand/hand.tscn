@@ -23,7 +23,12 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Combo seqment" parent="HBoxContainer" instance=ExtResource("2_uoeha")]
+custom_minimum_size = Vector2(200, 230)
 layout_mode = 2
 
 [node name="Card Segment" parent="HBoxContainer" instance=ExtResource("3_31fhb")]
+layout_mode = 2
+
+[node name="Consumable placeholder" type="Panel" parent="HBoxContainer"]
+custom_minimum_size = Vector2(200, 230)
 layout_mode = 2

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cawhx3tjnq3b2"
-path="res://.godot/imported/wood.png-731acd25ddb406efd3bbeb187a792772.ctex"
+uid="uid://cu4fjgcjyxc0m"
+path="res://.godot/imported/mantis.png-1f30b6f3d6bd6afa392e62f9ed1866ae.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/card/textures/wood.png"
-dest_files=["res://.godot/imported/wood.png-731acd25ddb406efd3bbeb187a792772.ctex"]
+source_file="res://assets/ui/combo/icons/mantis.png"
+dest_files=["res://.godot/imported/mantis.png-1f30b6f3d6bd6afa392e62f9ed1866ae.ctex"]
 
 [params]
 

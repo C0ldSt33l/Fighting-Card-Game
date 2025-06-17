@@ -213,7 +213,8 @@ func play_card() -> void:
 
 
 func spawn_card(conf: Dictionary) -> void:
-	var card := CardFactory.create(
+	var card := Utils.Factory.create(
+		CARD_TEMPLATE,
 		func (c: Card) -> void:
 			c.set_main_props(conf)
 	)
@@ -221,6 +222,7 @@ func spawn_card(conf: Dictionary) -> void:
 	self.cards_in_hand.append(card)
 
 func spawn_combo(name: String, conf: Dictionary) -> void:
+	var materials := M.MATERIAL.values()
 	var combo: Combo = Utils.Factory.create(
 		self.COMBO_TEMPLATE,
 		func (c: Combo):
@@ -229,9 +231,10 @@ func spawn_combo(name: String, conf: Dictionary) -> void:
 			c.effects.append(Effects.get_effect(conf.effect))
 			for p in conf.props:
 				c[p] = conf.props[p]
+			c._material = materials[randi_range(0, materials.size() - 1)]
 	)
 	self.hand.add_combo(combo)
-	combo.make_little_view()
+	# combo.make_little_view()
 
 
 func reroll() -> void:

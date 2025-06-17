@@ -2,14 +2,17 @@ extends Control
 class_name Card
 
 @onready var background: Panel = $Background as Panel
-@onready var name_label: Label = $Background/MarginContainer/VBoxContainer/Name as Label
-@onready var type_label: Label = $Background/MarginContainer/VBoxContainer/Type as Label
-@onready var dmg_label: Label = $Background/MarginContainer/VBoxContainer/DMG as Label
+@onready var point_lbl: Label = $"Background/MarginContainer/VBoxContainer/point lbl" as Label
+@onready var body_part_icon: TextureRect = $"Background/MarginContainer/VBoxContainer/body part icon" as TextureRect
 
 
 enum BODY_PART {
 	HAND,
 	LEG,
+	HEAD,
+	THENAR,
+	KNEE,
+	ELBOW,
 }
 
 enum RARITY {
@@ -62,9 +65,6 @@ var effects: Array[Effect] = []
 
 
 func _ready() -> void:
-	self.name_label.text = 'Name: %s' % [self.card_name]
-	self.type_label.text = 'Type: %s' % [str(BODY_PART.keys()[self.body_part])]
-	self.dmg_label.text = 'Point: %s' % [str(self.point)]
 
 
 	# self.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)

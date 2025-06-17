@@ -2,10 +2,23 @@ extends Control
 class_name Combo
 
 const MAX_LVL := 2
-@onready var texture_rect: TextureRect = $TextureRect
+const PATH_TO_ICONS: String = 'res://assets/ui/combo/icons'
+enum ANIMAL {
+	BULL,
+	MANTIS,
+	ELEPHENT,
+	DRAGON,
+	SCORPION,
+}
+
+@onready var background: TextureRect = $background as TextureRect
+@onready var icon: TextureRect = $background/HBoxContainer/icon as TextureRect
+@onready var size_lbl: Label = $"background/HBoxContainer/size lbl" as Label
 
 var idx: int
 var pos_idx: float
+var pas_stat_idx: int
+var pos_end_idx: int
 
 var combo_name: String
 var description: String
@@ -14,10 +27,12 @@ var price: int
 var point: int
 var factor: int
 
+var animal: ANIMAL
+var _material: M.MATERIAL
 var upgrade_lvl: int = 1
 
 @export var pattern: Array[Dictionary] = []
-@onready var length: int = self.pattern.size()
+var length: int = 0
 var cards: Array[Card] = []
 var first_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[0]
@@ -26,28 +41,14 @@ var last_card: Card :
 
 var effects: Array[Effect]
 
-const MIN_SIZE: Vector2 = Vector2(130, 40)
-
 
 func _ready() -> void:
-	self.custom_minimum_size.x = MIN_SIZE.x * self.length
+	self.length = self.pattern.size()
+	self.size_lbl.text = str(self.length)
+	self.icon.texture = load('%s/%s.png' % [PATH_TO_ICONS, ANIMAL.keys()[self.animal].to_lower()])
+	self.background.texture = load('%s/%s.png' % [M.PATH_TO_MATERIALS, M.MATERIAL.keys()[self._material].to_lower()])
+	pass
 
-
-	#var last_panel := self.panels[-1]
-	#var last_panel_stylebox := StyleBoxFlat.new()
-	#last_panel_stylebox.bg_color = Color.RED
-	#last_panel.add_theme_stylebox_override(
-		#'panel',
-		#last_panel_stylebox
-	#)
-
-
-func make_default_view() -> void:
-	self.texture_rect.scale = Vector2.ONE
-
-
-func make_little_view() -> void:
-	self.texture_rect.scale = Vector2(0.5, 0.5)
 
 
 func count_card_by_tag(tag: String) -> int:

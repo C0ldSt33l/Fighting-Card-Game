@@ -40,7 +40,6 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		from.remove_combo(combo)
 	else:
 		from.remove_combo()
-	combo.make_default_view()
 	self.add_combo(combo)
 	Events.drag_completed.emit(combo, self)
 

@@ -14,6 +14,7 @@ func _ready() -> void:
 	#self.combo_container.remove_child(
 		#self.combo_container.get_child(0)
 	#)
+	
 	pass
 
 func add_combo(c: Combo) -> void:

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvn3rcmr72otg"
-path="res://.godot/imported/legL.png-7302445ccc8286b2405f5743f54ccc70.ctex"
+uid="uid://c4op28w4ujsrs"
+path="res://.godot/imported/elbow.png-5361da9077533129e1da7bd144b65d02.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/card/icons/legL.png"
-dest_files=["res://.godot/imported/legL.png-7302445ccc8286b2405f5743f54ccc70.ctex"]
+source_file="res://assets/ui/card/icons/elbow.png"
+dest_files=["res://.godot/imported/elbow.png-5361da9077533129e1da7bd144b65d02.ctex"]
 
 [params]
 
