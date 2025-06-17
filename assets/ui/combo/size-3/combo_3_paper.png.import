@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://f1633sr2fv0"
-path="res://.godot/imported/combo_panel.png-e0c55ecbe5a8c34d4059834adfc7faa6.ctex"
+uid="uid://ci5f3tox0vulp"
+path="res://.godot/imported/combo_3_paper.png-e47d1404801d3a2020df2e5e6e6a7b32.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/combo/combo_panel.png"
-dest_files=["res://.godot/imported/combo_panel.png-e0c55ecbe5a8c34d4059834adfc7faa6.ctex"]
+source_file="res://assets/ui/combo/size-3/combo_3_paper.png"
+dest_files=["res://.godot/imported/combo_3_paper.png-e47d1404801d3a2020df2e5e6e6a7b32.ctex"]
 
 [params]
 

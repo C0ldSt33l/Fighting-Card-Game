@@ -1,9 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://c7wnxs3jd7ek"]
+[gd_scene load_steps=3 format=3 uid="uid://c7wnxs3jd7ek"]
 
 [ext_resource type="Script" path="res://battle/card/card.gd" id="1_174wl"]
+[ext_resource type="Texture2D" uid="uid://s6h4tgtseil7" path="res://assets/ui/card/icons/hand.png" id="2_humot"]
 
 [node name="Card" type="Control"]
-custom_minimum_size = Vector2(100, 105)
+custom_minimum_size = Vector2(100, 120)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 100.0
@@ -28,22 +29,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Background/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 alignment = 1
 
-[node name="Name" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="Background/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Name: "
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 35
+text = "5"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Type" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="Background/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Type: "
-
-[node name="DMG" type="Label" parent="Background/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "DMG: "
+texture = ExtResource("2_humot")
