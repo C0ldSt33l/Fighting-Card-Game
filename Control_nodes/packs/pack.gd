@@ -1,13 +1,13 @@
 extends Control
+class_name Pack
 @onready var Background : Panel = $Background
 @onready var PackName : Label = $Background/PackName
-const MAX_DISPLAYED_CARDS = 5
-
+const MAX_DISPLAYED_CARDS : int = 5
+var count_selected_obj : int = 5
 var objects : Array = []
-
+var is_open : bool = false
 var data := {}
 var basket : Array = []
-var is_open : bool = false
 var id: int:
 	set(val): self.set_tag_val('id', val)
 	get(): return self.get_tag_val('id')
@@ -176,7 +176,7 @@ func create_combo(ComboInfo: Dictionary)->_Combo_:
 
 func _ready() -> void:
 	add_objects()
-	open_pack()
+
 
 	
 func _input(event: InputEvent) -> void:
@@ -187,21 +187,27 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			var mouse_pos = get_global_mouse_position()
-			for obj in displayed_cards:
-				if obj.Background.get_global_rect().has_point(mouse_pos):
-					var card_data = obj.return_all_tags()
-					if not basket.has(card_data) and basket.size() <=5:
-						basket.append(card_data)
-						obj.Background.modulate = Color.GREEN
-						for objects in basket:
-							print(objects)
-					else:
-						basket.erase(card_data)
-						obj.Background.modulate = Color.GRAY
-					print(basket.size())
-					break
+			if not is_open and self.Background.get_global_rect().has_point(mouse_pos):
+				open_pack()
+				is_open = true
+			else: 
+				for obj in displayed_cards:
+					if obj.Background.get_global_rect().has_point(mouse_pos) and !basket.has(obj):
+						var card_data = obj.return_all_tags()
+						if  basket.size() < count_selected_obj:
+							basket.append(card_data)
+							obj.Background.modulate = Color.GREEN
+							for objects in basket:
+								print(objects)
+						else:
+							basket.erase(card_data)
+							obj.Background.modulate = Color.GRAY
+						print(basket.size())
+						break
 
 func confirm_button_pressed():
+	if basket.size() < count_selected_obj:
+		return
 	print("card size",PlayerConfig.player_available_cards.size())
 	print("combo size",PlayerConfig.player_available_combos.size())
 	
@@ -222,3 +228,4 @@ func confirm_button_pressed():
 	head = null
 	tail = null
 	current = null
+	self.visible = false

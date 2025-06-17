@@ -7,7 +7,8 @@ class_name _Combo_
 signal hovered()
 signal unhovered()
 
-var tags := {}
+var data := {}
+var tags : Array = []
 
 var id: int:
 	set(val): self.set_tag_val('id', val)
@@ -38,7 +39,6 @@ func _ready() -> void:
 	self.DescriptionLabel.text = self.Description
 	pass # Replace with function body.
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
@@ -52,16 +52,19 @@ func _on_mouse_exited() -> void:
 	self.unhovered.emit()
 	
 func set_tag_val(tag: String, val: Variant) -> void:
-	self.tags[tag] = val
+	self.data[tag] = val
 	
 func get_tag_val(tag: String) -> Variant:
-	return self.tags[tag] if self.has_tag(tag) else null
+	return self.data[tag] if self.has_tag(tag) else null
 	
 func add_tags(new_tags: Dictionary) -> void:
-	self.tags.merge(new_tags, true)
+	self.data.merge(new_tags, true)
 
 func has_tag(tag: String) -> bool:
-	return self.tags.keys().has(tag)
+	return self.data.keys().has(tag)
 	
 func return_all_tags()-> Dictionary:
-	return tags
+	return {
+			"combo":data,
+			"tags":tags
+		}
