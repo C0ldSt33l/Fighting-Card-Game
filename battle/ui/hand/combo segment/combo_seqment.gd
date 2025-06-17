@@ -5,8 +5,9 @@ class_name ComboSeqment
 var combos: Array[Combo] :
 	get():
 		var arr: Array[Combo]
-		arr.assign(self.combo_container.get_children().map(func (c: Control) -> Combo: return c.get_child(0) as Combo))
+		arr.assign(self.combo_container.get_children().map(func (w: DraggableWrap) -> Combo: return w.obj_to_drag as Combo))
 		return arr
+
 
 #TODO: handle drag n drop
 func _ready() -> void:
@@ -16,12 +17,12 @@ func _ready() -> void:
 	pass
 
 func add_combo(c: Combo) -> void:
-	var wrapper := DraggableWrap.new(c)
+	var wrapper := DraggableWrap.new(c, Game.battle.hand)
 	self.combo_container.add_child(wrapper)
 
 
 func add_combo_at_pos(c: Combo, pos: int) -> void:
-	var wrapper := DraggableWrap.new(c)
+	var wrapper := DraggableWrap.new(c, Game.battle.hand)
 	self.combo_container.add_child(wrapper)
 	self.combo_container.move_child(wrapper, pos)
 

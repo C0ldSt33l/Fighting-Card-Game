@@ -47,7 +47,7 @@ func sort_cards(f: Callable) -> void:
 	var cards := self.cards
 	cards.sort_custom(f)
 	for pos in len(cards):
-		self.card_segment.card_container.move_child(cards[pos], pos)
+		self.card_segment.card_container.move_child(cards[pos].get_parent(), pos)
 
 
 func add_combo(c: Combo) -> void:

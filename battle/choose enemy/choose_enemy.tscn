@@ -47,3 +47,14 @@ size_flags_horizontal = 3
 [node name="Enemy card3" parent="Enemy card container" instance=ExtResource("2_neokh")]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 440.0
+offset_top = 512.0
+offset_right = 712.0
+offset_bottom = 608.0
+theme_override_font_sizes/font_size = 50
+text = "Сброс"
+
+[connection signal="pressed" from="Button" to="." method="reroll_enemy"]

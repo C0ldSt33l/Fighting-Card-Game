@@ -46,7 +46,7 @@ var last_combo: Combo :
 @onready var reroll_count: int = 4 :
 	set(val):
 		reroll_count = val
-		self.reroll_btn.text = 'Reroll: %s' % [val] 
+		self.reroll_btn.text = 'Сброс: %s' % [val] 
 
 var earned_money: int = 0
 
@@ -61,6 +61,7 @@ signal next_card_key_pressed
 
 
 func _ready() -> void:
+	print('wid res: ', DisplayServer.window_get_size())
 	Events.connect_events({
 		battle_started = self.start_round_preparation,
 
@@ -224,14 +225,13 @@ func spawn_combo(name: String, conf: Dictionary) -> void:
 		self.COMBO_TEMPLATE,
 		func (c: Combo):
 			c.combo_name = name
-			c.pattern.clear()
 			c.pattern.assign(conf.pattern)
 			c.effects.append(Effects.get_effect(conf.effect))
 			for p in conf.props:
 				c[p] = conf.props[p]
 	)
 	self.hand.add_combo(combo)
-	# combo.make_little_view()
+	combo.make_little_view()
 
 
 func reroll() -> void:

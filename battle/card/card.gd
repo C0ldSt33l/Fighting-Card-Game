@@ -76,7 +76,7 @@ func set_main_props(
 	conf: Dictionary,
 ) -> void:
 	for prop in conf:
-		if prop not in ['id', 'Name', 'Price', 'Body part', 'Direction']:
+		if prop not in ['id', 'Name', 'Price', 'Body part', 'Direction', 'Point']:
 			self[prop.to_snake_case()] = conf[prop]
 		else:
 			match prop:
@@ -86,6 +86,9 @@ func set_main_props(
 					self.body_part = BODY_PART[conf[prop].to_upper()]
 				'Direction':
 					self.direction = DIRECTION[conf[prop].to_upper()]
+				'Point':
+					self.point = randi_range(0, 99)
+					#self.dmg_label.text = 'Point: %s' % [self.point]
 				_:
 					pass
 

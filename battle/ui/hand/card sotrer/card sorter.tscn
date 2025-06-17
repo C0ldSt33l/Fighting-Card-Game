@@ -7,7 +7,7 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -600.0
+offset_right = -936.0
 offset_bottom = -440.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -27,7 +27,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 10
 text = "Сортировка"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -48,7 +48,7 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 10
 toggle_mode = true
 text = "Сила"
 
@@ -56,8 +56,9 @@ text = "Сила"
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
+theme_override_font_sizes/font_size = 10
 toggle_mode = true
-text = "By type"
+text = "Тип"
 
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/Sort modes/By strenth" to="." method="_on_by_value_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/Sort modes/By type" to="." method="_on_by_type_pressed"]

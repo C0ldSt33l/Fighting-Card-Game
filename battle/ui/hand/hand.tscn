@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://7o5shtggpkck" path="res://battle/ui/hand/card segment/card segment.tscn" id="3_31fhb"]
 
 [node name="Hand" type="Control"]
-custom_minimum_size = Vector2(870, 250)
+custom_minimum_size = Vector2(1080, 230)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 870.0
