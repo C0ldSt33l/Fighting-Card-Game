@@ -13,10 +13,11 @@ offset_bottom = 587.0
 
 [node name="Button" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 940.0
+offset_left = 927.0
 offset_top = 416.0
-offset_right = 1001.0
+offset_right = 1016.0
 offset_bottom = 476.0
+text = "Обновить"
 
 [node name="Button2" type="Button" parent="Panel"]
 layout_mode = 0

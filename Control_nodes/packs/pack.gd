@@ -76,6 +76,7 @@ func update_displayed_cards():
 	to_display.append(node)
 	count += 1
 	# Добавляем следующие по кругу
+	spawnPos = Vector2(50,100)
 	var next_node = node.next
 	while count < MAX_DISPLAYED_CARDS and next_node != node:
 		to_display.append(next_node)
@@ -148,7 +149,7 @@ func open_pack()-> void:
 	confirm_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	confirm_button.modulate = Color.CRIMSON
 	confirm_button.pressed.connect(confirm_button_pressed)
-	confirm_button.position = get_viewport_rect().size / 2 - confirm_button.size
+	confirm_button.position = (get_viewport_rect().size - confirm_button.size)/2
 	print(confirm_button.position)
 
 func create_card(CardInfo: Dictionary)-> BaseCard:
