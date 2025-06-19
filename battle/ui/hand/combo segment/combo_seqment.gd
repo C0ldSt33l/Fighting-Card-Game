@@ -29,25 +29,26 @@ func add_combo_at_pos(c: Combo, pos: int) -> void:
 
 
 func remove_combo(c: Combo) -> void:
-	for w in self.combo_container.get_children():
-		if w.get_child(0) == c:
+	for w: DraggableWrap in self.combo_container.get_children():
+		if w.obj_to_drag == c:
 			w.remove_child(c)
 			self.combo_container.remove_child(w)
-			break
 
 
 func remove_combo_at_pos(pos: int) -> void:
-	var w := self.combo_container.get_child(pos)
+	if pos >= self.combo_container.get_child_count(): return
+	var w: DraggableWrap = self.combo_container.get_child(pos)
+	w.remove_child(w.get_child(0))
 	self.combo_container.remove_child(w)
 
 
 func remove_all_combos() -> void:
-	for w in self.combo_container.get_children():
-		self.combo_container.remove_child(w)
+	for c in self.combo_container.get_children():
+		self.combo_container.remove_child(c)
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	return data.data is Combo
+	return data.data is Combo and data.data not in self.combos
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:

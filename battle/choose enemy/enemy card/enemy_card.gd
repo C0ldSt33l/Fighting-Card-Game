@@ -36,11 +36,12 @@ class_name EnemyCard
 @onready var required_score: int :
 	set(val):
 		required_score = val
-		self.required_score_lbl.text = 'Score: %s' % [val]
+		self.required_score_lbl.text = 'Здоровье: %s' % [val]
 @onready var required_score_lbl: Label = $"Background/Margins/Content container/Required score"
 
 var is_mouse_inside: bool = false
 
+@onready var constrains: Label = $"Background/Margins/Content container/constrains"
 
 signal choosed(c: EnemyCard)
 
@@ -56,7 +57,7 @@ func setup(
 	image_path: String,
 	required_score: int
 ) -> void:
-	self.enemy_name = name
+	#self.enemy_name = name
 	# self.image = load(image_path)
 	self.required_score = required_score
 	

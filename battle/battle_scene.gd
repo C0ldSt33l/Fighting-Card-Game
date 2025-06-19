@@ -111,11 +111,15 @@ func start_round_preparation() -> void:
 
 	var hand_size := PlayerConfig.hand_size - self.hand.card_count
 	var confs := self.get_hand_configs(hand_size)
-	for c in confs:
+	for i in len(confs):
+		var c := confs[i]
 		self.spawn_card(c)
 
+	var i := 0
 	for combo_name in self.available_combos:
+		#if i == 0: continue
 		self.spawn_combo(combo_name, self.available_combos[combo_name])
+		i += 1
 	var last_combo := self.hand.combos[-1]
 	
 	var e := Effects.get_effect('Multiplying')
@@ -213,10 +217,13 @@ func play_card() -> void:
 
 
 func spawn_card(conf: Dictionary) -> void:
+	var materials := M.MATERIAL.values()
 	var card := Utils.Factory.create(
 		CARD_TEMPLATE,
 		func (c: Card) -> void:
 			c.set_main_props(conf)
+			c._material = materials[randi_range(0, materials.size() - 1)]
+			c.point = randi_range(1, 9)
 	)
 	self.hand.add_card(card)
 	self.cards_in_hand.append(card)

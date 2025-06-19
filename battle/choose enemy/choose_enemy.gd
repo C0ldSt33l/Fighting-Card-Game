@@ -4,28 +4,34 @@ class_name ChooseEnemyScene
 #TODO: fill test configs
 var enemy_confs: Array[Dictionary] = [
 	{
-		enemy_name = 'weak enemy',
+		enemy_name = 'Противник 1',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Слабость']
 	},
 	{
-		enemy_name = 'middle enemy',
+		enemy_name = 'Противник 2',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Расточительность']
 	},
 	{
-		enemy_name = 'strong enemy',
+		enemy_name = 'Противник 3',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Маленькая рука']
 	},
 	{
-		enemy_name = 'random name 1',
+		enemy_name = 'Противник 4',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Штраф']
 	},
 	{
-		enemy_name = 'random name 2',
+		enemy_name = 'Противник 5',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Слабость']
 	},
 	{
-		enemy_name = 'random name 3',
+		enemy_name = 'Противник 6',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Слабость']
 	},
 ]
 
@@ -55,9 +61,10 @@ func _ready() -> void:
 		var c := self.enemy_cards[i]
 		var d := confs[i]
 		c.setup(d.enemy_name, d.image_path, randi_range(1, 1000))
+		#c.constrains.text += '\n' + d.constrains[0]
 
 		#TODO: make it depend on run progression (enemy rarity/type, lvl or etc.)
-		c.image_rect.modulate += colors[i]
+		#c.image_rect.modulate += colors[i]
 		var col := colors[i]
 		col.s = 100
 		col.v = 0.5

@@ -1,11 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c7wnxs3jd7ek"]
+[gd_scene load_steps=4 format=3 uid="uid://c7wnxs3jd7ek"]
 
 [ext_resource type="Script" path="res://battle/card/card.gd" id="1_174wl"]
 [ext_resource type="Texture2D" uid="uid://cd5h373qvrocd" path="res://assets/ui/materials/wood.png" id="2_htulr"]
 [ext_resource type="Texture2D" uid="uid://s6h4tgtseil7" path="res://assets/ui/card/icons/hand.png" id="2_humot"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_784jb"]
-texture = ExtResource("2_htulr")
 
 [node name="Card" type="Control"]
 custom_minimum_size = Vector2(100, 120)
@@ -16,7 +13,7 @@ offset_bottom = 120.0
 mouse_filter = 2
 script = ExtResource("1_174wl")
 
-[node name="Background" type="Panel" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +21,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_784jb")
+texture = ExtResource("2_htulr")
+expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="Background"]
 layout_mode = 1
@@ -43,6 +41,9 @@ alignment = 1
 [node name="point lbl" type="Label" parent="Background/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 35
 text = "5"
 horizontal_alignment = 1

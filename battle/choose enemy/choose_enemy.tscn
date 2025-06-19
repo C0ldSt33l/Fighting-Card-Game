@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://mnm6d0m2u0hx"]
+[gd_scene load_steps=6 format=3 uid="uid://mnm6d0m2u0hx"]
 
 [ext_resource type="Script" path="res://battle/choose enemy/choose_enemy.gd" id="1_4dc4p"]
 [ext_resource type="PackedScene" uid="uid://bnahkya0rw85b" path="res://battle/choose enemy/enemy card/enemy_card.tscn" id="2_neokh"]
+[ext_resource type="Texture2D" uid="uid://4m8i6cs7m0op" path="res://assets/tmp enemy/death2.png" id="4_yg7g8"]
+[ext_resource type="Texture2D" uid="uid://ffovge2e0run" path="res://assets/tmp enemy/scull_deer2.png" id="5_0ycga"]
+[ext_resource type="Texture2D" uid="uid://bqyk0f3y1pcdf" path="res://assets/tmp enemy/alghoul2.png" id="5_mnirx"]
 
 [node name="Choose enemy" type="Control"]
 layout_mode = 3
@@ -40,21 +43,67 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Name" parent="Enemy card container/Enemy card1/Background/Margins/Content container" index="0"]
+text = "Череп-олень"
+
+[node name="Image" parent="Enemy card container/Enemy card1/Background/Margins/Content container" index="1"]
+texture = ExtResource("5_0ycga")
+
+[node name="constrains" parent="Enemy card container/Enemy card1/Background/Margins/Content container" index="3"]
+text = "Ограничения: 
+Слабость"
+
+[node name="Label" parent="Enemy card container/Enemy card1/Background/Margins/Content container" index="4"]
+text = "Награда:
+Мощь Гор"
+
 [node name="Enemy card2" parent="Enemy card container" instance=ExtResource("2_neokh")]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Name" parent="Enemy card container/Enemy card2/Background/Margins/Content container" index="0"]
+text = "Весник Смерти"
+
+[node name="Image" parent="Enemy card container/Enemy card2/Background/Margins/Content container" index="1"]
+texture = ExtResource("4_yg7g8")
+
+[node name="constrains" parent="Enemy card container/Enemy card2/Background/Margins/Content container" index="3"]
+text = "Ограничения: 
+Без Сбросов"
+
+[node name="Label" parent="Enemy card container/Enemy card2/Background/Margins/Content container" index="4"]
+text = "Награда:
+Чёрная сталь"
 
 [node name="Enemy card3" parent="Enemy card container" instance=ExtResource("2_neokh")]
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Name" parent="Enemy card container/Enemy card3/Background/Margins/Content container" index="0"]
+text = "Вурдалак"
+
+[node name="Image" parent="Enemy card container/Enemy card3/Background/Margins/Content container" index="1"]
+texture = ExtResource("5_mnirx")
+
+[node name="constrains" parent="Enemy card container/Enemy card3/Background/Margins/Content container" index="3"]
+text = "Ограничения: 
+Один раунд"
+
+[node name="Label" parent="Enemy card container/Enemy card3/Background/Margins/Content container" index="4"]
+text = "Награда:
+Долина Духов"
+
 [node name="Button" type="Button" parent="."]
 layout_mode = 0
-offset_left = 440.0
-offset_top = 512.0
-offset_right = 712.0
-offset_bottom = 608.0
+offset_left = 480.0
+offset_top = 592.0
+offset_right = 752.0
+offset_bottom = 688.0
 theme_override_font_sizes/font_size = 50
 text = "Сброс"
 
 [connection signal="pressed" from="Button" to="." method="reroll_enemy"]
+
+[editable path="Enemy card container/Enemy card1"]
+[editable path="Enemy card container/Enemy card2"]
+[editable path="Enemy card container/Enemy card3"]

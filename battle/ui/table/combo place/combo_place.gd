@@ -26,6 +26,7 @@ func remove_combo() -> void:
 
 func _get_drag_data(at_position: Vector2) -> Variant:
 	Events.drag_started.emit(self.combo, self)
+	set_drag_preview(self.combo.get_drag_preview())
 	return DragData.new(self, self.combo)
 
 

@@ -24,11 +24,11 @@ var combo_name: String
 var description: String
 
 var price: int
-var point: int
-var factor: int
+@export var point: int
+@export var factor: int
 
-var animal: ANIMAL
-var _material: M.MATERIAL
+@export var animal: ANIMAL
+@export var _material: M.MATERIAL
 var upgrade_lvl: int = 1
 
 @export var pattern: Array[Dictionary] = []
@@ -47,23 +47,21 @@ func _ready() -> void:
 	self.size_lbl.text = str(self.length)
 	self.icon.texture = load('%s/%s.png' % [PATH_TO_ICONS, ANIMAL.keys()[self.animal].to_lower()])
 	self.background.texture = load('%s/%s.png' % [M.PATH_TO_MATERIALS, M.MATERIAL.keys()[self._material].to_lower()])
-	pass
-
 
 
 func count_card_by_tag(tag: String) -> int:
 	var count := 0
 	for c in self.cards:
-		if !c.has_tag(tag): continue
-		count += 1
+		if c.has_tag(tag):
+			count += 1
 	return count
 
 
 func count_card_by_tag_val(tag: String, match: Callable) -> int:
 	var count := 0
 	for c in self.cards:
-		if !match.call(c.get_tag_val(tag)): continue
-		count += 1
+		if match.call(c.get_tag_val(tag)):
+			count += 1
 	return count
 
 
@@ -88,6 +86,16 @@ func reset_effects() -> void:
 
 func is_all_effects_activated() -> bool:
 	return self.effects.is_empty()
+
+
+# DRAG N DROP FUNCS
+func _get_drag_data(at_position: Vector2) -> Variant:
+	set_drag_preview(self.get_drag_preview())
+	return DragData.new(Game.battle.hand.combo_seqment, self)
+
+
+func get_drag_preview() -> DragNDropPreview:
+	return DragNDropPreview.new(self.duplicate())
 
 
 # Maybe will come in useful for creating combo patterns

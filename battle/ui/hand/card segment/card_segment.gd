@@ -5,7 +5,7 @@ class_name CardSegment
 @onready var cards: Array[Card] :
 	get():
 		var a: Array[Card]
-		a.assign(self.card_container.get_children().map(func(w): return w.obj_to_drag))
+		a.assign(self.card_container.get_children().map(func(w: DraggableWrap): return w.obj_to_drag as Card))
 		return a
 
 @onready var reroll_btn: Button = $"VBoxContainer/Button container/Reroll btn" as Button
@@ -43,7 +43,7 @@ func remove_all_cards() -> void:
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	return data.data is Card
+	return data.data is Card and data.data not in self.cards
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:

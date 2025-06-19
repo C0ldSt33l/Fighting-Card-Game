@@ -9,9 +9,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 10.0
 offset_right = -392.0
-offset_bottom = -388.0
+offset_bottom = -398.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2eh7u")
@@ -25,15 +24,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="Panel" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(540, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -41,12 +43,15 @@ theme_override_constants/margin_bottom = 10
 
 [node name="Card container" type="GridContainer" parent="VBoxContainer/Panel/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
+theme_override_constants/v_separation = -20
 columns = 4
 
 [node name="Button container" type="VBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="Reroll btn" type="Button" parent="VBoxContainer/Button container"]
 custom_minimum_size = Vector2(0, 80)

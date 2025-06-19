@@ -24,5 +24,7 @@ func __set_obj(obj: Variant) -> void:
 		obj_to_drag = null
 	else:
 		self.add_child(obj)
+		obj.set_anchors_and_offsets_preset(PRESET_TOP_LEFT, PRESET_MODE_KEEP_SIZE)
+		# obj.set_anchors_preset(PRESET_TOP_LEFT)
 		obj_to_drag = obj
 		self.custom_minimum_size = obj.size

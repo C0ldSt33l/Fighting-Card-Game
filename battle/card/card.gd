@@ -1,11 +1,12 @@
 extends Control
 class_name Card
 
-@onready var background: Panel = $Background as Panel
+@onready var background: TextureRect = $Background as TextureRect
 @onready var point_lbl: Label = $"Background/MarginContainer/VBoxContainer/point lbl" as Label
 @onready var body_part_icon: TextureRect = $"Background/MarginContainer/VBoxContainer/body part icon" as TextureRect
 
 
+const PATH_TO_ICONS: String = 'res://assets/ui/card/icons'
 enum BODY_PART {
 	HAND,
 	LEG,
@@ -14,19 +15,16 @@ enum BODY_PART {
 	KNEE,
 	ELBOW,
 }
-
 enum RARITY {
 	REGULAR,
 	RARE,
 	LEGENDARY,
 }
-
 enum DIRECTION {
 	HEAD,
 	BODY,
 	LEGS,
 }
-
 enum ENERGY {
 	CHAKRA,
 	PRANA,
@@ -34,13 +32,13 @@ enum ENERGY {
 }
 
 var index: int = -1
-var picture: String
 
 @export var card_name: String
 @export var description: String
 
 @export var point: int
 @export var factor: int
+@export var _material: M.MATERIAL
 @export var body_part: BODY_PART
 @export var direction: DIRECTION
 @export var rarity: RARITY
@@ -65,9 +63,9 @@ var effects: Array[Effect] = []
 
 
 func _ready() -> void:
-
-
-	# self.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)
+	self.body_part_icon.texture = load('%s/%s.png' % [PATH_TO_ICONS, BODY_PART.keys()[self.body_part].to_lower()])
+	self.background.texture = load('%s/%s.png' % [M.PATH_TO_MATERIALS, M.MATERIAL.keys()[self._material]])
+	self.point_lbl.text = str(self.point)
 
 	Events.obj_created.emit(self)
 
@@ -76,7 +74,7 @@ func set_main_props(
 	conf: Dictionary,
 ) -> void:
 	for prop in conf:
-		if prop not in ['id', 'Name', 'Price', 'Body part', 'Direction', 'Point']:
+		if prop not in ['id', 'Name', 'Price', 'Body part', 'Direction', 'Point', 'Picture']:
 			self[prop.to_snake_case()] = conf[prop]
 		else:
 			match prop:
@@ -87,7 +85,7 @@ func set_main_props(
 				'Direction':
 					self.direction = DIRECTION[conf[prop].to_upper()]
 				'Point':
-					self.point = randi_range(0, 99)
+					self.point = randi_range(1, 9)
 					#self.dmg_label.text = 'Point: %s' % [self.point]
 				_:
 					pass
@@ -127,6 +125,10 @@ func bind_effect(e: Effect) -> void:
 
 func bind_effect_arr(effs: Array[Effect]) -> void:
 	self.effects.append_array(effs)
+
+
+func get_drag_preview() -> DragNDropPreview:
+	return DragNDropPreview.new(self.duplicate())
 
 
 func _exit_tree() -> void:

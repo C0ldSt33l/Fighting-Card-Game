@@ -54,7 +54,7 @@ func _ready() -> void:
 	var nodes: Array[Node] = __tree_root.get_children()
 	__scene_stack.push_back(nodes.back())
 	print_debug("Scene Manager loaded.")
-	print_debug(__scene_stack)
+	#print_debug(__scene_stack)
 	
 func _exit_tree() -> void:
 	for scene in __all_scenes:
