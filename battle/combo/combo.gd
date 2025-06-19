@@ -22,8 +22,8 @@ var pos_end_idx: int
 
 var combo_name: String
 var description: String
-
 var price: int
+
 @export var point: int
 @export var factor: int
 
@@ -89,13 +89,20 @@ func is_all_effects_activated() -> bool:
 
 
 # DRAG N DROP FUNCS
-func _get_drag_data(at_position: Vector2) -> Variant:
-	set_drag_preview(self.get_drag_preview())
-	return DragData.new(Game.battle.hand.combo_seqment, self)
-
-
 func get_drag_preview() -> DragNDropPreview:
 	return DragNDropPreview.new(self.duplicate())
+
+# TODO: relace with resources
+func get_combo_data() -> ComboData:
+	return ComboData.new(
+		self.combo_name,
+		self.description,
+		self.price,
+		self.point,
+		self.factor,
+		self.animal,
+		self._material,
+	)
 
 
 # Maybe will come in useful for creating combo patterns
