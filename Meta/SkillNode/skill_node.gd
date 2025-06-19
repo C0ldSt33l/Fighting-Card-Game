@@ -2,10 +2,12 @@ extends Control
 
 class_name SkillNode
 
-@onready var name_label: Label = $Background/Name
-@onready var description_label: Label = $Background/Description
+@onready var name_label: Label = $Background/TextureRect/Name
+@onready var description_label: Label = $Background/TextureRect/Description
 @onready var panel: Panel = $Background
 @onready var port_container: HBoxContainer = $PortContainer
+@onready var Price : Label = $Background/TextureRect/Price
+@onready var Texture_rect : TextureRect = $Background/TextureRect
 
 @export var name_text: String = "New Node"
 @export var description: String = "Description of the node."
@@ -24,6 +26,7 @@ var Meta_func : Callable = func (): pass
 func _ready():
 	name_label.text = name_text
 	description_label.text = description
+	Price.text = str(price)
 	create_port()
 
 	update_visibility()
@@ -48,6 +51,12 @@ func has_unlocked_parent() -> bool:
 			return true
 	return false
 
+func has_unlocked_children()->bool:
+	for child in child_nodes:
+		if child.unlocked:
+			return true
+	return false
+
 func create_port():
 	var port = preload("res://Meta/Port/Port.tscn").instantiate()
 	port.buy_skill.connect(port_buy_skill)
@@ -55,8 +64,13 @@ func create_port():
 	return port
 
 func port_buy_skill(port):
-	SkillTreeManager.try_unlock_node(self)
+	SkillTreeManager.try_upgrade_node(self)
+
 
 func on_unlocked():
 	print("узел куплен")
 	panel.modulate = Color.GREEN
+
+func on_locked():
+	print("узел закрыт")
+	panel.modulate - Color.GRAY

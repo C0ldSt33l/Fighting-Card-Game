@@ -12,6 +12,7 @@ offset_bottom = 11.0
 name_text = "Стартовый узел"
 description = "Стартовый узел"
 Start_node = true
+price = 2
 child_nodes = [NodePath("../SkillNode2"), NodePath("../SkillNode3")]
 
 [node name="SkillNode2" parent="." node_paths=PackedStringArray("parent_nodes", "child_nodes") instance=ExtResource("1_plmxj")]
@@ -21,6 +22,7 @@ offset_right = 424.0
 offset_bottom = 9.0
 name_text = "Сильный удар"
 description = "Дает +1 ко всем картам кдаров"
+price = 4
 parent_nodes = [NodePath("../SkillNode")]
 child_nodes = [NodePath("../SkillNode4")]
 
@@ -31,6 +33,7 @@ offset_right = 430.0
 offset_bottom = 349.0
 name_text = "Богатые спонсоры"
 description = "Дает +2 монеты в конце сражения"
+price = 3
 parent_nodes = [NodePath("../SkillNode")]
 child_nodes = [NodePath("../SkillNode5")]
 
@@ -41,6 +44,7 @@ offset_right = 830.0
 offset_bottom = 8.0
 name_text = "Сильный удар II"
 description = "Дает +1 ко всем картам ударов"
+price = 1
 parent_nodes = [NodePath("../SkillNode2")]
 child_nodes = [NodePath("../SkillNode6")]
 
@@ -49,6 +53,7 @@ offset_left = 840.0
 offset_top = 354.0
 offset_right = 840.0
 offset_bottom = 354.0
+price = 1
 parent_nodes = [NodePath("../SkillNode3")]
 child_nodes = [NodePath("../SkillNode7")]
 

@@ -10,14 +10,15 @@ script = ExtResource("2_hfugg")
 [node name="Background" parent="." index="0"]
 script = ExtResource("3_lcysh")
 
-[node name="Name" parent="Background" index="0"]
-offset_left = 1.0
-offset_top = 3.0
-offset_right = 200.0
-offset_bottom = 43.0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Description" parent="Background" index="1"]
+[node name="price" parent="Background/TextureRect" index="2"]
+offset_left = 133.0
+offset_top = 236.0
+offset_right = 198.0
+offset_bottom = 297.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
 vertical_alignment = 1

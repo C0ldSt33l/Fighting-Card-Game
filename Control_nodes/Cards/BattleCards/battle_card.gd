@@ -1,8 +1,8 @@
 class_name BattleCard extends BaseCard
 
-@onready var Description_label:= $Background/Description
-@onready var Name_label:=$Background/Name
-
+@onready var Description_label : Label= $Background/TextureRect/Description
+@onready var Name_label: Label = $Background/TextureRect/Name
+@onready var price: Label = $Background/TextureRect/price
 var Price:int:
 	set(val): self.set_tag_val('Price',val)
 	get(): return self.get_tag_val('Price')
@@ -28,6 +28,8 @@ func _ready() -> void:
 	super()
 	Events.drag_completed.connect(get_upgrade)
 	Background.check = func(data):return true
+	#price.visible = false
+	price.text = str(Price)
 	pass # Replace with function body.
 
 

@@ -88,6 +88,9 @@ func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 			for tag in CardInfo.tags:
 				c.tags.append(tag)
 			c.position = pos
+			var pr = c.get_node("Background/TextureRect/price")
+			pr.visible = true
+			
 			#c.hovered.connect(self.create_panel_with_text)
 			#c.unhovered.connect(self.remove_panel)
 	)
@@ -145,6 +148,7 @@ func _on_button_2_pressed() -> void:#buy button
 
 func update_total_price():
 	total_price = 0
+	Price.visible = true
 	for obj in basket:
 		total_price+=obj.Price
 	if total_price == 0:
