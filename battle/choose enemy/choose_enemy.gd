@@ -4,28 +4,34 @@ class_name ChooseEnemyScene
 #TODO: fill test configs
 var enemy_confs: Array[Dictionary] = [
 	{
-		enemy_name = 'weak enemy',
+		enemy_name = 'Противник 1',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Слабость']
 	},
 	{
-		enemy_name = 'middle enemy',
+		enemy_name = 'Противник 2',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Расточительность']
 	},
 	{
-		enemy_name = 'strong enemy',
+		enemy_name = 'Противник 3',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Маленькая рука']
 	},
 	{
-		enemy_name = 'random name 1',
+		enemy_name = 'Противник 4',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Штраф']
 	},
 	{
-		enemy_name = 'random name 2',
+		enemy_name = 'Противник 5',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Слабость']
 	},
 	{
-		enemy_name = 'random name 3',
+		enemy_name = 'Противник 6',
 		image_path = 'res://assets/tmp enemy/enemy.jpg',
+		constrains = ['Слабость']
 	},
 ]
 
@@ -55,9 +61,10 @@ func _ready() -> void:
 		var c := self.enemy_cards[i]
 		var d := confs[i]
 		c.setup(d.enemy_name, d.image_path, randi_range(1, 1000))
+		#c.constrains.text += '\n' + d.constrains[0]
 
 		#TODO: make it depend on run progression (enemy rarity/type, lvl or etc.)
-		c.image_rect.modulate += colors[i]
+		#c.image_rect.modulate += colors[i]
 		var col := colors[i]
 		col.s = 100
 		col.v = 0.5
@@ -86,6 +93,14 @@ func start_opening_animation() -> void:
 
 
 func on_enemy_choosed(ec: EnemyCard) -> void:
-	#TODO: move in new scene:
-	#choose enemy -> loading -> battle
-	print('enemy choosed')
+	PlayerConfig.enemy_data = ec.get_enemy_data()
+
+	SceneManager.__last_scene_type = SceneManager.SCENE.CHOOSE_ENEMY 
+	SceneManager.call_deferred('open_new_scene_by_name', SceneManager.SCENE.LOADING)
+	
+
+func reroll_enemy() -> void:
+	for ec in self.enemy_cards:
+		var dict_size := self.enemy_confs.size()
+		var dict := self.enemy_confs[randi_range(0, dict_size - 1)]
+		ec.setup(dict.enemy_name, dict.image_path, randi_range(0, 1000))

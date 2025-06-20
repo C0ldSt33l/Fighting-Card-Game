@@ -1,26 +1,19 @@
 extends Control
 class_name CardSorter 
 
-@onready var sort_btn: Button = $"VBoxContainer/Sort button" as Button
-@onready var sort_modes: HBoxContainer = $"VBoxContainer/Sort modes" as HBoxContainer
+@onready var sort_modes: HBoxContainer = $"PanelContainer/VBoxContainer/MarginContainer/Sort modes" as HBoxContainer
+
 var sort_mode_btns: Array[Button] :
 		get():
 			var btns: Array[Button]
 			btns.assign(self.sort_modes.get_children())
 			return btns
-var sort_mode_grp: ButtonGroup = ButtonGroup.new()
 
 signal card_sorted(f: Callable)
 
 
 func _ready() -> void:
-	self.sort_btn.custom_minimum_size.y = self.size.y / 2
-	for b in self.sort_mode_btns:
-		b.button_group = self.sort_mode_grp
-		b.custom_minimum_size.x = self.size.x / 2
-	self.sort_mode_btns[0].button_pressed = true
-	self.sort_mode_btns[0].pressed.emit()
-
+	pass
 
 func _on_by_value_pressed() -> void:
 	self.card_sorted.emit(self.sort_cards_by_value)

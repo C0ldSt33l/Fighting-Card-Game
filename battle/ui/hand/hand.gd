@@ -5,7 +5,7 @@ extends Control
 @onready var combos: Array[Combo] :
 	get(): return self.combo_seqment.combos
 
-var card_count_per_row: int = PlayerConfig.hand_size
+var card_count_per_row: int = PlayerConfig.hand_size / 2
 
 @onready var card_segment: CardSegment = $"HBoxContainer/Card Segment" as CardSegment
 @onready var cards: Array[Card] :
@@ -47,7 +47,7 @@ func sort_cards(f: Callable) -> void:
 	var cards := self.cards
 	cards.sort_custom(f)
 	for pos in len(cards):
-		self.card_segment.card_container.move_child(cards[pos], pos)
+		self.card_segment.card_container.move_child(cards[pos].get_parent(), pos)
 
 
 func add_combo(c: Combo) -> void:

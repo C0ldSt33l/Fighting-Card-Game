@@ -6,6 +6,7 @@ extends Control
 @onready var start_button: Button = $"Start button" as Button
 
 @onready var counter: Counter = $Counter as Counter
+#TODO: add another enemy props and init it in `_ready()`
 @onready var required_score: int = 2
 
 @onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
@@ -45,7 +46,7 @@ var last_combo: Combo :
 @onready var reroll_count: int = 4 :
 	set(val):
 		reroll_count = val
-		self.reroll_btn.text = 'Reroll: %s' % [val] 
+		self.reroll_btn.text = 'Сброс: %s' % [val] 
 
 var earned_money: int = 0
 
@@ -60,6 +61,7 @@ signal next_card_key_pressed
 
 
 func _ready() -> void:
+	print('wid res: ', DisplayServer.window_get_size())
 	Events.connect_events({
 		battle_started = self.start_round_preparation,
 
@@ -87,8 +89,11 @@ func _ready() -> void:
 
 	#TODO: move init seg in separate func
 	self.reroll_btn.pressed.connect(self.reroll)
+	# TODO: add this props in player config
 	self.reroll_count = 4
 	self.round_count = 2
+
+	print('EMEMY SCORE: ', self.required_score)
 
 	Game.battle = self
 	Events.battle_started.emit()
@@ -106,11 +111,16 @@ func start_round_preparation() -> void:
 
 	var hand_size := PlayerConfig.hand_size - self.hand.card_count
 	var confs := self.get_hand_configs(hand_size)
-	for c in confs:
+	for i in len(confs):
+		var c := confs[i]
 		self.spawn_card(c)
 
+	var i := 0
 	for combo_name in self.available_combos:
+		#if i == 0: continue
 		self.spawn_combo(combo_name, self.available_combos[combo_name])
+		i += 1
+	var last_combo := self.hand.combos[-1]
 	
 	var e := Effects.get_effect('Multiplying')
 	self.cards_in_hand[0].bind_effect(e)
@@ -207,25 +217,31 @@ func play_card() -> void:
 
 
 func spawn_card(conf: Dictionary) -> void:
-	var card := CardFactory.create(
+	var materials := M.MATERIAL.values()
+	var card := Utils.Factory.create(
+		CARD_TEMPLATE,
 		func (c: Card) -> void:
 			c.set_main_props(conf)
+			c._material = materials[randi_range(0, materials.size() - 1)]
+			c.point = randi_range(1, 9)
 	)
 	self.hand.add_card(card)
 	self.cards_in_hand.append(card)
 
 func spawn_combo(name: String, conf: Dictionary) -> void:
+	var materials := M.MATERIAL.values()
 	var combo: Combo = Utils.Factory.create(
 		self.COMBO_TEMPLATE,
 		func (c: Combo):
 			c.combo_name = name
-			c.pattern.append_array(conf.pattern)
+			c.pattern.assign(conf.pattern)
 			c.effects.append(Effects.get_effect(conf.effect))
 			for p in conf.props:
 				c[p] = conf.props[p]
+			c._material = materials[randi_range(0, materials.size() - 1)]
 	)
 	self.hand.add_combo(combo)
-	combo.make_little_view()
+	# combo.make_little_view()
 
 
 func reroll() -> void:
@@ -416,3 +432,4 @@ func on_effect_activated(e: Effect) -> void: pass
 
 func on_battle_ended() -> void:
 	self.earned_money += self.round_count
+	PlayerConfig.enemy_data = null

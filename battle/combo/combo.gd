@@ -2,26 +2,37 @@ extends Control
 class_name Combo
 
 const MAX_LVL := 2
-@onready var panel_container: HBoxContainer = $PanelContainer as HBoxContainer
-var panels: Array[Panel] :
-	get():
-		var a: Array[Panel]
-		a.assign(self.panel_container.get_children())
-		return a
+const PATH_TO_ICONS: String = 'res://assets/ui/combo/icons'
+enum ANIMAL {
+	BULL,
+	MANTIS,
+	ELEPHENT,
+	DRAGON,
+	SCORPION,
+}
 
-var index: int
+@onready var background: TextureRect = $background as TextureRect
+@onready var icon: TextureRect = $background/HBoxContainer/icon as TextureRect
+@onready var size_lbl: Label = $"background/HBoxContainer/size lbl" as Label
+
+var idx: int
+var pos_idx: float
+var pas_stat_idx: int
+var pos_end_idx: int
 
 var combo_name: String
 var description: String
-
 var price: int
-var point: int
-var factor: int
 
+@export var point: int
+@export var factor: int
+
+@export var animal: ANIMAL
+@export var _material: M.MATERIAL
 var upgrade_lvl: int = 1
 
-var pattern: Array[Dictionary] = []
-@onready var length: int = self.pattern.size()
+@export var pattern: Array[Dictionary] = []
+var length: int = 0
 var cards: Array[Card] = []
 var first_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[0]
@@ -32,44 +43,25 @@ var effects: Array[Effect]
 
 
 func _ready() -> void:
-	if self.length > 1:
-		var p: Panel = self.panel_container.get_child(0)
-		p.scale = self.scale
-		for i in length - 1:
-			self.panel_container.add_child(p.duplicate())
-	
-	var last_panel := self.panels[-1]
-	var last_panel_stylebox := StyleBoxFlat.new()
-	last_panel_stylebox.bg_color = Color.RED
-	last_panel.add_theme_stylebox_override(
-		'panel',
-		last_panel_stylebox
-	)
-
-
-func make_default_view() -> void:
-	self.custom_minimum_size *= 2
-	self.panel_container.scale *= 2
-
-
-func make_little_view() -> void:
-	self.custom_minimum_size /= 2
-	self.panel_container.scale /= 2
+	self.length = self.pattern.size()
+	self.size_lbl.text = str(self.length)
+	self.icon.texture = load('%s/%s.png' % [PATH_TO_ICONS, ANIMAL.keys()[self.animal].to_lower()])
+	self.background.texture = load('%s/%s.png' % [M.PATH_TO_MATERIALS, M.MATERIAL.keys()[self._material].to_lower()])
 
 
 func count_card_by_tag(tag: String) -> int:
 	var count := 0
 	for c in self.cards:
-		if !c.has_tag(tag): continue
-		count += 1
+		if c.has_tag(tag):
+			count += 1
 	return count
 
 
 func count_card_by_tag_val(tag: String, match: Callable) -> int:
 	var count := 0
 	for c in self.cards:
-		if !match.call(c.get_tag_val(tag)): continue
-		count += 1
+		if match.call(c.get_tag_val(tag)):
+			count += 1
 	return count
 
 
@@ -94,6 +86,23 @@ func reset_effects() -> void:
 
 func is_all_effects_activated() -> bool:
 	return self.effects.is_empty()
+
+
+# DRAG N DROP FUNCS
+func get_drag_preview() -> DragNDropPreview:
+	return DragNDropPreview.new(self.duplicate())
+
+# TODO: relace with resources
+func get_combo_data() -> ComboData:
+	return ComboData.new(
+		self.combo_name,
+		self.description,
+		self.price,
+		self.point,
+		self.factor,
+		self.animal,
+		self._material,
+	)
 
 
 # Maybe will come in useful for creating combo patterns

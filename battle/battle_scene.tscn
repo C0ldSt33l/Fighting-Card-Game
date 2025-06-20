@@ -1,15 +1,29 @@
-[gd_scene load_steps=5 format=3 uid="uid://dmwiv3j3x3x3d"]
+[gd_scene load_steps=15 format=3 uid="uid://dmwiv3j3x3x3d"]
 
 [ext_resource type="Script" path="res://battle/battle_scene.gd" id="1_437rl"]
 [ext_resource type="PackedScene" uid="uid://bnv0hy2jwwtgd" path="res://battle/counter/counter.tscn" id="2_hdy1t"]
 [ext_resource type="PackedScene" uid="uid://5xl7p4fse6ad" path="res://battle/ui/table/table.tscn" id="3_aygk4"]
 [ext_resource type="PackedScene" uid="uid://cp47xxnw14oip" path="res://battle/ui/hand/hand.tscn" id="4_va1qn"]
+[ext_resource type="Texture2D" uid="uid://bpryimv0skgyi" path="res://assets/ui/totem/angel_blue_fire.png" id="5_vl4v8"]
+[ext_resource type="Texture2D" uid="uid://dr7w6bvydcopt" path="res://assets/ui/totem/angel_fire.png" id="6_73wjb"]
+[ext_resource type="Texture2D" uid="uid://dq3rq6xm3u636" path="res://assets/ui/player_char/mc_idle.png" id="6_u42g7"]
+[ext_resource type="Texture2D" uid="uid://bdi31jbv1r5ks" path="res://assets/ui/totem/angel_green_fire.png" id="7_820qf"]
+[ext_resource type="Texture2D" uid="uid://c5vxt8ax7vdhg" path="res://assets/ui/totem/bonsai.png" id="8_5kumo"]
+[ext_resource type="Texture2D" uid="uid://xdahe630wm2v" path="res://assets/ui/totem/dragon.png" id="9_auj0k"]
+[ext_resource type="Texture2D" uid="uid://dlohb66r5nnus" path="res://assets/ui/totem/gargoyle.png" id="10_sc67d"]
+[ext_resource type="Texture2D" uid="uid://el2pffdb2ttv" path="res://assets/ui/totem/hourglass.png" id="11_an4id"]
+[ext_resource type="Texture2D" uid="uid://bc6vslt73gpvh" path="res://assets/ui/totem/warrior.png" id="12_5dl35"]
+[ext_resource type="Texture2D" uid="uid://bp7138i04vljk" path="res://assets/tmp enemy/orc.png" id="14_7easd"]
 
 [node name="Battle scene" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 1.0
+offset_right = 8.0
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_437rl")
@@ -17,16 +31,8 @@ script = ExtResource("1_437rl")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 
-[node name="Start button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 912.0
-offset_top = 39.0
-offset_right = 1107.0
-offset_bottom = 118.0
-focus_mode = 0
-text = "START"
-
 [node name="Round counter" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 408.0
 offset_top = 1.0
@@ -39,6 +45,7 @@ vertical_alignment = 1
 uppercase = true
 
 [node name="Counter" parent="." instance=ExtResource("2_hdy1t")]
+visible = false
 offset_left = 544.0
 offset_top = 40.0
 offset_right = 544.0
@@ -46,21 +53,208 @@ offset_bottom = 40.0
 
 [node name="Table" parent="." instance=ExtResource("3_aygk4")]
 layout_mode = 1
-offset_left = 200.0
-offset_top = -64.0
-offset_right = 200.0
-offset_bottom = -64.0
+offset_left = -80.0
+offset_top = 1.0
+offset_right = -80.0
+offset_bottom = 1.0
 
 [node name="Hand" parent="." instance=ExtResource("4_va1qn")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 280.0
-offset_top = -256.0
-offset_right = 1150.0
-offset_bottom = 0.0
+offset_left = 190.0
+offset_top = -249.0
+offset_right = 1270.0
+offset_bottom = 1.0
 grow_vertical = 0
+
+[node name="Start button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1072.0
+offset_top = 383.0
+offset_right = 1267.0
+offset_bottom = 462.0
+focus_mode = 0
+text = "START"
+
+[node name="totems" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -8.0
+offset_right = 184.0
+offset_bottom = 607.0
+
+[node name="MarginContainer" type="MarginContainer" parent="totems"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GridContainer" type="GridContainer" parent="totems/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="totems/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 130)
+layout_mode = 2
+texture = ExtResource("5_vl4v8")
+
+[node name="TextureRect2" type="TextureRect" parent="totems/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 130)
+layout_mode = 2
+texture = ExtResource("6_73wjb")
+
+[node name="TextureRect3" type="TextureRect" parent="totems/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 130)
+layout_mode = 2
+texture = ExtResource("7_820qf")
+
+[node name="TextureRect4" type="TextureRect" parent="totems/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 130)
+layout_mode = 2
+texture = ExtResource("8_5kumo")
+
+[node name="TextureRect5" type="TextureRect" parent="totems/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 130)
+layout_mode = 2
+texture = ExtResource("9_auj0k")
+
+[node name="TextureRect6" type="TextureRect" parent="totems/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 130)
+layout_mode = 2
+texture = ExtResource("10_sc67d")
+
+[node name="TextureRect7" type="TextureRect" parent="totems/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 130)
+layout_mode = 2
+texture = ExtResource("11_an4id")
+
+[node name="TextureRect8" type="TextureRect" parent="totems/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 130)
+layout_mode = 2
+texture = ExtResource("12_5dl35")
+
+[node name="Panel" type="Panel" parent="totems"]
+layout_mode = 0
+offset_top = 610.0
+offset_right = 192.0
+offset_bottom = 719.0
+
+[node name="Button" type="Button" parent="totems/Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 32.0
+offset_right = 80.0
+offset_bottom = 104.0
+text = "Меню"
+
+[node name="Button2" type="Button" parent="totems/Panel"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 32.0
+offset_right = 176.0
+offset_bottom = 104.0
+text = "Инфо"
+
+[node name="player" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 95.0
+offset_right = 608.0
+offset_bottom = 255.0
+texture = ExtResource("6_u42g7")
+metadata/_edit_group_ = true
+
+[node name="enemy health" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 392.0
+offset_top = 1.0
+offset_right = 632.0
+offset_bottom = 65.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="enemy health"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "1 000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="points" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 95.0
+offset_right = 328.0
+offset_bottom = 159.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="points"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="mult" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 183.0
+offset_right = 328.0
+offset_bottom = 247.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="mult"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="x" type="Label" parent="."]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 151.0
+offset_right = 304.0
+offset_bottom = 193.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 30
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="enemy" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 632.0
+offset_top = 1.0
+offset_right = 960.0
+offset_bottom = 263.0
+texture = ExtResource("14_7easd")
+expand_mode = 1
 
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Start button" to="." method="start_round" flags=3]

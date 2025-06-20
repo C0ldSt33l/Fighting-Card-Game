@@ -36,11 +36,12 @@ class_name EnemyCard
 @onready var required_score: int :
 	set(val):
 		required_score = val
-		self.required_score_lbl.text = 'Score: %s' % [val]
+		self.required_score_lbl.text = 'Здоровье: %s' % [val]
 @onready var required_score_lbl: Label = $"Background/Margins/Content container/Required score"
 
 var is_mouse_inside: bool = false
 
+@onready var constrains: Label = $"Background/Margins/Content container/constrains"
 
 signal choosed(c: EnemyCard)
 
@@ -56,18 +57,10 @@ func setup(
 	image_path: String,
 	required_score: int
 ) -> void:
-	self.enemy_name = name
+	#self.enemy_name = name
 	# self.image = load(image_path)
 	self.required_score = required_score
 	
-
-func get_enemy_data() -> Dictionary:
-	return {
-		enemy_name = self.enemy_name,
-		image = self.image,
-		required_score = self.required_score,
-	}
-
 
 func connect_mouse_signals() -> void:
 	self.background.mouse_entered.connect(self._on_background_mouse_entered)
@@ -88,6 +81,15 @@ func _on_background_mouse_exited() -> void:
 func _on_background_gui_input(event: InputEvent) -> void:
 	if self.is_mouse_inside and event.is_action_pressed('click'):
 		self.choosed.emit(self)
+
+
+func get_enemy_data() -> EnemyData:
+	return EnemyData.new(
+		self.enemy_name,
+		self.image,
+		self.required_score,
+		[]
+	)
 
 
 func _to_string() -> String:

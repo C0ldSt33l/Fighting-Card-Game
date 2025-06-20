@@ -4,6 +4,7 @@ const COMBOS := {
 	'Standart Combo': {
 		'props': {
 			'description': 'Started combo',
+			'animal': Combo.ANIMAL.BULL,
 			'price': 15,
 			'point': 10,
 			'factor': 2,
@@ -17,6 +18,7 @@ const COMBOS := {
 	'Big Combo': {
 		'props': {
 			'description': 'big Started combo',
+			'animal': Combo.ANIMAL.ELEPHENT,
 			'price': 25,
 			'point': 10,
 			'factor': 2,
@@ -31,6 +33,7 @@ const COMBOS := {
 	'Shord combo': {
 		'props': {
 			'description': 'Made of one card',
+			'animal': Combo.ANIMAL.SCORPION,
 			'price': 5,
 			'point': 5,
 			'factor': 1,

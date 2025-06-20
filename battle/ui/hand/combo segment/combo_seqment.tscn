@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://battle/ui/hand/combo segment/combo_seqment.gd" id="1_ec8t0"]
 
 [node name="Combo seqment" type="Control"]
-custom_minimum_size = Vector2(225, 200)
+custom_minimum_size = Vector2(260, 230)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -927.0
+offset_right = -880.0
 offset_bottom = -448.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -22,6 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Background"]
 layout_mode = 1
@@ -30,9 +31,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
+theme_override_constants/margin_top = 5
 
 [node name="Combo Container" type="VBoxContainer" parent="Background/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
+mouse_filter = 2
+theme_override_constants/separation = 5
