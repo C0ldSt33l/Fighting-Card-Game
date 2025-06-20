@@ -7,7 +7,7 @@ extends Node2D
 var playerCardID = 1000000
 
 var LabelMoney:Label 
-var money : int = 10
+var money : int = 100
 
 var objects :Array = []
 
@@ -54,7 +54,7 @@ func _ready() -> void:
 	arrange_cards()
 	
 	spawn_combo(All_combo[randi() % All_combo.size()],Vector2(258,358))
-	Save_Manager.auto_save()
+
 	pass
 
 func _process(delta: float) -> void:
@@ -144,6 +144,7 @@ func _on_button_2_pressed() -> void:#buy button
 		print(PlayerConfig.player_available_cards)
 		basket.clear()
 		total_price = 0
+		Save_Manager.auto_save()
 				
 
 func update_total_price():
