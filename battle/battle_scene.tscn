@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dmwiv3j3x3x3d"]
+[gd_scene load_steps=16 format=3 uid="uid://dmwiv3j3x3x3d"]
 
 [ext_resource type="Script" path="res://battle/battle_scene.gd" id="1_437rl"]
 [ext_resource type="PackedScene" uid="uid://bnv0hy2jwwtgd" path="res://battle/counter/counter.tscn" id="2_hdy1t"]
@@ -15,6 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://bc6vslt73gpvh" path="res://assets/ui/totem/warrior.png" id="12_5dl35"]
 [ext_resource type="Texture2D" uid="uid://bp7138i04vljk" path="res://assets/tmp enemy/orc.png" id="14_7easd"]
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_ktl34"]
+
 [node name="Battle scene" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -25,6 +27,14 @@ offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_437rl")
+
+[node name="fight_background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 191.0
+offset_top = 1.0
+offset_right = 1278.0
+offset_bottom = 467.0
+texture = SubResource("CanvasTexture_ktl34")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5

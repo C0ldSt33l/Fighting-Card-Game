@@ -9,6 +9,9 @@ const ANIMAL := ComboData.ANIMAL
 @onready var panel: TextureRect = $panel as TextureRect
 @onready var icon: TextureRect = $panel/icon as TextureRect
 
+var activation_pos: int
+var pos_idx: float
+
 @export var combo_name: String
 @export var description: String
 @export var price: int

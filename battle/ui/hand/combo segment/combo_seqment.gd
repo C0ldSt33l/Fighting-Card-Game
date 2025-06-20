@@ -1,13 +1,13 @@
 extends Control
 class_name ComboSeqment
 
-var SIMPLE_COMBO_VIEW_TEPLATE: Combo = preload("res://battle/combo/combo.tscn").instantiate()
+var SIMPLE_COMBO_VIEW_TEPLATE: SimpleComboView = preload("res://battle/combo/simple_view/simple_combo_view.tscn").instantiate()
 
 @onready var combo_container: VBoxContainer = $"Background/MarginContainer/Combo Container"
-var combos: Array[Combo] :
+var combos: Array[SimpleComboView] :
 	get():
-		var arr: Array[Combo]
-		arr.assign(self.combo_container.get_children().map(func (w: DraggableWrap) -> Combo: return w.obj_to_drag as Combo))
+		var arr: Array[SimpleComboView]
+		arr.assign(self.combo_container.get_children().map(func (w: DraggableWrap) -> SimpleComboView: return w.obj_to_drag))
 		return arr
 
 
@@ -19,18 +19,18 @@ func _ready() -> void:
 	
 	pass
 
-func add_combo(c: Combo) -> void:
+func add_combo(c: SimpleComboView) -> void:
 	var wrapper := DraggableWrap.new(c, Game.battle.hand)
 	self.combo_container.add_child(wrapper)
 
 
-func add_combo_at_pos(c: Combo, pos: int) -> void:
+func add_combo_at_pos(c: SimpleComboView, pos: int) -> void:
 	var wrapper := DraggableWrap.new(c, Game.battle.hand)
 	self.combo_container.add_child(wrapper)
 	self.combo_container.move_child(wrapper, pos)
 
 
-func remove_combo(c: Combo) -> void:
+func remove_combo(c: SimpleComboView) -> void:
 	for w: DraggableWrap in self.combo_container.get_children():
 		if w.obj_to_drag == c:
 			w.remove_child(c)
@@ -50,13 +50,13 @@ func remove_all_combos() -> void:
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	return (data.data is Combo and data.data not in self.combos) or data.data is FullComboView
+	return (data.data is SimpleComboView and data.data not in self.combos) or data.data is FullComboView
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	var simple_view: Combo = Utils.Factory.create(
+	var simple_view: SimpleComboView = Utils.Factory.create(
 		SIMPLE_COMBO_VIEW_TEPLATE,
-		func (c: Combo) -> void:
+		func (c: SimpleComboView) -> void:
 			c.set_combo_data(data.data.get_combo_data())
 	)
 

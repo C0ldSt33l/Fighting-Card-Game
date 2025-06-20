@@ -4,7 +4,6 @@
 [ext_resource type="StyleBox" uid="uid://mr6sclmmmyrn" path="res://battle/choose enemy/enemy card/enemy card style.tres" id="2_x47cf"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a27ew"]
-load_path = "res://.godot/imported/output-onlinepngtools.png-d9ab39be34ff13d96e633a29cda169f4.ctex"
 
 [node name="Enemy card" type="Control"]
 custom_minimum_size = Vector2(300, 450)

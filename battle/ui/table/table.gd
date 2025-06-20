@@ -77,8 +77,8 @@ func remove_cards() -> void:
 		p.remove_card()
 
 
-func get_combos() -> Array[Combo]:
-	var combos: Array[Combo]
+func get_combos() -> Array[FullComboView]:
+	var combos: Array[FullComboView]
 	for p in self.combo_places:
 		var c := p.combo
 		if c:

@@ -33,13 +33,13 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	return self.combo == null and (data.data is Combo or data.data is FullComboView)
+	return self.combo == null and (data.data is SimpleComboView or data.data is FullComboView)
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var from = data.from
 	var combo = data.data
-	if combo is Combo:
+	if combo is SimpleComboView:
 		from.remove_combo(combo)
 		combo = Utils.Factory.create(
 			FULL_COMBO_VIEW_TEMPLATE,

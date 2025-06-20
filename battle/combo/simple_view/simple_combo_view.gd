@@ -1,5 +1,5 @@
 extends Control
-class_name Combo
+class_name SimpleComboView
 
 const MAX_LVL := 2
 const ANIMAL := ComboData.ANIMAL
