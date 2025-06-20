@@ -55,7 +55,8 @@ func load_node_data():
 func get_all_nodes_save_data() -> void:
 	var save_data = []
 	for node in nodes:
-		save_data.append(node.get_save_data())
+		if !Save_Manager.nodes.has(node):
+			save_data.append(node.get_save_data())
 	Save_Manager.nodes = save_data 
 	print(Save_Manager.nodes)
 
