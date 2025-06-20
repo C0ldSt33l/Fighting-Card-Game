@@ -1,6 +1,8 @@
 extends Control
 class_name ComboSeqment
 
+var SIMPLE_COMBO_VIEW_TEPLATE: Combo = preload("res://battle/combo/combo.tscn").instantiate()
+
 @onready var combo_container: VBoxContainer = $"Background/MarginContainer/Combo Container"
 var combos: Array[Combo] :
 	get():
@@ -48,9 +50,15 @@ func remove_all_combos() -> void:
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	return data.data is Combo and data.data not in self.combos
+	return (data.data is Combo and data.data not in self.combos) or data.data is FullComboView
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
+	var simple_view: Combo = Utils.Factory.create(
+		SIMPLE_COMBO_VIEW_TEPLATE,
+		func (c: Combo) -> void:
+			c.set_combo_data(data.data.get_combo_data())
+	)
+
 	data.from.remove_combo()
-	self.add_combo(data.data)
+	self.add_combo(simple_view)

@@ -2,14 +2,8 @@ extends Control
 class_name Combo
 
 const MAX_LVL := 2
-const PATH_TO_ICONS: String = 'res://assets/ui/combo/icons'
-enum ANIMAL {
-	BULL,
-	MANTIS,
-	ELEPHENT,
-	DRAGON,
-	SCORPION,
-}
+const ANIMAL := ComboData.ANIMAL
+const PATH_TO_ICONS: String = ComboData.PATH_TO_ICONS
 
 @onready var background: TextureRect = $background as TextureRect
 @onready var icon: TextureRect = $background/HBoxContainer/icon as TextureRect
@@ -20,9 +14,9 @@ var pos_idx: float
 var pas_stat_idx: int
 var pos_end_idx: int
 
-var combo_name: String
-var description: String
-var price: int
+@export var combo_name: String
+@export var description: String
+@export var price: int
 
 @export var point: int
 @export var factor: int
@@ -32,14 +26,14 @@ var price: int
 var upgrade_lvl: int = 1
 
 @export var pattern: Array[Dictionary] = []
-var length: int = 0
-var cards: Array[Card] = []
+@onready var length: int = self.pattern.size()
+@export var cards: Array[Card] = []
 var first_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[0]
 var last_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[-1]
 
-var effects: Array[Effect]
+var effects: Array[Effect] = []
 
 
 func _ready() -> void:
@@ -92,6 +86,20 @@ func is_all_effects_activated() -> bool:
 func get_drag_preview() -> DragNDropPreview:
 	return DragNDropPreview.new(self.duplicate())
 
+func set_combo_data(data: ComboData) -> void:
+	self.combo_name = data.name
+	self.description = data.description
+	self.price = data.price
+
+	self.point = data.point
+	self.factor = data.factor
+
+	self.animal = data.animal
+	self._material = data.material
+
+	self.pattern = data.pattern
+	self.effects = data.effects
+
 # TODO: relace with resources
 func get_combo_data() -> ComboData:
 	return ComboData.new(
@@ -102,6 +110,8 @@ func get_combo_data() -> ComboData:
 		self.factor,
 		self.animal,
 		self._material,
+		self.pattern,
+		self.effects,
 	)
 
 
