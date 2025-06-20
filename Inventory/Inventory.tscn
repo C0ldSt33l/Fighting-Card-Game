@@ -11,18 +11,6 @@ offset_top = 60.0
 offset_right = 119.0
 offset_bottom = 124.0
 
-[node name="Combos" type="Button" parent="."]
-offset_left = 55.0
-offset_top = 125.0
-offset_right = 119.0
-offset_bottom = 189.0
-
-[node name="totem" type="Button" parent="."]
-offset_left = 55.0
-offset_top = 190.0
-offset_right = 119.0
-offset_bottom = 254.0
-
 [node name="Panel" type="Panel" parent="."]
 offset_left = 160.0
 offset_top = 61.0
@@ -55,5 +43,3 @@ offset_right = 612.0
 offset_bottom = 208.0
 
 [connection signal="pressed" from="Cards" to="." method="_on_cards_pressed"]
-[connection signal="pressed" from="Combos" to="." method="_on_combos_pressed"]
-[connection signal="pressed" from="totem" to="." method="_on_totem_pressed"]

@@ -2,6 +2,8 @@
 class_name SaveManager
 extends Node
 
+@export var mode: String = "load"
+
 const SAVE_PATH = "user://saves/"
 
 var cards = []
@@ -15,12 +17,9 @@ var data = {
 	"Totem":totems
 }
 
-
-
-
 func _ready() -> void:
 	Events.save_game.connect(save_game)
-
+	Events.load_game.connect(load_game)
 # Сохранить данные
 func save_game(name: String):
 	var file_path = SAVE_PATH + name + ".json"
@@ -42,18 +41,32 @@ func save_game(name: String):
 
 # Загрузить данные
 func load_game(name: String) -> Dictionary:
-	var file = FileAccess.open(SAVE_PATH + name + ".json",FileAccess.READ)
-	if not file.file_exists(SAVE_PATH + name + ".json"):
+	var file_path = SAVE_PATH + name + ".json"
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	if not file or not file.file_exists(file_path):
+		push_error("File does not exist: %s" % file_path)
 		return {}
+
 	var json_data = file.get_as_text()
+	var json_parser = JSON.new()
+	var parse_result = json_parser.parse(json_data)
 	file.close()
-	var json = JSON.new()
-	var parse_result = json.parse(json_data)
-	if parse_result.error != OK:
+	
+	if !parse_result == OK:
 		push_error("Ошибка парсинга JSON: " + parse_result.error_string)
 		return {}
-	
-	return parse_result.result as Dictionary
+
+	var result = json_parser.get_data() as Dictionary
+
+	PlayerConfig.hand_money = result.get("Money", PlayerConfig.hand_money)
+	PlayerConfig.player_available_cards = result.get("Cards", [])
+	PlayerConfig.player_available_combos = result.get("Combo", [])
+	PlayerConfig.player_available_totems = result.get("Totem", [])
+
+	Events.emit_signal("player_data_loaded")  # например
+
+	print("Game loaded successfully from ", file_path)
+	return result
 
 # Получить список всех сохранений
 func get_saves() -> Array:
@@ -78,3 +91,7 @@ func get_saves() -> Array:
 			saves.append(file.get_basename())
 		file = dir.get_next()
 	return saves
+
+func auto_save():
+	var name = "save_%s" % [get_saves().size() + 1]
+	Events.save_game.emit(name)

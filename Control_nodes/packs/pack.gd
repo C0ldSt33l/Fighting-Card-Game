@@ -1,12 +1,13 @@
 extends Control
+class_name Pack
 @onready var Background : Panel = $Background
-@onready var PackName : Label = $PackName
-const MAX_DISPLAYED_CARDS = 3
-
+@onready var PackName : Label = $Background/PackName
+const MAX_DISPLAYED_CARDS : int = 5
+var count_selected_obj : int = 5
 var objects : Array = []
-
+var is_open : bool = false
 var data := {}
-
+var basket : Array = []
 var id: int:
 	set(val): self.set_tag_val('id', val)
 	get(): return self.get_tag_val('id')
@@ -59,30 +60,55 @@ func add_obj(card_data: Dictionary):
 		tail.next = new_node
 		new_node.prev = tail
 		tail = new_node
+	head.prev = tail
+	tail.next = head
 
 func update_displayed_cards():
 	for card in displayed_cards:
-		card.queue_free()
+		if card.is_inside_tree(): 
+			card.queue_free()
 	displayed_cards.clear()
-	
+	spawnPos = Vector2.ZERO
 	var node = current
 	var count = 0
-	var temp = current.prev
-	var prev_cards = []
-	while temp != null and count < (MAX_DISPLAYED_CARDS - 1) / 2:
-		prev_cards.push_front(temp)
-		temp = temp.prev
+	var to_display = []
+	# Добавляем текущий элемент
+	to_display.append(node)
+	count += 1
+	# Добавляем следующие по кругу
+	spawnPos = Vector2(50,100)
+	var next_node = node.next
+	while count < MAX_DISPLAYED_CARDS and next_node != node:
+		to_display.append(next_node)
+		next_node = next_node.next
 		count += 1
-	for n in prev_cards:
+	# Отображаем
+	for n in to_display:
 		display_card(n)
-	display_card(current)
 
 func display_card(node: DoublyLinkedListNode):
-	var card = create_card(node.data)
-	spawnPos += Vector2(200,0)
-	card.position = spawnPos
-	add_child(card)
-	displayed_cards.append(card)
+	var obj
+	if node.data.has("card"):
+		obj = create_card(node.data)
+	elif node.data.has("combo"):
+		obj = create_combo(node.data)
+	else:
+		return
+
+	add_child(obj)
+	var bg: Panel = obj.Background
+	bg.update_minimum_size()
+	var screen_width = get_viewport_rect().size.x
+	if spawnPos.x + bg.size.x > screen_width:
+		obj.queue_free()
+		return
+	obj.position = spawnPos
+	displayed_cards.append(obj)
+	if basket.has(node.data):  # сравниваем по данным
+		obj.Background.modulate = Color.GREEN
+	else:
+		obj.Background.modulate = Color.GRAY
+	spawnPos.x += bg.size.x + 10
 
 func move_left():
 	if current and current.prev:
@@ -94,18 +120,8 @@ func move_right():
 		current = current.next
 		update_displayed_cards()
 
-func print_all_objects():
-	print("=== Все объекты в списке ===")
-	var node = head  # Начинаем с головы списка
-	var index = 0
-	while node != null:
-		print("Объект %d: %s" % [index, node.data])
-		node = node.next  # Переходим к следующему узлу
-		index += 1
-	print("=== Всего объектов: %d ===" % index)
-
 func add_objects()->void:
-	var res = Sql.select_objects_in_pack_by_id(1) #!!!!!!!!!!!!!!!!!!!!!!
+	var res = Sql.select_objects_in_pack_by_id(1) 
 	for i in res: 
 		match i["Object_type"]:
 			"BATTLE","UPGRADE","CONSUMABLE":
@@ -118,10 +134,23 @@ func add_objects()->void:
 				print("totem")
 
 func open_pack()-> void:
+	Background.visible = false
 	var random_objects = []
 	for i in range(0,15):
 		add_obj(objects[randi() % objects.size()])
-	pass
+	if head:
+		current = head
+		update_displayed_cards()
+		
+	var confirm_button = Button.new()
+	add_child(confirm_button)
+	confirm_button.text = "Выбрать"
+	confirm_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	confirm_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	confirm_button.modulate = Color.CRIMSON
+	confirm_button.pressed.connect(confirm_button_pressed)
+	confirm_button.position = (get_viewport_rect().size - confirm_button.size)/2
+	print(confirm_button.position)
 
 func create_card(CardInfo: Dictionary)-> BaseCard:
 	var card := CardCreator.create(CardInfo.card['TypeCard'],
@@ -137,17 +166,66 @@ func create_card(CardInfo: Dictionary)-> BaseCard:
 	return card
 
 func create_combo(ComboInfo: Dictionary)->_Combo_:
-	var combo = ComboCreator.create(
+	var combo:= ComboCreator.create(
 		func (c:_Combo_)-> void:
-			for i in ComboInfo:
-				c[i] = ComboInfo[i] 
+			for i in ComboInfo.combo:
+				c[i] = ComboInfo.combo[i]
 	)
-	combo.size_flags_horizontal =  Control.SIZE_EXPAND_FILL
-	combo.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	self.objects.append(combo)
 	return combo
 
 func _ready() -> void:
 	add_objects()
-	open_pack()
-	print_all_objects()
+
+
 	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_left"):
+		move_left()
+	if event.is_action_pressed("ui_right"):
+		move_right()
+	if event is InputEventMouseButton and event.is_pressed():
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			var mouse_pos = get_global_mouse_position()
+			if not is_open and self.Background.get_global_rect().has_point(mouse_pos):
+				open_pack()
+				is_open = true
+			else: 
+				for obj in displayed_cards:
+					if obj.Background.get_global_rect().has_point(mouse_pos) and !basket.has(obj):
+						var card_data = obj.return_all_tags()
+						if  basket.size() < count_selected_obj:
+							basket.append(card_data)
+							obj.Background.modulate = Color.GREEN
+							for objects in basket:
+								print(objects)
+						else:
+							basket.erase(card_data)
+							obj.Background.modulate = Color.GRAY
+						print(basket.size())
+						break
+
+func confirm_button_pressed():
+	if basket.size() < count_selected_obj:
+		return
+	print("card size",PlayerConfig.player_available_cards.size())
+	print("combo size",PlayerConfig.player_available_combos.size())
+	
+	for object in basket:
+		if object.has("card"):
+			PlayerConfig.player_available_cards.append(object)
+		if object.has("combo"):
+			PlayerConfig.player_available_combos.append(object)
+			
+	print("card size",PlayerConfig.player_available_cards.size())
+	print("combo size",PlayerConfig.player_available_combos.size())
+	
+	for card in displayed_cards:
+		if is_instance_valid(card):
+			card.queue_free()
+	displayed_cards.clear()
+	
+	head = null
+	tail = null
+	current = null
+	self.visible = false

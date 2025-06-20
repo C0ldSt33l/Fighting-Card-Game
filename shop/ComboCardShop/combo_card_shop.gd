@@ -54,7 +54,7 @@ func _ready() -> void:
 	arrange_cards()
 	
 	spawn_combo(All_combo[randi() % All_combo.size()],Vector2(258,358))
-	
+	Save_Manager.auto_save()
 	pass
 
 func _process(delta: float) -> void:
@@ -67,10 +67,12 @@ func _input(event: InputEvent) -> void:
 			var mouse_pos = get_global_mouse_position()
 			for obj in objects:
 				if obj.Background.get_global_rect().has_point(mouse_pos) and !basket.has(obj):
+					obj.modulate = Color.AQUA
 					basket.append(obj)
 					update_total_price()
 					return
 				elif obj.Background.get_global_rect().has_point(mouse_pos) and basket.has(obj):
+					obj.modulate = Color.GRAY
 					basket.erase(obj)
 					update_total_price()
 					return
@@ -86,6 +88,9 @@ func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 			for tag in CardInfo.tags:
 				c.tags.append(tag)
 			c.position = pos
+			var pr = c.get_node("Background/TextureRect/price")
+			pr.visible = true
+			
 			#c.hovered.connect(self.create_panel_with_text)
 			#c.unhovered.connect(self.remove_panel)
 	)
@@ -143,8 +148,11 @@ func _on_button_2_pressed() -> void:#buy button
 
 func update_total_price():
 	total_price = 0
+	Price.visible = true
 	for obj in basket:
 		total_price+=obj.Price
+	if total_price == 0:
+		Price.visible = false
 	Price.text = "Total price = %s" % str(total_price)
 
 func create_panel_with_text(card:BaseCard)->void:
