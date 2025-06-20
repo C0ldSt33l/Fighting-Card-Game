@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bnahkya0rw85b"]
 
-[ext_resource type="Script" path="res://battle/choose enemy/enemy card/enemy_card.gd" id="1_vbipi"]
-[ext_resource type="StyleBox" uid="uid://mr6sclmmmyrn" path="res://battle/choose enemy/enemy card/enemy card style.tres" id="2_x47cf"]
+[ext_resource type="Script" path="res://choose enemy/enemy card/enemy_card.gd" id="1_08qli"]
+[ext_resource type="StyleBox" uid="uid://mr6sclmmmyrn" path="res://choose enemy/enemy card/enemy card style.tres" id="2_x47cf"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a27ew"]
 
@@ -15,7 +15,7 @@ offset_right = -980.0
 offset_bottom = -270.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_vbipi")
+script = ExtResource("1_08qli")
 metadata/_edit_group_ = true
 
 [node name="Background" type="Panel" parent="."]

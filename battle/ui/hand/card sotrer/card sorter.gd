@@ -25,7 +25,3 @@ func _on_by_type_pressed() -> void:
 
 static func sort_cards_by_value(f: Card, s: Card) -> bool:
 	return f.point > s.point
-
-
-static func sort_cards_by_type(f: Card, s: Card) -> bool:
-	return false

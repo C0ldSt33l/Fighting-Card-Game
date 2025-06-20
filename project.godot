@@ -55,6 +55,7 @@ folder_colors={
 "res://addons/": "yellow",
 "res://assets/": "blue",
 "res://battle/": "orange",
+"res://choose enemy/": "orange",
 "res://drag_n_drop/": "orange",
 "res://global/": "blue",
 "res://loading scene/": "orange",
