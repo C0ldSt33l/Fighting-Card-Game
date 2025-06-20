@@ -45,6 +45,29 @@ project/assembly_name="main"
 
 enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://Cards/": "green",
+"res://Control_nodes/": "green",
+"res://DB/": "green",
+"res://Inventory/": "green",
+"res://addons/": "yellow",
+"res://assets/": "blue",
+"res://battle/": "orange",
+"res://drag_n_drop/": "orange",
+"res://global/": "blue",
+"res://loading scene/": "orange",
+"res://logger/": "blue",
+"res://main scene/": "green",
+"res://main_menu/": "green",
+"res://materials/": "blue",
+"res://powerUpShop/": "green",
+"res://save/": "green",
+"res://shop/": "green",
+"res://utils/": "blue"
+}
+
 [input]
 
 save_game={

@@ -35,6 +35,7 @@ func _ready() -> void:
 	var texture_path := PATH_TO_SIZE_2 if self.length == 2 else PATH_TO_SIZE_3
 	self.icon.texture = load('%s/%s.png' % [PATH_TO_ICONS, ANIMAL.keys()[self.animal].to_lower()])
 	self.panel.texture = load('%s/combo_%s_%s.png' % [texture_path, self.length, M.MATERIAL.keys()[self._material].to_lower()])
+	self.icon.position.x = self.panel.texture.get_size().x / 2 - self.icon.size.x / 2
 
 
 func get_drag_preview() -> DragNDropPreview:

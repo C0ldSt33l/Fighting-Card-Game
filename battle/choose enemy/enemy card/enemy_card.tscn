@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" path="res://battle/choose enemy/enemy card/enemy_card.gd" id="1_vbipi"]
 [ext_resource type="StyleBox" uid="uid://mr6sclmmmyrn" path="res://battle/choose enemy/enemy card/enemy card style.tres" id="2_x47cf"]
-[ext_resource type="Texture2D" uid="uid://d2261vnshd3co" path="res://assets/output-onlinepngtools.png" id="3_odxt5"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a27ew"]
+load_path = "res://.godot/imported/output-onlinepngtools.png-d9ab39be34ff13d96e633a29cda169f4.ctex"
 
 [node name="Enemy card" type="Control"]
 custom_minimum_size = Vector2(300, 450)
@@ -52,7 +54,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
-texture = ExtResource("3_odxt5")
+texture = SubResource("CompressedTexture2D_a27ew")
 expand_mode = 1
 
 [node name="Required score" type="Label" parent="Background/Margins/Content container"]

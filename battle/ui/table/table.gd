@@ -14,7 +14,7 @@ var combo_places: Array[ComboPlace] :
 		var a: Array[ComboPlace]
 		a.assign(self.combo_places_container.get_children())
 		return a
-var card_place_count: int = PlayerConfig.hand_size / 2
+var card_place_count: int = 6 #PlayerConfig.hand_size / 2
 
 var CARD_PLACE_TEMPLATE: CardPlace = preload("res://battle/ui/table/card place/card_place.tscn").instantiate() as CardPlace
 var COMBO_PLACE_TEMPLATE: ComboPlace = preload("res://battle/ui/table/combo place/combo_place.tscn").instantiate() as ComboPlace

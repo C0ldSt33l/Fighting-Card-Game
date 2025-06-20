@@ -47,6 +47,8 @@ var last_combo: Combo :
 	set(val):
 		reroll_count = val
 		self.reroll_btn.text = 'Сброс: %s' % [val] 
+		if val < 1:
+			self.reroll_btn.disabled = true
 
 var earned_money: int = 0
 
@@ -252,9 +254,6 @@ func reroll() -> void:
 	self.hand.remove_all_cards()
 	for c in configs:
 		self.spawn_card(c)
-
-	if self.reroll_count == 0:
-		self.reroll_btn.disabled = true
 
 
 func get_hand_configs(size: int) -> Array[Dictionary]:
