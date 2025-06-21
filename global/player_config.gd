@@ -1,5 +1,10 @@
 extends Node
 
+@onready var timer : Timer
+
+var total_time_in_secs : int = 0
+
+
 
 var upgrade_money: int
 var hand_money: int
@@ -18,3 +23,6 @@ var count_of_extra_rounds : int
 var extra_damage : int
 var extra_points_to_combo : int
 var pack_in_shop : bool = false
+
+func _ready() -> void:
+	pass

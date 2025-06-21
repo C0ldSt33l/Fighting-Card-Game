@@ -71,6 +71,8 @@ func create_card(CardInfo: Dictionary)-> BaseCard:
 				c[i] = CardInfo.card[i]
 			for i in CardInfo.tags:
 				c.tags.append(i)
+			if c is UpgradeCard:
+				c.set_dragNdrop_func()
 	)
 	card.scale = Vector2(0.66,0.66)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL

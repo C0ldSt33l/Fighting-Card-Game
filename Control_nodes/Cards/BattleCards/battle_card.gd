@@ -28,7 +28,7 @@ func _ready() -> void:
 	super()
 	Events.drag_completed.connect(get_upgrade)
 	Background.check = func(data):return true
-	#price.visible = false
+	price.visible = false
 	price.text = str(Price)
 	pass # Replace with function body.
 
@@ -39,14 +39,17 @@ func _process(delta: float) -> void:
 
 func get_upgrade(c: BaseCard,where:BattleCard) -> void:
 	print(c.Target)
-	if self != where or not c.Target.contains("CARD"):
-		return
-	print(Background.get_children().size())
 	var data = c.return_all_tags()
-	print("start tags")
+	print("all tags")
 	print(self.tags)
 	self.tags.append_array(data.tags)
-	self.remove_child(c)
-	print("add tags")
 	print(self.tags)
+	pass
+
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	return data is UpgradeCard and data.Target.contains("CARD")
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	get_upgrade(data,self)
+	data.get_parent().remove_child(data)
 	pass

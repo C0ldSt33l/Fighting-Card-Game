@@ -88,13 +88,13 @@ func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 			for tag in CardInfo.tags:
 				c.tags.append(tag)
 			c.position = pos
-			var pr = c.get_node("Background/TextureRect/price")
-			pr.visible = true
+			
 			
 			#c.hovered.connect(self.create_panel_with_text)
 			#c.unhovered.connect(self.remove_panel)
 	)
 	self.objects.append(card)
+	card.price.show()
 	
 func spawn_combo(ComboInfo: Dictionary, pos:Vector2)->void:
 	var combo:= ComboCreator.create_with_binding(
