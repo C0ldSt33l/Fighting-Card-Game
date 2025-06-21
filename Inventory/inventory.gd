@@ -68,7 +68,10 @@ func create_card(CardInfo: Dictionary)-> BaseCard:
 	var card := CardCreator.create(CardInfo.card['TypeCard'],
 		func (c:BaseCard)-> void:
 			for i in CardInfo.card:
-				c[i] = CardInfo.card[i]
+				if i == 'Body part' and c is BattleCard:
+					c.Type = CardInfo.card[i]
+				else:
+					c[i] = CardInfo.card[i]
 			for i in CardInfo.tags:
 				c.tags.append(i)
 			if c is UpgradeCard:

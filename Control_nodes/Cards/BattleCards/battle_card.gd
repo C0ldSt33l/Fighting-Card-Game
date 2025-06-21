@@ -20,8 +20,8 @@ var Direction:String:
 	get():return self.get_tag_val('Direction')
 
 var Type: String:
-	set(val): self.set_tag_val('Type',val)
-	get(): return self.get_tag_val('Type')
+	set(val): self.set_tag_val('Body part',val)
+	get(): return self.get_tag_val('Body part')
 	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
