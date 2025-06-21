@@ -29,6 +29,8 @@ func remove_card() -> void:
 
 
 func _get_drag_data(at_position: Vector2) -> Variant:
+	if self.card == null:
+		return null
 	Events.drag_started.emit(self.card, self)
 	set_drag_preview(self.card.get_drag_preview())
 	return DragData.new(self, self.card)

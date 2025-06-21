@@ -14,8 +14,10 @@ extends Control
 @onready var table: Table = $Table as Table
 
 var CARD_TEMPLATE: Card = preload("res://battle/card/card.tscn").instantiate() as Card
-var cards_on_table: Array[Card] = []
-var cards_in_hand: Array[Card] = []
+var cards_on_table: Array[Card] :
+	get(): return self.table.cards
+var cards_in_hand: Array[Card] :
+	get(): return self.hand.cards
 var card_cursor: Cursor = Cursor.new(Cursor.TYPE.CARDS)
 var cur_card: Card :
 	get(): return self.cards_on_table[self.card_cursor.index] if self.card_cursor.index < self.cards_on_table.size() else null
@@ -25,15 +27,19 @@ var last_card: Card :
 	get(): return self.cards_on_table[-1] if self.cards_on_table.size() > 0 else null
 var played_cards: Array[Card] = []
 
-var COMBO_TEMPLATE: Combo = preload("res://battle/combo/combo.tscn").instantiate() as Combo
+var COMBO_TEMPLATE: SimpleComboView = preload("res://battle/combo/simple_view/simple_combo_view.tscn").instantiate()
 var available_combos: Dictionary = Combos.COMBOS
-var combos_on_table: Array[Combo] = []
+var combos_on_table: Array[ComboData] :
+	get():
+		var a: Array[ComboData]
+		a.assign(self.table.combos.map(func (c: FullComboView): return c.get_combo_data()))
+		return a
 var combo_cursor: Cursor = Cursor.new(Cursor.TYPE.COMBOS)
-var cur_combo: Combo :
+var cur_combo: ComboData :
 	get(): return self.combos_on_table[self.combo_cursor.index] if self.combo_cursor.index < self.combos_on_table.size() else null
-var first_combo: Combo :
+var first_combo: ComboData :
 	get(): return self.combos_on_table[0] if self.combos_on_table.size() > 0 else null
-var last_combo: Combo :
+var last_combo: ComboData :
 	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
 @onready var round_counter: Label = $"Round counter" as Label
@@ -47,6 +53,8 @@ var last_combo: Combo :
 	set(val):
 		reroll_count = val
 		self.reroll_btn.text = 'Сброс: %s' % [val] 
+		if val < 1:
+			self.reroll_btn.disabled = true
 
 var earned_money: int = 0
 
@@ -61,9 +69,9 @@ signal next_card_key_pressed
 
 
 func _ready() -> void:
-	print('wid res: ', DisplayServer.window_get_size())
 	Events.connect_events({
 		battle_started = self.start_round_preparation,
+		battle_ended = self.on_battle_ended,
 
 		round_started = self.on_round_started,
 		round_ended = self.on_round_ended,
@@ -99,6 +107,11 @@ func _ready() -> void:
 	Events.battle_started.emit()
 
 
+# TODO: init hand, table, totem segment and comsumable segment
+func __init_components() -> void:
+	pass
+
+
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed('ui_accept'):
 		self.next_card_key_pressed.emit()
@@ -122,8 +135,8 @@ func start_round_preparation() -> void:
 		i += 1
 	var last_combo := self.hand.combos[-1]
 	
-	var e := Effects.get_effect('Multiplying')
-	self.cards_in_hand[0].bind_effect(e)
+	# var e := Effects.get_effect('Multiplying')
+	# self.cards_in_hand[0].bind_effect(e)
 
 
 # TODO: move `check_combos()` in round preparation stage
@@ -151,6 +164,7 @@ func end_round() -> void:
 
 	self.round_counter.text = str(self.round_count)
 	self.timer.stop()
+
 
 	await self.counter.update_round_score()
 	await get_tree().create_timer(1).timeout
@@ -230,9 +244,9 @@ func spawn_card(conf: Dictionary) -> void:
 
 func spawn_combo(name: String, conf: Dictionary) -> void:
 	var materials := M.MATERIAL.values()
-	var combo: Combo = Utils.Factory.create(
+	var combo: SimpleComboView = Utils.Factory.create(
 		self.COMBO_TEMPLATE,
-		func (c: Combo):
+		func (c: SimpleComboView):
 			c.combo_name = name
 			c.pattern.assign(conf.pattern)
 			c.effects.append(Effects.get_effect(conf.effect))
@@ -253,16 +267,13 @@ func reroll() -> void:
 	for c in configs:
 		self.spawn_card(c)
 
-	if self.reroll_count == 0:
-		self.reroll_btn.disabled = true
-
 
 func get_hand_configs(size: int) -> Array[Dictionary]:
 	var hand_confs: Array[Dictionary]
 	hand_confs.assign(
 		Utils.get_array_with_uniq_nums(
 			size, self.deck_dict.size() - 1
-		)\
+		)
 		.map(func (el: int): return self.deck_dict[el])
 	)
 	return hand_confs
@@ -408,19 +419,19 @@ func on_card_exit(c: Card) -> void:
 		[c]
 	)
 
-func on_combo_started(c: Combo) -> void:
+func on_combo_started(c: ComboData) -> void:
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_START, c]
 	)
-func on_combo_ended(c: Combo) -> void:
+func on_combo_ended(c: ComboData) -> void:
 	self.combo_cursor.move_foward()
 
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_END, c]
 	)
-func on_combo_exit(c: Combo) -> void:
+func on_combo_exit(c: ) -> void:
 	self.reset_filtered_effects(
 		Utils.Filter.BY_RESET_ON_COMBO,
 		[c]
@@ -431,5 +442,6 @@ func on_effect_activated(e: Effect) -> void: pass
 
 
 func on_battle_ended() -> void:
+	print('BATTLE IS ENDED')
 	self.earned_money += self.round_count
 	PlayerConfig.enemy_data = null

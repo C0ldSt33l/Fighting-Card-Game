@@ -26,9 +26,9 @@ signal card_started(c: Card)
 signal card_ended(c: Card)
 signal card_exit(c: Card)
 
-signal combo_started(c: Combo)
-signal combo_ended(c: Combo)
-signal combo_exit(c: Combo)
+signal combo_started(c: FullComboView)
+signal combo_ended(c: FullComboView)
+signal combo_exit(c: FullComboView)
 
 signal effect_applyed(e: Effect)
 signal effect_activated(e: Effect)

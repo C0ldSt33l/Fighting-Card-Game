@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dmwiv3j3x3x3d"]
+[gd_scene load_steps=16 format=3 uid="uid://dmwiv3j3x3x3d"]
 
 [ext_resource type="Script" path="res://battle/battle_scene.gd" id="1_437rl"]
 [ext_resource type="PackedScene" uid="uid://bnv0hy2jwwtgd" path="res://battle/counter/counter.tscn" id="2_hdy1t"]
@@ -15,18 +15,26 @@
 [ext_resource type="Texture2D" uid="uid://bc6vslt73gpvh" path="res://assets/ui/totem/warrior.png" id="12_5dl35"]
 [ext_resource type="Texture2D" uid="uid://bp7138i04vljk" path="res://assets/tmp enemy/orc.png" id="14_7easd"]
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_ktl34"]
+
 [node name="Battle scene" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 1.0
-offset_right = 8.0
-offset_bottom = 1.0
+offset_top = 2.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_437rl")
+
+[node name="fight_background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 191.0
+offset_top = 1.0
+offset_right = 1278.0
+offset_bottom = 467.0
+texture = SubResource("CanvasTexture_ktl34")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -53,46 +61,47 @@ offset_bottom = 40.0
 
 [node name="Table" parent="." instance=ExtResource("3_aygk4")]
 layout_mode = 1
-offset_left = -80.0
-offset_top = 1.0
-offset_right = -80.0
-offset_bottom = 1.0
+offset_left = -40.0
+offset_top = 4.0
+offset_right = -40.0
+offset_bottom = 4.0
 
 [node name="Hand" parent="." instance=ExtResource("4_va1qn")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 190.0
-offset_top = -249.0
-offset_right = 1270.0
-offset_bottom = 1.0
+offset_left = 192.0
+offset_top = -253.0
+offset_right = 1278.0
+offset_bottom = -3.0
 grow_vertical = 0
 
 [node name="Start button" type="Button" parent="."]
 layout_mode = 0
-offset_left = 1072.0
-offset_top = 383.0
-offset_right = 1267.0
-offset_bottom = 462.0
+offset_left = 304.0
+offset_top = 22.0
+offset_right = 499.0
+offset_bottom = 101.0
 focus_mode = 0
-text = "START"
+text = "БОЙ"
 
 [node name="totems" type="Panel" parent="."]
 layout_mode = 0
-offset_left = -8.0
-offset_right = 184.0
-offset_bottom = 607.0
+offset_top = -2.0
+offset_right = 187.0
+offset_bottom = 582.0
 
 [node name="MarginContainer" type="MarginContainer" parent="totems"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -4.0
+offset_right = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
@@ -144,9 +153,10 @@ texture = ExtResource("12_5dl35")
 
 [node name="Panel" type="Panel" parent="totems"]
 layout_mode = 0
-offset_top = 610.0
-offset_right = 192.0
+offset_top = 592.0
+offset_right = 187.0
 offset_bottom = 719.0
+metadata/_edit_group_ = true
 
 [node name="Button" type="Button" parent="totems/Panel"]
 layout_mode = 0
@@ -166,19 +176,19 @@ text = "Инфо"
 
 [node name="player" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 400.0
-offset_top = 95.0
-offset_right = 608.0
-offset_bottom = 255.0
+offset_left = 540.0
+offset_top = 121.0
+offset_right = 748.0
+offset_bottom = 281.0
 texture = ExtResource("6_u42g7")
 metadata/_edit_group_ = true
 
 [node name="enemy health" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 392.0
-offset_top = 1.0
-offset_right = 632.0
-offset_bottom = 65.0
+offset_left = 1032.0
+offset_top = 6.0
+offset_right = 1272.0
+offset_bottom = 70.0
 metadata/_edit_group_ = true
 
 [node name="Label" type="Label" parent="enemy health"]
@@ -195,10 +205,10 @@ vertical_alignment = 1
 
 [node name="points" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 208.0
-offset_top = 95.0
-offset_right = 328.0
-offset_bottom = 159.0
+offset_left = 256.0
+offset_top = 131.0
+offset_right = 376.0
+offset_bottom = 195.0
 metadata/_edit_group_ = true
 
 [node name="Label" type="Label" parent="points"]
@@ -215,10 +225,10 @@ vertical_alignment = 1
 
 [node name="mult" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 208.0
-offset_top = 183.0
-offset_right = 328.0
-offset_bottom = 247.0
+offset_left = 416.0
+offset_top = 131.0
+offset_right = 536.0
+offset_bottom = 195.0
 metadata/_edit_group_ = true
 
 [node name="Label" type="Label" parent="mult"]
@@ -235,10 +245,10 @@ vertical_alignment = 1
 
 [node name="x" type="Label" parent="."]
 layout_mode = 0
-offset_left = 232.0
-offset_top = 151.0
-offset_right = 304.0
-offset_bottom = 193.0
+offset_left = 360.0
+offset_top = 142.0
+offset_right = 432.0
+offset_bottom = 184.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 20
@@ -249,12 +259,59 @@ vertical_alignment = 1
 
 [node name="enemy" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 632.0
-offset_top = 1.0
-offset_right = 960.0
-offset_bottom = 263.0
+offset_left = 752.0
+offset_top = 22.0
+offset_right = 1080.0
+offset_bottom = 284.0
 texture = ExtResource("14_7easd")
 expand_mode = 1
+
+[node name="Enemy info" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="background" type="Panel" parent="Enemy info"]
+layout_mode = 0
+offset_left = 1032.0
+offset_top = 78.0
+offset_right = 1272.0
+offset_bottom = 334.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Enemy info/background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Enemy info/background/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="name" type="Label" parent="Enemy info/background/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Орк-громила"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="constrains" type="Label" parent="Enemy info/background/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Ограничения:
+Без сбросов"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="round count" type="Label" parent="Enemy info/background/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Раундов: 2/3"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="timeout" from="Timer" to="." method="play_card"]
 [connection signal="pressed" from="Start button" to="." method="start_round" flags=3]

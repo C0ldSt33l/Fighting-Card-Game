@@ -1,12 +1,15 @@
 extends Control
 class_name Table
 
+var card_place_count: int = 6 #PlayerConfig.hand_size / 2
 @onready var card_places_container: HBoxContainer = $VBoxContainer/PanelContainer/MarginContainer/CardPlaces as HBoxContainer
 var card_places: Array[CardPlace] :
 	get():
 		var a: Array[CardPlace]
 		a.assign(self.card_places_container.get_children())
 		return a
+var cards: Array[Card] :
+	get = get_cards
 
 @onready var combo_places_container: HBoxContainer = $VBoxContainer/MarginContainer/ComboPlaces as HBoxContainer
 var combo_places: Array[ComboPlace] :
@@ -14,7 +17,8 @@ var combo_places: Array[ComboPlace] :
 		var a: Array[ComboPlace]
 		a.assign(self.combo_places_container.get_children())
 		return a
-var card_place_count: int = PlayerConfig.hand_size / 2
+var combos: Array[FullComboView] :
+	get = get_combos
 
 var CARD_PLACE_TEMPLATE: CardPlace = preload("res://battle/ui/table/card place/card_place.tscn").instantiate() as CardPlace
 var COMBO_PLACE_TEMPLATE: ComboPlace = preload("res://battle/ui/table/combo place/combo_place.tscn").instantiate() as ComboPlace
@@ -77,8 +81,8 @@ func remove_cards() -> void:
 		p.remove_card()
 
 
-func get_combos() -> Array[Combo]:
-	var combos: Array[Combo]
+func get_combos() -> Array[FullComboView]:
+	var combos: Array[FullComboView]
 	for p in self.combo_places:
 		var c := p.combo
 		if c:

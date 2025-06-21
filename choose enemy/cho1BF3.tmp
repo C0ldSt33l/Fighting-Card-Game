@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://mnm6d0m2u0hx"]
 
-[ext_resource type="Script" path="res://battle/choose enemy/choose_enemy.gd" id="1_4dc4p"]
-[ext_resource type="PackedScene" uid="uid://bnahkya0rw85b" path="res://battle/choose enemy/enemy card/enemy_card.tscn" id="2_neokh"]
+[ext_resource type="Script" path="res://choose enemy/choose_enemy.gd" id="1_0fm2j"]
+[ext_resource type="PackedScene" uid="uid://bnahkya0rw85b" path="res://choose enemy/enemy card/enemy_card.tscn" id="2_neokh"]
 [ext_resource type="Texture2D" uid="uid://4m8i6cs7m0op" path="res://assets/tmp enemy/death2.png" id="4_yg7g8"]
 [ext_resource type="Texture2D" uid="uid://ffovge2e0run" path="res://assets/tmp enemy/scull_deer2.png" id="5_0ycga"]
 [ext_resource type="Texture2D" uid="uid://bqyk0f3y1pcdf" path="res://assets/tmp enemy/alghoul2.png" id="5_mnirx"]
@@ -13,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_4dc4p")
+script = ExtResource("1_0fm2j")
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1

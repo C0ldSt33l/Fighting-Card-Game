@@ -44,7 +44,7 @@ var enemy_cards: Array[EnemyCard] :
 		return cards
 
 
-const CARD_SCENE := preload("res://battle/choose enemy/enemy card/enemy_card.tscn")
+const CARD_SCENE := preload("res://choose enemy/enemy card/enemy_card.tscn")
 
 
 
