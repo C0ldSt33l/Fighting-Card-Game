@@ -2,6 +2,7 @@ extends Control
 class_name BaseCard
 
 @onready var Background:Panel = $Background
+@onready var Texture_rect : TextureRect = $Background/TextureRect
 var data := {}
 var tags : Array = []
 
@@ -57,6 +58,10 @@ func  return_Background()->Panel:
 	return Background
 
 func _ready() -> void:
-	self.Name_label.text = str(self.Name)
-	self.Description_label.text = self.Description
+	#self.Description_label.text = str(self.Description)
+	#self.Name_label.text = str(self.Name)
+	var texture = load(self.Picture)
+	if texture and texture is Texture2D:
+		self.Texture_rect.texture = texture
+		self.Texture_rect.ExpandMode.EXPAND_IGNORE_SIZE
 	pass # Replace with function body.

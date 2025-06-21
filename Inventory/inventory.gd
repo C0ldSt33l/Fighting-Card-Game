@@ -13,8 +13,8 @@ var is_sell_popup_active = false
 var tmp
 var ALL_cards_with_tags
 
-var battleCard
-var upgrade_card
+var battleCard:Array = []
+var upgrade_card:Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:  # Явно задаем размер
@@ -63,25 +63,6 @@ func upgradeInventory():
 	
 	var n =0
 	print(gridContainer.get_child_count())
-
-func arrange_cards():
-	var parent_rect = gridContainer.get_rect()
-	var card_count = ALL_cards_with_tags.size()
-	var columns = gridContainer.columns
-	var rows = ceil(card_count / float(columns))
-	
-	var available_width = parent_rect.size.x / columns
-	var available_height = parent_rect.size.y / rows
-	
-	var base_card_size = Vector2(200, 300)
-	
-	var scale_x = available_width / base_card_size.x
-	var scale_y = available_height / base_card_size.y
-	var scale = min(scale_x, scale_y)
-	
-	for child in gridContainer.get_children():
-		if child is BaseCard:
-			child.scale = Vector2(scale, scale)
 	
 func create_card(CardInfo: Dictionary)-> BaseCard:
 	var card := CardCreator.create(CardInfo.card['TypeCard'],
@@ -90,6 +71,8 @@ func create_card(CardInfo: Dictionary)-> BaseCard:
 				c[i] = CardInfo.card[i]
 			for i in CardInfo.tags:
 				c.tags.append(i)
+			if c is UpgradeCard:
+				c.set_dragNdrop_func()
 	)
 	card.scale = Vector2(0.66,0.66)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -109,17 +92,14 @@ func create_combo(ComboInfo: Dictionary)->_Combo_:
 
 func _on_cards_pressed() -> void:
 	gridContainer.columns = 4
-	for child in gridContainer.get_children():
-		gridContainer.remove_child(child)
-		child.queue_free()
-	
+	battleCard.clear()
+	upgrade_card.clear()
 	for child_data in PlayerConfig.player_available_cards:
-		var card = create_card(child_data)
-		gridContainer.add_child(card)
-		print("Card added:", card.name) 
-	print(gridContainer.get_child_count()) # Отладочный вывод
-	arrange_cards()
-	pass 
+		if child_data.card['TypeCard'] == "BATTLE":
+			battleCard.append(child_data)
+		if child_data.card['TypeCard'] == "UPGRADE":
+			upgrade_card.append(child_data)
+	upgradeInventory()
 
 func show_sell_popup(obj,Position: Vector2):
 	var sell_popup_scene = preload("res://Inventory/SellPopup/SellPopup.tscn")

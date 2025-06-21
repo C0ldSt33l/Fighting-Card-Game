@@ -27,7 +27,9 @@ Effects="*res://global/effects.gd"
 Game="*res://global/game.gd"
 Events="*res://global/events.gd"
 Settings="*res://main_menu/SettingsConf.gd"
-SceneManager="*res://global/scene_manager.gd"
+Save_Manager="*res://Control_nodes/SaveLoadScreen/SaveManager.gd"
+SkillTreeManager="*res://Meta/SkillTreeManager.gd"
+PackCreator="*res://Control_nodes/packs/PackCreator.gd"
 
 [display]
 

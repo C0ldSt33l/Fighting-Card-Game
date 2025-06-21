@@ -5,7 +5,7 @@ var database : SQLite
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	database = SQLite.new()
-	database.path = "C:/Users/syche/Desktop/_Config.db"
+	database.path = "res://DB/_config.db"
 	database.open_db()
 	pass # Replace with function body.
 
@@ -14,7 +14,7 @@ func select_Smth(query:String)-> Array:
 	
 	return database.query_result
 
-func select_tag_cards(CardID: int,type:String) -> Array: #type: UPGRADE,BUTTLE,CONSUMABLE
+func select_tag_cards(CardID: int,type:String) -> Array: #type: UPGRADE,BATTLE,CONSUMABLE
 	database.query("
 	select t.*
 	from TAGS t
@@ -62,8 +62,10 @@ func select_typed_card_by_id(type:String, id:int)->Dictionary:
 	type.to_upper()
 	var res
 	var query = "SELECT * from " + type + "_CARDS c where c.id = "+str(id)
-	res = database.query(query)
+	database.query(query)
 	var card = database.query_result
+	card = card[0] #to dict
+	card['TypeCard'] = type
 	var tags = select_tag_cards(card.id,type)
 	res = {
 			"card":card,
@@ -117,11 +119,12 @@ func select_consumable_card_dy_id(id:int)->Array:
 	return database.query_result
 
 func select_combo_by_id(id:int)->Array:
-	database.query("select * from COMBO where COMBO.id = "+str(id))
+	database.query("select * from COMBOS where COMBOS.id = "+str(id))
 	return database.query_result
 
 func select_combo_by_id_with_tags(id:int)->Dictionary:
 	var combo = select_combo_by_id(id)
+	combo = combo[0]
 	var tags = select_combos_tag(combo.id)
 	return {
 		"combo":combo,
@@ -166,7 +169,7 @@ func select_combos_tag(ComboID:int)->Array:
 
 func select_objects_in_pack_by_id(id:int)->Array:
 	database.query("SELECT c.id_object, c.Object_type, c.Count 
-	FROM OBJECT_IN_PACK 
+	FROM OBJECT_IN_PACK c
 	WHERE id_pack = " + str(id))
 	return database.query_result
 
