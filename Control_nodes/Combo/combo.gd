@@ -79,3 +79,16 @@ func return_all_tags()-> Dictionary:
 			"combo":data,
 			"tags":tags
 		}
+
+func get_upgrade(c: Variant)->void:
+	var data = c.return_all_tags()
+	self.tags.append_array(data.tags)
+	pass
+
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	return data.Target.contains("COMBO")
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	get_upgrade(data)
+	data.get_parent().remove_child(data)
+	pass

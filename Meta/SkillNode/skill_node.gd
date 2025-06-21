@@ -21,12 +21,14 @@ class_name SkillNode
 
 @export var unlocked: bool = false
 
+@export var Meta_func_name : String = ""
 var Meta_func : Callable = func (): pass
 
 func _ready():
 	name_label.text = name_text
 	description_label.text = description
 	Price.text = str(price)
+	Meta_func = MetaSkills[Meta_func_name]
 	create_port()
 
 	update_visibility()
@@ -70,7 +72,23 @@ func port_buy_skill(port):
 func on_unlocked():
 	print("узел куплен")
 	panel.modulate = Color.GREEN
+	Meta_func.call()
 
 func on_locked():
 	print("узел закрыт")
 	panel.modulate - Color.GRAY
+	Meta_func.call()
+
+func get_save_data() -> Dictionary:
+	return {
+		"name": name_text,
+		"unlocked": unlocked
+	}
+
+func load_save_data(data: Dictionary):
+	if data["name"] == name_text:
+		set_unlocked(data["unlocked"])
+		if data["unlocked"]:
+			on_unlocked()
+		else:
+			on_locked()

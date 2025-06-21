@@ -9,12 +9,14 @@ const SAVE_PATH = "user://saves/"
 var cards = []
 var combos = []
 var totems = []
+var nodes = []
 
 var data = {
 	"Money":PlayerConfig.hand_money,
 	"Cards":cards,
 	"Combo":combos,
-	"Totem":totems
+	"Totem":totems,
+	"Nodes":nodes,
 }
 
 func _ready() -> void:
@@ -27,9 +29,8 @@ func save_game(name: String):
 	cards.append_array(PlayerConfig.player_available_cards)
 	combos.append_array(PlayerConfig.player_available_combos)
 	totems.append_array(PlayerConfig.player_available_totems)
-		
-	var json_string = JSON.stringify(data, "  ")  # 2 spaces for pretty-print
-	# Open and write to file
+	var json_string = JSON.stringify(data, "  ")  
+	
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	if not file:
 		push_error("Failed to save game: Could not open file for writing at %s" % file_path)
@@ -62,9 +63,7 @@ func load_game(name: String) -> Dictionary:
 	PlayerConfig.player_available_cards = result.get("Cards", [])
 	PlayerConfig.player_available_combos = result.get("Combo", [])
 	PlayerConfig.player_available_totems = result.get("Totem", [])
-
-	Events.emit_signal("player_data_loaded")  # например
-
+	Events.emit_signal("player_data_loaded") 
 	print("Game loaded successfully from ", file_path)
 	return result
 

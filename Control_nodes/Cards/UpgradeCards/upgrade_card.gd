@@ -9,5 +9,18 @@ var Price:int:
 	
 func _ready() -> void:
 	super()
-	#price.visible = false
+	price.visible = false
 	price.text = str(Price)
+
+func set_dragNdrop_func() ->void:
+	set_drag_forwarding(
+		func (at_position: Vector2) -> Variant:
+			set_drag_preview(DragNDropPreview.new(self.Texture_rect.duplicate()))
+			return self
+			,
+		func (at_position: Vector2, data: Variant) -> bool:
+			return false
+			,
+		func (at_position: Vector2, data: Variant) -> void:
+			pass
+	)
