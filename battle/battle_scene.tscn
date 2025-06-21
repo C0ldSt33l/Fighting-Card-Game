@@ -40,6 +40,7 @@ texture = SubResource("CanvasTexture_ktl34")
 wait_time = 0.5
 
 [node name="Round counter" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 408.0
 offset_top = 1.0
@@ -52,6 +53,7 @@ vertical_alignment = 1
 uppercase = true
 
 [node name="Counter" parent="." instance=ExtResource("2_hdy1t")]
+visible = false
 offset_left = 544.0
 offset_top = 40.0
 offset_right = 544.0

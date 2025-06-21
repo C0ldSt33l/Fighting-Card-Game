@@ -107,6 +107,11 @@ func _ready() -> void:
 	Events.battle_started.emit()
 
 
+# TODO: init hand, table, totem segment and comsumable segment
+func __init_components() -> void:
+	pass
+
+
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed('ui_accept'):
 		self.next_card_key_pressed.emit()
