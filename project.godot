@@ -17,7 +17,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-CardFactory="*res://global/card_factory.gd"
 PlayerConfig="*res://global/player_config.gd"
 Sql="*res://global/sql.gd"
 CardCreator="*res://Control_nodes/Cards/Card_creator.gd"
@@ -34,6 +33,8 @@ PackCreator="*res://Control_nodes/packs/PackCreator.gd"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
@@ -45,6 +46,30 @@ project/assembly_name="main"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://Cards/": "green",
+"res://Control_nodes/": "green",
+"res://DB/": "green",
+"res://Inventory/": "green",
+"res://addons/": "yellow",
+"res://assets/": "blue",
+"res://battle/": "orange",
+"res://choose enemy/": "orange",
+"res://drag_n_drop/": "orange",
+"res://global/": "blue",
+"res://loading scene/": "orange",
+"res://logger/": "blue",
+"res://main scene/": "green",
+"res://main_menu/": "green",
+"res://materials/": "blue",
+"res://powerUpShop/": "green",
+"res://save/": "green",
+"res://shop/": "green",
+"res://utils/": "blue"
+}
 
 [input]
 

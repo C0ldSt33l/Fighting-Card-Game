@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://bnahkya0rw85b"]
+
+[ext_resource type="Script" path="res://choose enemy/enemy card/enemy_card.gd" id="1_08qli"]
+[ext_resource type="StyleBox" uid="uid://mr6sclmmmyrn" path="res://choose enemy/enemy card/enemy card style.tres" id="2_x47cf"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a27ew"]
+
+[node name="Enemy card" type="Control"]
+custom_minimum_size = Vector2(300, 450)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -980.0
+offset_bottom = -270.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_08qli")
+metadata/_edit_group_ = true
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_x47cf")
+
+[node name="Margins" type="MarginContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Content container" type="VBoxContainer" parent="Background/Margins"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Background/Margins/Content container"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 30
+text = "Противник"
+horizontal_alignment = 1
+
+[node name="Image" type="TextureRect" parent="Background/Margins/Content container"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+texture = SubResource("CompressedTexture2D_a27ew")
+expand_mode = 1
+
+[node name="Required score" type="Label" parent="Background/Margins/Content container"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 30
+text = "Здоровье: "
+vertical_alignment = 1
+
+[node name="constrains" type="Label" parent="Background/Margins/Content container"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 30
+text = "Ограничения: "
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="Background/Margins/Content container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Награда:"

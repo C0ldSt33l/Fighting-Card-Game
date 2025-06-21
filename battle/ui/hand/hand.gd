@@ -2,10 +2,10 @@ class_name Hand
 extends Control
 
 @onready var combo_seqment: ComboSeqment = $"HBoxContainer/Combo seqment" as ComboSeqment
-@onready var combos: Array[Combo] :
+@onready var combos: Array[SimpleComboView] :
 	get(): return self.combo_seqment.combos
 
-var card_count_per_row: int = PlayerConfig.hand_size
+var card_count_per_row: int = 5 #PlayerConfig.hand_size / 2
 
 @onready var card_segment: CardSegment = $"HBoxContainer/Card Segment" as CardSegment
 @onready var cards: Array[Card] :
@@ -43,22 +43,22 @@ func remove_all_cards() -> void:
 	self.card_segment.remove_all_cards()
 
 
-func sort_cards(f: Callable) -> void:
+func sort_cards(sorter: Callable) -> void:
 	var cards := self.cards
-	cards.sort_custom(f)
+	sorter.call(cards)
 	for pos in len(cards):
-		self.card_segment.card_container.move_child(cards[pos], pos)
+		self.card_segment.card_container.move_child(cards[pos].get_parent(), pos)
 
 
-func add_combo(c: Combo) -> void:
+func add_combo(c: SimpleComboView) -> void:
 	self.combo_seqment.add_combo(c)
 
 
-func add_combo_at_pos(c: Combo, pos: int) -> void:
+func add_combo_at_pos(c: SimpleComboView, pos: int) -> void:
 	self.combo_seqment.add_combo_at_pos(c, pos)
 
 
-func remove_combo(c: Combo) -> void:
+func remove_combo(c: SimpleComboView) -> void:
 	self.combo_seqment.remove_combo(c)
 
 

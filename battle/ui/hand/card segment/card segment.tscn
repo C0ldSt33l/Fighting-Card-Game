@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://battle/ui/hand/card segment/card_segment.gd" id="1_2eh7u"]
 [ext_resource type="PackedScene" uid="uid://frgofpu2jt4a" path="res://battle/ui/hand/card sotrer/card sorter.tscn" id="1_mcmwu"]
 
-[node name="Control" type="Control"]
-custom_minimum_size = Vector2(700, 250)
+[node name="Card segment" type="Control"]
+custom_minimum_size = Vector2(680, 230)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,7 +16,7 @@ grow_vertical = 2
 script = ExtResource("1_2eh7u")
 metadata/_edit_group_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,15 +24,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="Panel" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(700, 170)
+custom_minimum_size = Vector2(540, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -40,21 +43,26 @@ theme_override_constants/margin_bottom = 10
 
 [node name="Card container" type="GridContainer" parent="VBoxContainer/Panel/MarginContainer"]
 layout_mode = 2
-theme_override_constants/h_separation = 30
+mouse_filter = 2
+theme_override_constants/v_separation = -20
 columns = 4
 
-[node name="Button container" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Button container" type="VBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="Reroll btn" type="Button" parent="VBoxContainer/Button container"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 focus_mode = 0
-text = "Reroll: "
+text = "Сброс: "
 
 [node name="Card sorter" parent="VBoxContainer/Button container" instance=ExtResource("1_mcmwu")]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3

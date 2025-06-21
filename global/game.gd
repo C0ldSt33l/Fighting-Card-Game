@@ -6,7 +6,7 @@ var battle: BattleScene = null
 var shop = null
 
 const log_win_scene := preload("res://logger/logger_window.tscn")
-var logger_enable := true 
+var logger_enable := false
 var log_win: Window = null
 
 

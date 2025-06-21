@@ -63,10 +63,10 @@ class Filter:
 				return e.activation_time == time and (e.caster == c if e.target is not Card else e.target == c)
 		)
 
-	static func BY_ACTIVATION_ON_COMBO(effects: Array[Effect], time: Effect.ACTIVATION_TIME, c: Combo) -> Array[Effect]:
+	static func BY_ACTIVATION_ON_COMBO(effects: Array[Effect], time: Effect.ACTIVATION_TIME, c: FullComboView) -> Array[Effect]:
 		return effects.filter(
 			func (e: Effect) -> bool:
-				return e.activation_time == time and (e.caster == c if e.target is not Combo else e.target == c)
+				return e.activation_time == time and (e.caster == c if e.target is not FullComboView else e.target == c)
 		)
 
 	static func BY_RESET_ON_CARD(effects: Array[Effect], c: Card) -> Array[Effect]:
@@ -75,10 +75,10 @@ class Filter:
 				return e.reset_time == Effect.RESET_TIME.CARD and (e.caster == c if e.target is not Card else e.target == c)
 		)
 
-	static func BY_RESET_ON_COMBO(effects: Array[Effect], c: Combo) -> Array[Effect]:
+	static func BY_RESET_ON_COMBO(effects: Array[Effect], c: FullComboView) -> Array[Effect]:
 		return effects.filter(
 			func (e: Effect) -> bool:
-				return e.reset_time == Effect.RESET_TIME.COMBO and (e.caster == c if e.target is not Combo else e.target == c)
+				return e.reset_time == Effect.RESET_TIME.COMBO and (e.caster == c if e.target is not FullComboView else e.target == c)
 		)
 
 class Factory:

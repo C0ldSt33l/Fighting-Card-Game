@@ -8,7 +8,7 @@ var delta: float = 0.5
 func _init(data: Control) -> void:
 	self.data = data
 	self.add_child(self.data)
-	data.self_modulate.a = 0.5
+	data.modulate.a = 0.5
 	data.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)
 
 #
