@@ -1,7 +1,6 @@
 extends Control
 class_name ComboPlace
 
-var table: Table = null
 @onready var panel: Panel = $Panel as Panel 
 var index: float = -1
 var combo: FullComboView = null
@@ -15,6 +14,9 @@ func _ready() -> void:
 
 func add_combo(c: FullComboView) -> void:
 	self.combo = c
+	var offset := (c.length / 2) - 0.5
+	c.cards = Game.battle.table.cards.slice(self.index - offset, (self.index + offset) + 1)
+	print('CARDS: ', c.cards)
 	self.panel.add_child(c)
 	c.set_anchors_and_offsets_preset(PRESET_CENTER, PRESET_MODE_KEEP_SIZE)
 

@@ -94,7 +94,7 @@ func set_main_props(
 func play() -> void:
 	self.scale += Vector2(0.2, 0.2)
 	# NOTE: maybe do this after card is played
-	Game.battle.counter.add(self.point, self.factor)
+	Game.battle.score_counter.add(self.point, self.factor)
 
 
 func add_tags(new_tags: Dictionary) -> void:

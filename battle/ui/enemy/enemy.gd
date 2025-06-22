@@ -11,8 +11,8 @@ var enemy_name: String = 'Nobody' :
 	set = set_enemy_name
 var constraints: String = 'Empty':
 	set = set_constraints
-var max_round_count: int = -1
-var rest_round_count: int = -1 :
+var max_round_count: int
+var rest_round_count: int :
 	set = set_round_count
 
 
@@ -30,5 +30,5 @@ func set_constraints(constraint: String) -> void:
 	
 func set_round_count(rest_round: int) -> void:
 	rest_round_count = rest_round
-	self.enemy_info.round_count_lbl.text = 'Раундов: %s//%s' % [rest_round, self.max_round_count]
+	self.enemy_info.round_count_lbl.text = 'Раундов: %s/%s' % [rest_round, self.max_round_count]
 	

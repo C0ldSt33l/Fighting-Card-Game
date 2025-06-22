@@ -83,14 +83,14 @@ var EFFECTS := {
 # TypeName_ActionName(obj: TypeName)
 
 static func counter_add_points_and_multiplier(
-	c: Counter,
+	c: ScoreCounter,
 	points: int,
 	mult: int
 ) -> void:
 	c.add(points, mult)
 
 static func counter_multiply_points_and_multiplier(
-	c: Counter,
+	c: ScoreCounter,
 	points: int,
 	mult: int
 ) -> void:

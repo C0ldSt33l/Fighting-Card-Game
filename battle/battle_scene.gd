@@ -2,13 +2,14 @@ class_name BattleScene
 extends Control
 
 @onready var player: TextureRect = $player
-@onready var enemy_info: Control = $"Enemy info"
+@onready var enemy: Enemy = $Enemy
+@onready var score_counter: ScoreCounter = $"Score counter"
+
 @onready var totem_segment: TotemSegment = $"Totem segment"
 
 @onready var timer: Timer = $Timer as Timer
 @onready var start_button: Button = $"Start button" as Button
 
-@onready var counter: Counter = $Counter as Counter
 #TODO: add another enemy props and init it in `_ready()`
 @onready var required_score: int = 2
 
@@ -32,25 +33,31 @@ var played_cards: Array[Card] = []
 
 var COMBO_TEMPLATE: SimpleComboView = preload("res://battle/combo/simple_view/simple_combo_view.tscn").instantiate()
 var available_combos: Dictionary = Combos.COMBOS
-var combos_on_table: Array[ComboData] :
+var combos_on_table: Array[FullComboView] :
 	get():
-		var a: Array[ComboData]
-		a.assign(self.table.combos.map(func (c: FullComboView): return c.get_combo_data()))
+		var a: Array[FullComboView]
+		a.assign(self.table.combos)
 		return a
 var combo_cursor: Cursor = Cursor.new(Cursor.TYPE.COMBOS)
-var cur_combo: ComboData :
+var cur_combo: FullComboView :
 	get(): return self.combos_on_table[self.combo_cursor.index] if self.combo_cursor.index < self.combos_on_table.size() else null
-var first_combo: ComboData :
+var first_combo: FullComboView :
 	get(): return self.combos_on_table[0] if self.combos_on_table.size() > 0 else null
-var last_combo: ComboData :
+var last_combo: FullComboView :
 	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
-@onready var round_counter: Label = $"Round counter" as Label
 # TODO: move in player config
-@onready var round_count: int = 2 :
+@onready var max_round_count: int :
 	set(val):
-		round_count = val
-		self.round_counter.text = str(val)
+		self.enemy.max_round_count = val
+	get():
+		return self.enemy.max_round_count
+@onready var rest_round_count: int :
+	set(val):
+		self.enemy.rest_round_count = val
+	get():
+		return self.enemy.rest_round_count
+
 @onready var reroll_btn: Button = (self.hand as Hand).reroll_btn
 @onready var reroll_count: int = 4 :
 	set(val):
@@ -102,7 +109,11 @@ func _ready() -> void:
 	self.reroll_btn.pressed.connect(self.reroll)
 	# TODO: add this props in player config
 	self.reroll_count = 4
-	self.round_count = 2
+	self.enemy.max_round_count = 2
+	self.rest_round_count = 2
+	self.enemy.health = 500
+
+	self.score_counter.reset()
 
 	print('EMEMY SCORE: ', self.required_score)
 
@@ -127,7 +138,6 @@ func _on_inventory_button() -> void:
 func start_round_preparation() -> void:
 	print('ENEMY HP: ', self.required_score)
 	self.start_button.disabled = false
-	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
 
 	var hand_size := PlayerConfig.hand_size - self.hand.card_count
@@ -136,11 +146,11 @@ func start_round_preparation() -> void:
 		var c := confs[i]
 		self.spawn_card(c)
 
-	var i := 0
 	for combo_name in self.available_combos:
-		#if i == 0: continue
 		self.spawn_combo(combo_name, self.available_combos[combo_name])
-		i += 1
+		# TODO: add used combo array
+		if self.hand.combos.size() == 3:
+			break
 	var last_combo := self.hand.combos[-1]
 	
 	# var e := Effects.get_effect('Multiplying')
@@ -167,7 +177,8 @@ func start_round() -> void:
 	self.start_button.disabled = true
 
 	Events.round_started.emit()
-	self.round_count -= 1
+	print('REST ROUND: ', self.rest_round_count)
+	self.rest_round_count -= 1
 	if self.cards_on_table.size() == 0: return
 
 	self.card_cursor.set_size(self.cards_on_table.size())
@@ -182,16 +193,17 @@ func start_round() -> void:
 func end_round() -> void:
 	Events.round_exit.emit()
 
-	self.round_counter.text = str(self.round_count)
+	#self.
 	self.timer.stop()
 
 
-	await self.counter.update_round_score()
+	await self.score_counter.update_round_score()
+	self.enemy.health -= self.score_counter.round_score
 	await get_tree().create_timer(1).timeout
 
 	#NOTE: maybe it will await so show reward screen takes time
-	print('POINTS SCORED: ', self.counter.total_score)
-	if self.counter.total_score >= self.required_score:
+	print('ENEMY HP: ', self.enemy.health)
+	if self.enemy.health <= 0:
 		Events.battle_ended.emit()
 		return
 
@@ -199,9 +211,12 @@ func end_round() -> void:
 
 	var card_names := self.cards_on_table.map(func (c: Card): return c.card_name)
 	self.deck_dict = self.deck_dict.filter(func (conf: Dictionary): return conf.Name not in card_names)
+
 	self.played_cards.append_array(self.cards_on_table)
 	self.cards_on_table.clear()
-	self.table.remove_cards()
+
+	self.table.remove_all_cards()
+	self.table.remove_all_combos()
 
 	self.card_cursor.reset()
 	self.combo_cursor.reset()
@@ -209,14 +224,15 @@ func end_round() -> void:
 	self.effects.clear()
 	self.used_effects.clear()
 
-	if self.round_count != 0:
+	if self.rest_round_count > 0:
 		self.start_round_preparation()
 	else:
 		Events.battle_ended.emit()
 		print('battle end')
 
-func play_card(card: Card, combo: ComboData) -> void:
+func play_card(card: Card, combo: FullComboView) -> void:
 	if combo and card == combo.first_card:
+		print('CARD IN COMBO')
 		Events.combo_started.emit(combo)
 
 	Events.card_started.emit(card);\
@@ -367,7 +383,7 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 				effects.append(e.set_target(self.combo_cursor))
 
 			TYPE.SCORE:
-				effects.append(e.set_target(self.counter))
+				effects.append(e.set_target(self.score_counter))
 
 			_:
 				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER: target type: %s' % [str(TYPE.keys()[e.target_type])])
@@ -385,7 +401,7 @@ func on_round_preparation_started() -> void: pass
 func on_round_started() -> void:
 	# TODO: move segment in round preparation segment
 	for c in self.combos_on_table:
-		self.counter.add(c.points, c.factor)
+		self.score_counter.add(c.point, c.factor)
 	
 	self.collect_all_effects()
 	self.activate_filtered_effects(
@@ -425,12 +441,12 @@ func on_card_exit(c: Card) -> void:
 		[c]
 	)
 
-func on_combo_started(c: ComboData) -> void:
+func on_combo_started(c: FullComboView) -> void:
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_START, c]
 	)
-func on_combo_ended(c: ComboData) -> void:
+func on_combo_ended(c: FullComboView) -> void:
 	self.combo_cursor.move_foward()
 
 	self.activate_filtered_effects(
@@ -449,7 +465,7 @@ func on_effect_activated(e: Effect) -> void: pass
 
 func on_battle_ended() -> void:
 	print('BATTLE IS ENDED')
-	self.earned_money += self.round_count
+	self.earned_money += self.rest_round_count
 	PlayerConfig.enemy_data = null
 
 	SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE
