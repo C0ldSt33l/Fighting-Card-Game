@@ -1,13 +1,18 @@
 extends Control
 class_name Pack
 @onready var Background : Panel = $Background
-@onready var PackName : Label = $Background/PackName
+@onready var Texture_rect : TextureRect = $Background/TextureRect
+@onready var PackName : Label = $Background/TextureRect/PackName
 const MAX_DISPLAYED_CARDS : int = 5
 var count_selected_obj : int = 5
 var objects : Array = []
 var is_open : bool = false
+var can_open : bool = true
 var data := {}
 var basket : Array = []
+
+var full_screen_panel: Panel
+
 var id: int:
 	set(val): self.set_tag_val('id', val)
 	get(): return self.get_tag_val('id')
@@ -19,7 +24,15 @@ var Name: String:
 var Description: String:
 	set(val): self.set_tag_val('Description',"" if val == null else val)
 	get():return self.get_tag_val('Description') if self.get_tag_val('Description') != null else ""
-	
+
+var Picture : String:
+	set(val):self.set_tag_val('Picture',"" if val == null else val)
+	get():return self.get_tag_val('Picture') if self.get_tag_val('Picture') != null else ""
+
+var Price:int:
+	set(val): self.set_tag_val('Price',val)
+	get(): return self.get_tag_val('Price')
+
 func set_tag_val(tag: String, val: Variant) -> void:
 	self.data[tag] = val
 	
@@ -50,6 +63,9 @@ var tail: DoublyLinkedListNode = null
 var current: DoublyLinkedListNode = null
 var displayed_cards = []
 
+
+var current_x_pos: float = 50
+
 func add_obj(card_data: Dictionary):
 	var new_node = DoublyLinkedListNode.new(card_data)
 	
@@ -68,21 +84,20 @@ func update_displayed_cards():
 		if card.is_inside_tree(): 
 			card.queue_free()
 	displayed_cards.clear()
-	spawnPos = Vector2.ZERO
+	
+	current_x_pos = 50
 	var node = current
 	var count = 0
 	var to_display = []
-	# Добавляем текущий элемент
 	to_display.append(node)
 	count += 1
-	# Добавляем следующие по кругу
-	spawnPos = Vector2(50,100)
 	var next_node = node.next
+
 	while count < MAX_DISPLAYED_CARDS and next_node != node:
 		to_display.append(next_node)
 		next_node = next_node.next
 		count += 1
-	# Отображаем
+
 	for n in to_display:
 		display_card(n)
 
@@ -94,21 +109,17 @@ func display_card(node: DoublyLinkedListNode):
 		obj = create_combo(node.data)
 	else:
 		return
-
-	add_child(obj)
-	var bg: Panel = obj.Background
-	bg.update_minimum_size()
-	var screen_width = get_viewport_rect().size.x
-	if spawnPos.x + bg.size.x > screen_width:
-		obj.queue_free()
-		return
-	obj.position = spawnPos
+	
+	obj.position = Vector2(current_x_pos, 100)
+	full_screen_panel.add_child(obj)
 	displayed_cards.append(obj)
-	if basket.has(node.data):  # сравниваем по данным
+	
+	if basket.has(node.data):  
 		obj.Background.modulate = Color.GREEN
 	else:
 		obj.Background.modulate = Color.GRAY
-	spawnPos.x += bg.size.x + 10
+		
+	current_x_pos += obj.Background.size.x + 10
 
 func move_left():
 	if current and current.prev:
@@ -136,6 +147,11 @@ func add_objects()->void:
 func open_pack()-> void:
 	Background.visible = false
 	var random_objects = []
+	
+	full_screen_panel = Panel.new()
+	add_child(full_screen_panel)
+	full_screen_panel.size = get_viewport_rect().size
+	full_screen_panel.modulate = Color(0.745098, 0.745098, 0.745098, 1)
 	for i in range(0,15):
 		add_obj(objects[randi() % objects.size()])
 	if head:
@@ -143,7 +159,7 @@ func open_pack()-> void:
 		update_displayed_cards()
 		
 	var confirm_button = Button.new()
-	add_child(confirm_button)
+	full_screen_panel.add_child(confirm_button)
 	confirm_button.text = "Выбрать"
 	confirm_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	confirm_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -179,9 +195,12 @@ func create_combo(ComboInfo: Dictionary)->_Combo_:
 
 func _ready() -> void:
 	add_objects()
+	var texture = load(self.Picture)
+	if texture and texture is Texture2D:
+		self.Texture_rect.texture = texture
+		self.Texture_rect.ExpandMode.EXPAND_IGNORE_SIZE
+	pass
 
-
-	
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_left"):
 		move_left()
@@ -190,7 +209,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			var mouse_pos = get_global_mouse_position()
-			if not is_open and self.Background.get_global_rect().has_point(mouse_pos):
+			if not is_open and can_open and self.Background.get_global_rect().has_point(mouse_pos):
 				open_pack()
 				is_open = true
 			else: 
@@ -232,3 +251,32 @@ func confirm_button_pressed():
 	tail = null
 	current = null
 	self.visible = false
+
+func debug_print_all_objects():
+	if objects.is_empty():
+		print("Пак не содержит объектов.")
+		return
+
+	print("=== Содержимое пака ===")
+	for i in range(objects.size()):
+		var obj = objects[i]
+		print("Объект #", i + 1)
+
+		if obj.has("card"):
+			var card = obj.card
+			print(" - Тип: Карта")
+			print("   Название: ", card.Name if card.has("Name") else "Нет имени")
+			print("   Тип карты: ", card.TypeCard if card.has("TypeCard") else "Неизвестен")
+			print("   Теги: ", card.tags if card.has("tags") else "Нет")
+
+		elif obj.has("combo"):
+			var combo = obj.combo
+			print(" - Тип: Комбо")
+			print("   ID: ", combo.id if combo.has("id") else "Нет ID")
+			print("   Название: ", combo.Name if combo.has("Name") else "Нет имени")
+			print("   Карты в комбо: ", combo.cards.size() if combo.has("cards") else "0")
+
+		else:
+			print(" - Неизвестный тип объекта")
+
+		print("-----------------------")

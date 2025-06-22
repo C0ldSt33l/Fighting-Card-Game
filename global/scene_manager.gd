@@ -15,7 +15,7 @@ enum SCENE {
 	SHOP_MAIN,
 	SHOP_POWER_UPS,
 	SHOP_ITEMS,
-
+	SHOP_PACK,
 	INVENTORY,
 
 	RUN_RESULT,
@@ -38,7 +38,7 @@ var __all_scenes := [
 	preload("res://shop/shop.tscn").instantiate(),
 	preload("res://shop/powerUpShop/PowerUpShop.tscn").instantiate(),
 	preload("res://shop/ComboCardShop/ComboCardShop.tscn").instantiate(),
-
+	preload("res://shop/ComboCardShop/PackShop/PackShop.tscn").instantiate(),
 	preload("res://Inventory/Inventory.tscn").instantiate(),
 
 	#TODO: replace run result scene

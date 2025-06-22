@@ -1,8 +1,9 @@
 extends Node2D
-@onready var Price = $Panel/Price
+@onready var Price = $Panel/Button2/Price
 @onready var ComboPanel = $Panel/ComboPanel
 @onready var ComboPanelLabel: Label = $Panel/ComboPanel/Label
-
+@onready var OpenPackShopButton: Button = $Panel/open_pack_shop
+var fullscreen_container: Control
 
 var playerCardID = 1000000
 
@@ -19,6 +20,7 @@ var PriceButton:Button
 var ChosenObj
 var ALL_cards_with_tags
 var All_combo
+var All_packs
 var count_cards : int = 7
 
 var InfoPanel: Panel
@@ -33,6 +35,11 @@ func _ready() -> void:
 	PriceButton = get_node("Panel/Button2")	
 	Price = get_node("Panel/Button2/Price")
 	BackgroundPanel = get_node("Panel")
+	
+	if !PlayerConfig.pack_in_shop:
+		OpenPackShopButton.hide()
+	else:
+		OpenPackShopButton.show()
 	
 	var tmp = []
 	tmp = Sql.select_all_type_cards_with_tags('BATTLE')
@@ -52,9 +59,7 @@ func _ready() -> void:
 	for i in range(7):
 		spawn_card(ALL_cards_with_tags[randi() % ALL_cards_with_tags.size()], spawn_pos + Vector2(i * 150, 0))
 	arrange_cards()
-	
 	spawn_combo(All_combo[randi() % All_combo.size()],Vector2(258,358))
-
 	pass
 
 func _process(delta: float) -> void:
@@ -76,8 +81,7 @@ func _input(event: InputEvent) -> void:
 					basket.erase(obj)
 					update_total_price()
 					return
-					
-			
+
 
 func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 	var card := CardCreator.create_with_binding(
@@ -109,7 +113,6 @@ func spawn_combo(ComboInfo: Dictionary, pos:Vector2)->void:
 			c.position = pos
 	)
 	self.objects.append(combo)
-	
 
 func _on_button_pressed() -> void: #reroll button
 	if(money>0):
@@ -177,28 +180,19 @@ func arrange_cards():
 	var parent_rect = $Panel.get_rect()  
 	var card_count = count_cards  
 	var spacing = 10
-
 	var total_spacing = spacing * (card_count - 1)
 	var available_width = parent_rect.size.x - total_spacing
-
-	var base_card_size = objects[1].Background.size  
-
+	var base_card_size = Vector2(200,300)
 	var scale_x = available_width / (base_card_size.x * card_count + total_spacing)
 	var scale_y = scale_x 
-	
 	var start_position = parent_rect.position.x + 20
-
 	for i in range(card_count):
 		var obj = objects[i]
-		if obj is BaseCard:
-			
-			obj.scale = Vector2(scale_x, scale_y)
-
-			var scaled_width = base_card_size.x * scale_x
-			var x_position =start_position + i * (scaled_width + spacing)
-			var y_position = (parent_rect.size.y - base_card_size.y * scale_y) / 2  # Центрируем по вертикали
-
-			obj.position = Vector2(x_position, y_position)
+		obj.scale = Vector2(scale_x, scale_y)
+		var scaled_width = base_card_size.x * scale_x
+		var x_position =start_position + i * (scaled_width + spacing)
+		var y_position = (parent_rect.size.y - base_card_size.y * scale_y) / 2
+		obj.position = Vector2(x_position, y_position)
 
 func remove_panel():
 	if InfoPanel:
@@ -213,3 +207,7 @@ func _on_exit_button() -> void:
 func _on_inventory_button() -> void:
 	SceneManager.__last_scene_type = SceneManager.SCENE.SHOP_ITEMS
 	SceneManager.open_new_scene_by_name(SceneManager.SCENE.INVENTORY)
+
+func _on_pack_shop_button()->void:
+	SceneManager.__last_scene_type = SceneManager.SCENE.SHOP_ITEMS
+	SceneManager.open_new_scene_by_name(SceneManager.SCENE.SHOP_PACK)

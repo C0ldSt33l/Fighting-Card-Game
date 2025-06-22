@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Control_nodes/packs/pack.gd" id="1_ywne2"]
 
 [node name="Pack" type="Control"]
+custom_minimum_size = Vector2(200, 300)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_ywne2")
@@ -12,7 +13,13 @@ layout_mode = 0
 offset_right = 200.0
 offset_bottom = 300.0
 
-[node name="PackName" type="Label" parent="Background"]
+[node name="TextureRect" type="TextureRect" parent="Background"]
+layout_mode = 0
+offset_left = 2.0
+offset_right = 200.0
+offset_bottom = 303.0
+
+[node name="PackName" type="Label" parent="Background/TextureRect"]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 134.0
