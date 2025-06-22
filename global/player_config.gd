@@ -28,4 +28,3 @@ var enemy_data: EnemyData = null
 
 func _ready() -> void:
 	pass
-

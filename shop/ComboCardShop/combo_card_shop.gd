@@ -84,7 +84,10 @@ func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 		self, CardInfo.card['TypeCard'],
 		func (c:BaseCard)-> void:
 			for i in CardInfo.card:
-				c[i] = CardInfo.card[i]
+				if i == 'Body part' and c is BattleCard:
+					c.Type = CardInfo.card[i]
+				else:
+					c[i] = CardInfo.card[i]
 			for tag in CardInfo.tags:
 				c.tags.append(tag)
 			c.position = pos

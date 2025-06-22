@@ -30,6 +30,7 @@ Settings="*res://main_menu/SettingsConf.gd"
 Save_Manager="*res://Control_nodes/SaveLoadScreen/SaveManager.gd"
 SkillTreeManager="*res://Meta/SkillTreeManager.gd"
 PackCreator="*res://Control_nodes/packs/PackCreator.gd"
+SceneManager="*res://global/scene_manager.gd"
 
 [display]
 
