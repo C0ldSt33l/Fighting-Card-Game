@@ -2,37 +2,67 @@ extends Control
 class_name ChooseEnemyScene
 
 #TODO: fill test configs
-var enemy_confs: Array[Dictionary] = [
+const ENEMY_CONFIGS: Array[Dictionary] = [
 	{
-		enemy_name = 'Противник 1',
-		image_path = 'res://assets/tmp enemy/enemy.jpg',
-		constrains = ['Слабость']
+		enemy_name = 'вурдалак',
+		image = preload("res://assets/tmp enemy/alghoul2.png"),
 	},
 	{
-		enemy_name = 'Противник 2',
-		image_path = 'res://assets/tmp enemy/enemy.jpg',
-		constrains = ['Расточительность']
+		enemy_name = 'орк-громила',
+		image = preload("res://assets/tmp enemy/orc.png"),
 	},
 	{
-		enemy_name = 'Противник 3',
-		image_path = 'res://assets/tmp enemy/enemy.jpg',
-		constrains = ['Маленькая рука']
+		enemy_name = 'весник смерти',
+		image = preload("res://assets/tmp enemy/death2.png"),
 	},
 	{
-		enemy_name = 'Противник 4',
-		image_path = 'res://assets/tmp enemy/enemy.jpg',
-		constrains = ['Штраф']
+		enemy_name = 'череп-олень',
+		image = preload("res://assets/tmp enemy/scull_deer2.png"),
+	},
+
+	{
+		enemy_name = 'вурдалак',
+		image = preload("res://assets/tmp enemy/alghoul2.png"),
 	},
 	{
-		enemy_name = 'Противник 5',
-		image_path = 'res://assets/tmp enemy/enemy.jpg',
-		constrains = ['Слабость']
+		enemy_name = 'орк-громила',
+		image = preload("res://assets/tmp enemy/orc.png"),
 	},
 	{
-		enemy_name = 'Противник 6',
-		image_path = 'res://assets/tmp enemy/enemy.jpg',
-		constrains = ['Слабость']
+		enemy_name = 'весник смерти',
+		image = preload("res://assets/tmp enemy/death2.png"),
 	},
+	{
+		enemy_name = 'череп-олень',
+		image = preload("res://assets/tmp enemy/scull_deer2.png"),
+	},
+]
+const CONSTRAINTS: Array[String] = [
+	'Слабость', # decrease card point
+	'Один раунд', # player has only one round in battle
+	'Без сбросов', # player has no rerolls
+	'Расточительность', # for each combo player money decrease
+
+	'Слабость', # decrease card point
+	'Один раунд', # player has only one round in battle
+	'Без сбросов', # player has no rerolls
+	'Расточительность', # for each combo player money decrease
+]
+const REWARDS: Array[String] = [
+	'Доли Духов',
+	'Чёрная Сталь',
+	'Мощь Гор',
+
+	'Доли Духов',
+	'Чёрная Сталь',
+	'Мощь Гор',
+]
+const COLORS: Array[Color] = [
+	Color.RED,
+	Color.BLUE,
+	Color.GREEN,
+	Color.YELLOW,
+	Color.BROWN,
 ]
 
 @onready var background: Panel = $Background
@@ -43,39 +73,39 @@ var enemy_cards: Array[EnemyCard] :
 		cards.assign(self.enemy_card_container.get_children())
 		return cards
 
+@onready var reroll_count: int :
+	set(val):
+		reroll_count = val
+		self.reroll_btn.text = 'Сброс: %s' % val
+		if val < 1:
+			self.reroll_btn.disabled = true
+@onready var reroll_btn: Button = $"Reroll btn"
 
-const CARD_SCENE := preload("res://choose enemy/enemy card/enemy_card.tscn")
 
 
 
 func _ready() -> void:
-	var colors: Array[Color] = [
-		Color.RED,
-		Color.BLUE,
-		Color.GREEN,
-	]
-	colors.shuffle()
-	self.enemy_confs.shuffle()
-	var confs: Array[Dictionary] = self.enemy_confs.slice(0, 3)
+	self.reroll_count = 2
 	for i in len(self.enemy_cards):
-		var c := self.enemy_cards[i]
-		var d := confs[i]
-		c.setup(d.enemy_name, d.image_path, randi_range(1, 1000))
-		#c.constrains.text += '\n' + d.constrains[0]
+		var ec := self.enemy_cards[i]
+		var d: Dictionary = ENEMY_CONFIGS.pick_random()
+		ec.setup(
+			d.enemy_name,
+			d.image,
+			randi_range(2, 1000),
+			CONSTRAINTS.pick_random(),
+			REWARDS.pick_random(),
+		)
+		ec.change_color(COLORS.pick_random())
 
 		#TODO: make it depend on run progression (enemy rarity/type, lvl or etc.)
-		#c.image_rect.modulate += colors[i]
-		var col := colors[i]
-		col.s = 100
-		col.v = 0.5
-		c.stylebox.bg_color = col
-		c.choosed.connect(self.on_enemy_choosed)
+		ec.choosed.connect(self.on_enemy_choosed)
 
 	await get_tree().process_frame
 	await self.start_opening_animation()
 
 	for c in self.enemy_cards:
-		c.connect_mouse_signals()
+		c.mouse_filter = Control.MOUSE_FILTER_STOP
 
 
 func start_opening_animation() -> void:
@@ -88,7 +118,7 @@ func start_opening_animation() -> void:
 			c,
 			'position:y',
 			card_final_pos_y,
-			2
+			1
 		).finished
 
 
@@ -96,11 +126,19 @@ func on_enemy_choosed(ec: EnemyCard) -> void:
 	PlayerConfig.enemy_data = ec.get_enemy_data()
 
 	SceneManager.__last_scene_type = SceneManager.SCENE.CHOOSE_ENEMY 
-	SceneManager.call_deferred('open_new_scene_by_name', SceneManager.SCENE.LOADING)
+	# SceneManager.call_deferred('open_new_scene_by_name', SceneManager.SCENE.LOADING)
+	SceneManager.close_current_scene()
 	
 
 func reroll_enemy() -> void:
+	self.reroll_count -= 1
 	for ec in self.enemy_cards:
-		var dict_size := self.enemy_confs.size()
-		var dict := self.enemy_confs[randi_range(0, dict_size - 1)]
-		ec.setup(dict.enemy_name, dict.image_path, randi_range(0, 1000))
+		var d: Dictionary = ENEMY_CONFIGS.pick_random()
+		ec.setup(
+			d.enemy_name,
+			d.image,
+			randi_range(2, 1000),
+			CONSTRAINTS.pick_random(),
+			REWARDS.pick_random(),
+		)
+		ec.change_color(COLORS.pick_random())

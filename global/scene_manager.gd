@@ -10,7 +10,7 @@ enum SCENE {
 
 	CHOOSE_ENEMY,
 	BATTLE,
-	BATTLE_REWORD,
+	BATTLE_REWARD,
 
 	SHOP_MAIN,
 	SHOP_POWER_UPS,
@@ -53,8 +53,7 @@ func _ready() -> void:
 	__tree_root = get_tree().root
 	var nodes: Array[Node] = __tree_root.get_children()
 	__scene_stack.push_back(nodes.back())
-	print_debug("Scene Manager loaded.")
-	#print_debug(__scene_stack)
+	print_debug('Scene stack at game run:\n', self.__scene_stack)
 	
 func _exit_tree() -> void:
 	for scene in __all_scenes:
@@ -67,16 +66,14 @@ func open_new_scene_by_path(scene_path: String) -> void:
 	__tree_root.add_child(new_scene)
 	
 func open_new_scene_by_name(scene_name: SCENE) -> void:
-	print_debug("Scene Manager tries to open new scene")
-	print_debug(__scene_stack)
 	if scene_name < 0 or scene_name >= __all_scenes.size():
 		print_debug("Trying to open wrong scene with id #" + str(scene_name))
 	var new_scene = __all_scenes[scene_name].duplicate()
 	__tree_root.remove_child(__scene_stack.back())
 	__scene_stack.push_back(new_scene)
 	__tree_root.add_child(new_scene)
-	print_debug(__scene_stack)
-	print_debug("Scene Manager opened new scene")
+
+	print_debug('Scene stack after adding new scene:\n', self.__scene_stack)
 	
 func close_current_scene() -> void:
 	print_debug("Scene Manager got order to close current scene")
@@ -88,5 +85,4 @@ func __real_closing_scene() -> void:
 	__tree_root.remove_child(current_scene)
 	#current_scene.queue_free()
 	__tree_root.add_child(__scene_stack.back())
-	print_debug(__scene_stack)
-	print_debug("Scene Manager closed current scene")
+	print_debug('Scene stack after closing cur scene:\n', __scene_stack)

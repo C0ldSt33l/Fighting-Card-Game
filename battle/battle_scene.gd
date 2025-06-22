@@ -115,9 +115,14 @@ func __init_components() -> void:
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed('ui_accept'):
 		self.next_card_key_pressed.emit()
+		
+func _on_inventory_button() -> void:
+	SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE
+	SceneManager.open_new_scene_by_name(SceneManager.SCENE.INVENTORY)
 
 
 func start_round_preparation() -> void:
+	print('ENEMY HP: ', self.required_score)
 	self.start_button.disabled = false
 	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
@@ -138,6 +143,18 @@ func start_round_preparation() -> void:
 	# var e := Effects.get_effect('Multiplying')
 	# self.cards_in_hand[0].bind_effect(e)
 
+# TODO: test with effect that run rount again
+func process_round() -> void:
+	self.start_round()
+	while self.card_cursor.index < self.cards_on_table.size():
+		print('card index: ', self.cur_card.index)
+		print('cards on table: ', self.cards_on_table.size())
+
+		await self.play_card(self.cur_card, self.cur_combo)
+
+		if card_cursor.index == self.cards_on_table.size():
+			Events.round_ended.emit()
+	self.end_round()
 
 # TODO: move `check_combos()` in round preparation stage
 func start_round() -> void:
@@ -153,10 +170,10 @@ func start_round() -> void:
 	self.card_cursor.set_size(self.cards_on_table.size())
 	self.combo_cursor.set_size(self.combos_on_table.size())
 	
-	if self.is_turn_based_mode:
-		self.play_card()
-	else:
-		self.timer.start()
+	# if self.is_turn_based_mode:
+	# 	self.process_round()
+	# else:
+	# 	self.timer.start()
 
 
 func end_round() -> void:
@@ -170,6 +187,7 @@ func end_round() -> void:
 	await get_tree().create_timer(1).timeout
 
 	#NOTE: maybe it will await so show reward screen takes time
+	print('POINTS SCORED: ', self.counter.total_score)
 	if self.counter.total_score >= self.required_score:
 		Events.battle_ended.emit()
 		return
@@ -194,12 +212,7 @@ func end_round() -> void:
 		Events.battle_ended.emit()
 		print('battle end')
 
-
-
-func play_card() -> void:
-	var card := self.cur_card
-	var combo := self.cur_combo
-
+func play_card(card: Card, combo: ComboData) -> void:
 	if combo and card == combo.first_card:
 		Events.combo_started.emit(combo)
 
@@ -217,17 +230,7 @@ func play_card() -> void:
 		if self.is_all_effects_activated_on(combo):
 			Events.combo_exit.emit(combo)
 
-	print('card index: ', card.index)
-	print('cards on table: ', self.cards_on_table.size() - 1)
 
-	if self.card_cursor.index == self.cards_on_table.size():
-		print('end round fuck you')
-		Events.round_ended.emit()
-
-	if self.card_cursor.index == self.cards_on_table.size():
-		self.end_round()
-	elif self.is_turn_based_mode:
-		self.play_card()
 
 
 func spawn_card(conf: Dictionary) -> void:
@@ -445,3 +448,6 @@ func on_battle_ended() -> void:
 	print('BATTLE IS ENDED')
 	self.earned_money += self.round_count
 	PlayerConfig.enemy_data = null
+
+	SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE
+	SceneManager.close_current_scene()

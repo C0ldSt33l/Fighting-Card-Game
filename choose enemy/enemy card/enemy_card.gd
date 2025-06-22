@@ -29,21 +29,33 @@ class_name EnemyCard
 		enemy_name = capitalized
 		self.name_lbl.text = capitalized 
 @onready var name_lbl: Label = $"Background/Margins/Content container/Name" as Label
+
 @onready var image: Texture2D : 
 	set(val): self.image_rect.texture = val
 	get(): return self.image_rect.texture
 @onready var image_rect: TextureRect = $"Background/Margins/Content container/Image"
-@onready var required_score: int :
+
+@onready var required_score: int = 0:
 	set(val):
 		required_score = val
-		self.required_score_lbl.text = 'Здоровье: %s' % [val]
+		self.required_score_lbl.text = 'Здоровье: %s' % val
 @onready var required_score_lbl: Label = $"Background/Margins/Content container/Required score"
 
-var is_mouse_inside: bool = false
+@onready var constraints: String = 'empty' :
+	set(val):
+		constraints = val.capitalize()
+		self.constraints_lbl.text = 'Ограничения:\n%s' % constraints
+@onready var constraints_lbl: Label = $"Background/Margins/Content container/Constrains"
 
-@onready var constrains: Label = $"Background/Margins/Content container/constrains"
+@onready var reward: String = 'empty' :
+	set(val):
+		reward = val.capitalize()
+		self.reward_lbl.text = 'Награда:\n%s' % reward
+@onready var reward_lbl: Label = $"Background/Margins/Content container/Reward"
 
-signal choosed(c: EnemyCard)
+#var is_mouse_inside: bool = false
+
+signal choosed(ec: EnemyCard)
 
 
 func _ready() -> void:
@@ -54,32 +66,36 @@ func _ready() -> void:
 ## Call this func after adding this node to another
 func setup(
 	name: String,
-	image_path: String,
-	required_score: int
+	image: Texture2D,
+	required_score: int,
+	constraints: String,
+	reward: String,
 ) -> void:
-	#self.enemy_name = name
-	# self.image = load(image_path)
+	self.enemy_name = name
+	self.image = image
 	self.required_score = required_score
+	self.constraints = constraints
+	self.reward = reward
+
+
+func change_color(c: Color) -> void:
+	c.s = 100
+	c.v = 0.5
+	self.stylebox.bg_color = c
 	
 
-func connect_mouse_signals() -> void:
-	self.background.mouse_entered.connect(self._on_background_mouse_entered)
-	self.background.mouse_exited.connect(self._on_background_mouse_exited)
-	self.background.gui_input.connect(self._on_background_gui_input)
-
-
-func _on_background_mouse_entered() -> void:
-	self.is_mouse_inside = true
+func _on_mouse_entered() -> void:
+	#self.is_mouse_inside = true
 	self.border_width = 5
 
 
-func _on_background_mouse_exited() -> void:
-	self.is_mouse_inside = false
+func _on_mouse_exited() -> void:
+	#self.is_mouse_inside = false
 	self.border_width = 0
 
 
-func _on_background_gui_input(event: InputEvent) -> void:
-	if self.is_mouse_inside and event.is_action_pressed('click'):
+func _on_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed('click'):
 		self.choosed.emit(self)
 
 
@@ -88,7 +104,8 @@ func get_enemy_data() -> EnemyData:
 		self.enemy_name,
 		self.image,
 		self.required_score,
-		[]
+		[],
+		self.reward,
 	)
 
 

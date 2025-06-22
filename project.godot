@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Figting Card Game"
-run/main_scene="res://battle/battle_scene.tscn"
+run/main_scene="res://main_menu/main_menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -30,6 +30,7 @@ Settings="*res://main_menu/SettingsConf.gd"
 Save_Manager="*res://Control_nodes/SaveLoadScreen/SaveManager.gd"
 SkillTreeManager="*res://Meta/SkillTreeManager.gd"
 PackCreator="*res://Control_nodes/packs/PackCreator.gd"
+SceneManager="*res://global/scene_manager.gd"
 
 [display]
 
