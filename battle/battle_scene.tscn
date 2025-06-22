@@ -313,5 +313,4 @@ text = "Раундов: 2/3"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="timeout" from="Timer" to="." method="play_card"]
-[connection signal="pressed" from="Start button" to="." method="start_round" flags=3]
+[connection signal="pressed" from="Start button" to="." method="process_round" flags=3]

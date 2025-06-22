@@ -42,4 +42,13 @@ layout_mode = 0
 offset_right = 612.0
 offset_bottom = 208.0
 
+[node name="Exit button" type="Button" parent="."]
+offset_left = 1112.0
+offset_top = 8.0
+offset_right = 1272.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 30
+text = "Выход"
+
 [connection signal="pressed" from="Cards" to="." method="_on_cards_pressed"]
+[connection signal="pressed" from="Exit button" to="." method="_on_exit_button_pressed"]

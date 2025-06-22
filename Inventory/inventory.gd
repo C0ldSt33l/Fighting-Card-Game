@@ -162,3 +162,8 @@ func _on_combos_pressed() -> void:
 func _on_totem_pressed() -> void:
 	print("not worked now")
 	pass # Replace with function body.
+
+
+func _on_exit_button_pressed() -> void:
+	SceneManager.__last_scene_type = SceneManager.SCENE.INVENTORY
+	SceneManager.close_current_scene()

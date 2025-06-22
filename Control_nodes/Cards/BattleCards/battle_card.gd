@@ -32,11 +32,6 @@ func _ready() -> void:
 	price.text = str(Price)
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func get_upgrade(c: BaseCard,where:BattleCard) -> void:
 	print(c.Target)
 	var data = c.return_all_tags()

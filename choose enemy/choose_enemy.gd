@@ -126,7 +126,8 @@ func on_enemy_choosed(ec: EnemyCard) -> void:
 	PlayerConfig.enemy_data = ec.get_enemy_data()
 
 	SceneManager.__last_scene_type = SceneManager.SCENE.CHOOSE_ENEMY 
-	SceneManager.call_deferred('open_new_scene_by_name', SceneManager.SCENE.LOADING)
+	# SceneManager.call_deferred('open_new_scene_by_name', SceneManager.SCENE.LOADING)
+	SceneManager.close_current_scene()
 	
 
 func reroll_enemy() -> void:
