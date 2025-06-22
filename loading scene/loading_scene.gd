@@ -18,7 +18,8 @@ func switch_to_next_scene(scene_type: SceneManager.SCENE) -> void:
 		S.CHOOSE_ENEMY:
 			next_scene = S.BATTLE
 		S.BATTLE:
-			next_scene = S.BATTLE_REWARD
+			# next_scene = S.BATTLE_REWARD
+			next_scene = S.SHOP_ITEMS
 		S.BATTLE_REWARD:
 			pass
 
@@ -27,6 +28,7 @@ func switch_to_next_scene(scene_type: SceneManager.SCENE) -> void:
 		S.SHOP_POWER_UPS:
 			pass
 		S.SHOP_ITEMS:
+			next_scene = S.CHOOSE_ENEMY
 			pass
 
 		S.INVENTORY:

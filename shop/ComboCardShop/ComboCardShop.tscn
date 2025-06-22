@@ -6,10 +6,10 @@
 script = ExtResource("1_1tmp3")
 
 [node name="Panel" type="Panel" parent="."]
-offset_left = 62.0
-offset_top = 87.0
-offset_right = 1085.0
-offset_bottom = 587.0
+offset_left = 80.0
+offset_top = 96.0
+offset_right = 1103.0
+offset_bottom = 596.0
 
 [node name="Button" type="Button" parent="Panel"]
 layout_mode = 0
@@ -41,5 +41,23 @@ offset_bottom = -50.0
 
 [node name="hide_price_timer" type="Timer" parent="."]
 
+[node name="Invetory btn" type="Button" parent="."]
+offset_left = 1120.0
+offset_top = 104.0
+offset_right = 1276.0
+offset_bottom = 174.0
+theme_override_font_sizes/font_size = 30
+text = "Инветарь"
+
+[node name="Exit btn" type="Button" parent="."]
+offset_left = 1120.0
+offset_top = 8.0
+offset_right = 1270.0
+offset_bottom = 78.0
+theme_override_font_sizes/font_size = 30
+text = "Выход"
+
 [connection signal="pressed" from="Panel/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Panel/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Invetory btn" to="." method="_on_inventory_button"]
+[connection signal="pressed" from="Exit btn" to="." method="_on_exit_button"]

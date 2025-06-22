@@ -204,3 +204,12 @@ func remove_panel():
 	if InfoPanel:
 		InfoPanel.queue_free()
 		InfoPanel = null
+
+func _on_exit_button() -> void:
+	SceneManager.__last_scene_type = SceneManager.SCENE.SHOP_ITEMS
+	SceneManager.close_current_scene()
+
+
+func _on_inventory_button() -> void:
+	SceneManager.__last_scene_type = SceneManager.SCENE.SHOP_ITEMS
+	SceneManager.open_new_scene_by_name(SceneManager.SCENE.INVENTORY)
