@@ -1,4 +1,5 @@
 extends Control
+class_name MainMenu
 
 
 @onready var main_menu := $VBoxContainer as VBoxContainer
@@ -9,7 +10,8 @@ extends Control
 
 
 func _on_start_pressed() -> void:
-	print('Game is started')
+	SceneManager.__last_scene_type = SceneManager.SCENE.MAIN_MENU
+	SceneManager.call_deferred('open_new_scene_by_name', SceneManager.SCENE.LOADING)
 	
 
 func _on_exit_pressed() -> void:

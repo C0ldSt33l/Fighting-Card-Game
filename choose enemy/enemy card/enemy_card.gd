@@ -85,17 +85,17 @@ func change_color(c: Color) -> void:
 	
 
 func _on_mouse_entered() -> void:
-	self.is_mouse_inside = true
+	#self.is_mouse_inside = true
 	self.border_width = 5
 
 
 func _on_mouse_exited() -> void:
-	self.is_mouse_inside = false
+	#self.is_mouse_inside = false
 	self.border_width = 0
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if self.is_mouse_inside and event.is_action_pressed('click'):
+	if event.is_action_pressed('click'):
 		self.choosed.emit(self)
 
 
