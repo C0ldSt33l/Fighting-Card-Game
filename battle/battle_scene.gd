@@ -1,6 +1,9 @@
 class_name BattleScene
 extends Control
 
+@onready var player: TextureRect = $player
+@onready var enemy_info: Control = $"Enemy info"
+@onready var totem_segment: TotemSegment = $"Totem segment"
 
 @onready var timer: Timer = $Timer as Timer
 @onready var start_button: Button = $"Start button" as Button
