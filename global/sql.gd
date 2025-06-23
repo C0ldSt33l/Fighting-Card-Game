@@ -177,6 +177,10 @@ func select_all_packs()->Array:
 	database.query("SELECT * from PACK")
 	return database.query_result
 
+func select_pack_by_id(id:int)->Array:
+	database.query("SELECT * FROM PACK WHERE PACK.id = " + str(id))
+	return database.query_result
+
 func select_count_of_records(TableName:String)->int:
 	database.query("SELECT COUNT(*) AS total_records FROM " + TableName) 
 	var result = database.query_result

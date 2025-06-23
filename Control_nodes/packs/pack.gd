@@ -156,6 +156,7 @@ func open_pack()-> void:
 	
 	for i in range(0,15):
 		add_obj(objects[randi() % objects.size()])
+	self.position = Vector2.ZERO
 	if head:
 		current = head
 		update_displayed_cards()
@@ -251,6 +252,7 @@ func confirm_button_pressed():
 		if is_instance_valid(card):
 			card.queue_free()
 	displayed_cards.clear()
+	self.queue_free()
 	
 	head = null
 	tail = null
