@@ -3,7 +3,7 @@ extends Node2D
 @onready var scrollContainer = $Panel/ScrollContainer
 @onready var gridContainer = $Panel/ScrollContainer/GridContainer
 @onready var hboxContainer = $upgradePanel/HBoxContainer
-
+@onready var cardsButton = $Cards
 
 @export var card_per_row : int = 4
 
@@ -20,7 +20,7 @@ var upgrade_card:Array = []
 func _ready() -> void:  # Явно задаем размер
 	scrollContainer.set_anchors_preset(Control.PRESET_HCENTER_WIDE)
 	gridContainer.set_anchors_preset(Control.PRESET_HCENTER_WIDE)
-	
+	cardsButton.hide()
 	gridContainer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	gridContainer.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	
