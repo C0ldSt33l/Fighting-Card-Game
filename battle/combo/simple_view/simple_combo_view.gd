@@ -9,10 +9,7 @@ const PATH_TO_ICONS: String = ComboData.PATH_TO_ICONS
 @onready var icon: TextureRect = $background/HBoxContainer/icon as TextureRect
 @onready var size_lbl: Label = $"background/HBoxContainer/size lbl" as Label
 
-var idx: int
-var pos_idx: float
-var pas_stat_idx: int
-var pos_end_idx: int
+# var combo_data: ComboData = ComboData.new('', '', -1, -1, -1, 0, 0, [], [])
 
 @export var combo_name: String
 @export var description: String
@@ -26,12 +23,8 @@ var pos_end_idx: int
 var upgrade_lvl: int = 1
 
 @export var pattern: Array[Dictionary] = []
-@onready var length: int = self.pattern.size()
-@export var cards: Array[Card] = []
-var first_card: Card :
-	get(): return null if self.cards.size() == 0 else self.cards[0]
-var last_card: Card :
-	get(): return null if self.cards.size() == 0 else self.cards[-1]
+@onready var length: int :
+	get(): return self.pattern.size()
 
 var effects: Array[Effect] = []
 
@@ -113,6 +106,8 @@ func get_combo_data() -> ComboData:
 		self.pattern,
 		self.effects,
 	)
+	# self.combo_data.effects = self.effects
+	# return self.combo_data
 
 
 # Maybe will come in useful for creating combo patterns

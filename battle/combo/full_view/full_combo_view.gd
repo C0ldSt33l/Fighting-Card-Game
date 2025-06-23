@@ -9,7 +9,7 @@ const ANIMAL := ComboData.ANIMAL
 @onready var panel: TextureRect = $panel as TextureRect
 @onready var icon: TextureRect = $panel/icon as TextureRect
 
-var activation_pos: int
+var index: int
 var pos_idx: float
 
 @export var combo_name: String
@@ -23,7 +23,8 @@ var pos_idx: float
 @export var _material: M.MATERIAL
 
 @export var pattern: Array[Dictionary] = []
-@onready var length: int = self.pattern.size()
+@onready var length: int :
+	get(): return self.pattern.size()
 @export var cards: Array[Card] = []
 var first_card: Card :
 	get(): return null if self.cards.size() == 0 else self.cards[0]
@@ -70,4 +71,5 @@ func get_combo_data() -> ComboData:
 		self._material,
 		self.pattern,
 		self.effects,
+		self.cards,
 	)

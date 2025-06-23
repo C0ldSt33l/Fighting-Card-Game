@@ -8,7 +8,8 @@ var card: Card = null
 
 
 func _ready() -> void:
-	Events.drag_completed.connect(self.on_drag_completed)
+	#Events.drag_completed.connect(self.on_drag_completed)
+	pass
 
 
 
