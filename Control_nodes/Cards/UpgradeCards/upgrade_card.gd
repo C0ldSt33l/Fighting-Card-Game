@@ -10,7 +10,7 @@ var Price:int:
 func _ready() -> void:
 	super()
 	price.visible = false
-	price.text = str(Price)
+	price.text = "💲" + str(Price)
 
 func set_dragNdrop_func() ->void:
 	set_drag_forwarding(

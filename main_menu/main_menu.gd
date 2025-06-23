@@ -21,3 +21,7 @@ func _on_exit_pressed() -> void:
 func _swap_menu() -> void:
 	self.main_menu.visible = !self.main_menu.visible
 	self.settins_menu.visible = !self.settins_menu.visible
+
+func _on_meta_pressed() ->void:
+	SceneManager.__last_scene_type = SceneManager.SCENE.MAIN_MENU
+	SceneManager.call_deferred("open_new_scene_by_name",SceneManager.SCENE.META_PROGGRESSION)

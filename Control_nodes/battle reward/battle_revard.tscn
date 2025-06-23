@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0f5ujp1m01ix"]
+
+[ext_resource type="Script" path="res://Control_nodes/battle reward/battle_revard.gd" id="1_h77rn"]
+
+[node name="BattleRevard" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_h77rn")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 394.0
+offset_bottom = 535.0
+
+[node name="Money" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 31.0
+offset_right = 396.0
+offset_bottom = 101.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 414.0
+offset_right = 393.0
+offset_bottom = 488.0
+text = "Нажми на меня"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 133.0
+offset_right = 300.0
+offset_bottom = 433.0

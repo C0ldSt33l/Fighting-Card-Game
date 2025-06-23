@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8cbe1pkytka5"]
+[gd_scene load_steps=3 format=3 uid="uid://c8cbe1pkytka5"]
 
 [ext_resource type="Script" path="res://Control_nodes/packs/pack.gd" id="1_ywne2"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxgfy"]
+bg_color = Color(0, 0, 0, 1)
+
 [node name="Pack" type="Control"]
+custom_minimum_size = Vector2(200, 300)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_ywne2")
@@ -12,10 +16,32 @@ layout_mode = 0
 offset_right = 200.0
 offset_bottom = 300.0
 
-[node name="PackName" type="Label" parent="Background"]
+[node name="TextureRect" type="TextureRect" parent="Background"]
+layout_mode = 0
+offset_left = 2.0
+offset_right = 200.0
+offset_bottom = 303.0
+
+[node name="PackName" type="Label" parent="Background/TextureRect"]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 134.0
 offset_right = 197.0
 offset_bottom = 174.0
 metadata/_edit_lock_ = true
+
+[node name="Price" type="Label" parent="Background/TextureRect"]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 227.0
+offset_right = 192.0
+offset_bottom = 294.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+
+[node name="full_screen_panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxgfy")

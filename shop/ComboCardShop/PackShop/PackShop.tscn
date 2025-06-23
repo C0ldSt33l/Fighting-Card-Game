@@ -1,17 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://bm1la1g05stsh"]
+[gd_scene load_steps=2 format=3 uid="uid://br7h2srkehddb"]
 
-[ext_resource type="Script" path="res://shop/ComboCardShop/combo_card_shop.gd" id="1_1tmp3"]
+[ext_resource type="Script" path="res://shop/ComboCardShop/PackShop/pack_shop.gd" id="1_w4r05"]
 
-[node name="ComboCardShop" type="Node2D"]
-script = ExtResource("1_1tmp3")
+[node name="PackShop" type="Node2D"]
+script = ExtResource("1_w4r05")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Background" type="Panel" parent="."]
+z_index = -10
 offset_left = 80.0
 offset_top = 96.0
 offset_right = 1103.0
 offset_bottom = 596.0
 
-[node name="Button" type="Button" parent="Panel"]
+[node name="Button" type="Button" parent="Background"]
 layout_mode = 0
 offset_left = 927.0
 offset_top = 416.0
@@ -20,35 +21,25 @@ offset_bottom = 476.0
 text = "Обновить
 за 1💲"
 
-[node name="Button2" type="Button" parent="Panel"]
+[node name="Button2" type="Button" parent="Background"]
 layout_mode = 0
 offset_left = 823.0
 offset_top = 421.0
 offset_right = 920.0
 offset_bottom = 470.0
 
-[node name="Price" type="Label" parent="Panel/Button2"]
+[node name="Price" type="Label" parent="Background/Button2"]
 layout_mode = 0
 offset_right = 96.0
 offset_bottom = 33.0
 metadata/_edit_lock_ = true
 
-[node name="Label" type="Label" parent="Panel"]
+[node name="Money" type="Label" parent="Background"]
 layout_mode = 0
 offset_left = -58.0
 offset_top = -82.0
 offset_right = 38.0
 offset_bottom = -50.0
-
-[node name="open_pack_shop" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 823.0
-offset_top = 342.0
-offset_right = 1015.0
-offset_bottom = 411.0
-text = "Магазин Паков"
-
-[node name="hide_price_timer" type="Timer" parent="."]
 
 [node name="Invetory btn" type="Button" parent="."]
 offset_left = 1120.0
@@ -66,8 +57,7 @@ offset_bottom = 78.0
 theme_override_font_sizes/font_size = 30
 text = "Выход"
 
-[connection signal="pressed" from="Panel/Button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="Panel/Button2" to="." method="_on_button_2_pressed"]
-[connection signal="pressed" from="Panel/open_pack_shop" to="." method="_on_pack_shop_button"]
+[connection signal="pressed" from="Background/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Background/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="Invetory btn" to="." method="_on_inventory_button"]
 [connection signal="pressed" from="Exit btn" to="." method="_on_exit_button"]

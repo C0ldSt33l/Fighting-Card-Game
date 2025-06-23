@@ -27,7 +27,7 @@ var Meta_func : Callable = func (): pass
 func _ready():
 	name_label.text = name_text
 	description_label.text = description
-	Price.text = str(price)
+	Price.text = str(price) + "💎"
 	Meta_func = MetaSkills[Meta_func_name]
 	create_port()
 

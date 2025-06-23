@@ -15,7 +15,8 @@ enum SCENE {
 	SHOP_MAIN,
 	SHOP_POWER_UPS,
 	SHOP_ITEMS,
-
+	SHOP_PACK,
+  
 	INVENTORY,
 
 	RUN_RESULT,
@@ -24,20 +25,19 @@ enum SCENE {
 var __all_scenes: Dictionary = {
 	SCENE.MAIN_MENU: preload("res://main_menu/main_menu.tscn").instantiate(),
 	SCENE.SETTINGS_MENU: preload("res://main_menu/settings_menu.tscn").instantiate(),
-	#TODO: replace meta-proggression scene
 	SCENE.META_PROGGRESSION: preload("res://Meta/Meta.tscn"),
 
 	SCENE.LOADING: preload("res://loading scene/loading_scene.tscn").instantiate(),
 
 	SCENE.CHOOSE_ENEMY: preload("res://choose enemy/choose_enemy.tscn").instantiate(),
 	SCENE.BATTLE: preload("res://battle/battle_scene.tscn").instantiate(),
-	#TODO: replace battle reward scene
 	SCENE.BATTLE_REWARD: preload("res://assets/tmp enemy/orc.png"),
 
 	SCENE.SHOP_MAIN: preload("res://shop/shop.tscn").instantiate(),
 	SCENE.SHOP_POWER_UPS: preload("res://shop/powerUpShop/PowerUpShop.tscn").instantiate(),
 	SCENE.SHOP_ITEMS: preload("res://shop/ComboCardShop/ComboCardShop.tscn").instantiate(),
-
+	SCENE.SHOP_PACK: preload("res://shop/ComboCardShop/PackShop/PackShop.tscn").instantiate(),
+  
 	SCENE.INVENTORY: preload("res://Inventory/Inventory.tscn").instantiate(),
 
 	#TODO: replace run result scene

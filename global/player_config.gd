@@ -4,8 +4,6 @@ extends Node
 
 var total_time_in_secs : int = 0
 
-
-
 var upgrade_money: int
 var hand_money: int
 var battle_money: int
@@ -36,6 +34,8 @@ var reroll_count: int :
 	get(): return self.main_reroll_count + self.extra_reroll_count
 
 var enemy_data: EnemyData = null
+
+var can_upgrade : bool 
 
 func _ready() -> void:
 	pass

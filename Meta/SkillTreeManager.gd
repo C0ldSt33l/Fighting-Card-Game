@@ -1,7 +1,7 @@
 extends Control
 
 @export var nodes: Array[SkillNode] = []
-var money: int = 1000
+
 
 func _ready():
 	Events.skill_tree_scene_opened.connect(try_take_tree)
@@ -24,22 +24,21 @@ func try_upgrade_node(node: SkillNode):
 		try_unlock_node(node)
 
 func try_unlock_node(node: SkillNode):
-	if money >= node.price and (node.has_unlocked_parent() or node.is_start_node):
-		money -= node.price
+	if PlayerConfig.upgrade_money >= node.price and (node.has_unlocked_parent() or node.is_start_node):
+		PlayerConfig.upgrade_money -= node.price
 		unlock_node(node)
 		node.on_unlocked()
-		print("Узел разблокирован! Осталось денег: ", money)
+		print("Узел разблокирован! Осталось денег: ", PlayerConfig.upgrade_money)
 			
 func try_to_lock(node: SkillNode):
-		money += node.price
+		PlayerConfig.upgrade_money += node.price
 		lock_node(node)
 		node.on_locked()
 
 func try_take_tree(StartNode : SkillNode):
 	_collect_nodes_recursive(StartNode, nodes)
-	print("tree is taked")
-	for i in nodes:
-		print(i.name_text)
+	Save_Manager.load_game_meta()
+	load_skill_tree(Save_Manager.nodes)
 	pass
 
 func _collect_nodes_recursive(current_node: SkillNode, collected_nodes: Array) -> void:
@@ -49,16 +48,15 @@ func _collect_nodes_recursive(current_node: SkillNode, collected_nodes: Array) -
 	for child in current_node.child_nodes:
 		_collect_nodes_recursive(child, collected_nodes)
 
-func load_node_data():
-	pass
 
 func get_all_nodes_save_data() -> void:
 	var save_data = []
 	for node in nodes:
 		if !Save_Manager.nodes.has(node):
 			save_data.append(node.get_save_data())
-	Save_Manager.nodes = save_data 
+	Save_Manager.nodes.append_array(save_data)  
 	print(Save_Manager.nodes)
+	Save_Manager.save_game_meta()
 
 func load_skill_tree(data: Array):
 	if data != null:
