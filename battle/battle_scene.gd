@@ -10,8 +10,9 @@ extends Control
 @onready var timer: Timer = $Timer as Timer
 @onready var start_button: Button = $"Start button" as Button
 
-#TODO: add another enemy props and init it in `_ready()`
-@onready var required_score: int = 2
+@onready var enemy_hp: int :
+	set(val): self.enemy.health = val
+	get(): return self.enemy.health
 
 @onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
 @onready var hand: Hand = $Hand as Hand
@@ -68,6 +69,7 @@ var last_combo: FullComboView :
 
 var earned_money: int = 0
 
+
 var effects: Array[Effect] = []
 var used_effects: Array[Effect]= []
 
@@ -79,6 +81,27 @@ signal next_card_key_pressed
 
 
 func _ready() -> void:
+
+
+	# Events.drag_completed.connect(
+	# 	func (f, s):
+	# 		print('-----------------')
+	# 		for p: CardPlace in self.table.card_places_container.get_children():
+	# 			print('c: ', p.card)
+	# 			print('d: ', p.panel.held_data)
+	# 			print()
+	# )
+	self._init_components()
+
+
+	print('EMEMY SCORE: ', self.enemy_hp)
+
+	Game.battle = self
+	Events.battle_started.emit()
+
+
+# TODO: init hand, table, totem segment and comsumable segment
+func _init_components() -> void:
 	Events.connect_events({
 		battle_started = self.start_round_preparation,
 		battle_ended = self.on_battle_ended,
@@ -95,34 +118,27 @@ func _ready() -> void:
 		combo_ended = self.on_combo_ended,
 		combo_exit = self.on_combo_exit,
 	})
+	self._init_enemy()
+	self._init_table()
+	self._init_hand()
+	self._init_totem_segment()
 
-	# Events.drag_completed.connect(
-	# 	func (f, s):
-	# 		print('-----------------')
-	# 		for p: CardPlace in self.table.card_places_container.get_children():
-	# 			print('c: ', p.card)
-	# 			print('d: ', p.panel.held_data)
-	# 			print()
-	# )
+func _init_enemy() -> void:
+	var ed := PlayerConfig.enemy_data
+	self.enemy.health = ed.required_score
+	self.enemy.enemy_name = ed.name
+	self.enemy.image = ed.image
+	self.max_round_count = PlayerConfig.round_count
+	self.rest_round_count = self.enemy.max_round_count
 
-	#TODO: move init seg in separate func
+func _init_table() -> void:
+	self.table.setup(6)
+
+func _init_hand() -> void:
+	self.reroll_count = PlayerConfig.reroll_count
 	self.reroll_btn.pressed.connect(self.reroll)
-	# TODO: add this props in player config
-	self.reroll_count = 4
-	self.enemy.max_round_count = 2
-	self.rest_round_count = 2
-	self.enemy.health = 500
 
-	self.score_counter.reset()
-
-	print('EMEMY SCORE: ', self.required_score)
-
-	Game.battle = self
-	Events.battle_started.emit()
-
-
-# TODO: init hand, table, totem segment and comsumable segment
-func __init_components() -> void:
+func _init_totem_segment() -> void:
 	pass
 
 
@@ -136,7 +152,8 @@ func _on_inventory_button() -> void:
 
 
 func start_round_preparation() -> void:
-	print('ENEMY HP: ', self.required_score)
+	self.score_counter.reset()
+	print('ENEMY HP: ', self.enemy_hp)
 	self.start_button.disabled = false
 	Events.round_preparation_started.emit()
 
@@ -163,6 +180,7 @@ func process_round() -> void:
 		print('card index: ', self.cur_card.index)
 		print('cards on table: ', self.cards_on_table.size())
 
+		#TODO: remove manual card playing
 		await self.play_card(self.cur_card, self.cur_combo)
 
 		if card_cursor.index == self.cards_on_table.size():

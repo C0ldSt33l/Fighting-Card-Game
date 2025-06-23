@@ -52,6 +52,7 @@ func _ready() -> void:
 	__tree_root = get_tree().root
 	var nodes: Array[Node] = __tree_root.get_children()
 	__scene_stack.push_back(nodes.back())
+	await nodes.back().ready
 	print_debug('Scene stack at game run:\n', self.__scene_stack)
 	
 func _exit_tree() -> void:

@@ -24,7 +24,13 @@ var CARD_PLACE_TEMPLATE: CardPlace = preload("res://battle/ui/table/card place/c
 var COMBO_PLACE_TEMPLATE: ComboPlace = preload("res://battle/ui/table/combo place/combo_place.tscn").instantiate() as ComboPlace
 
 
-func _ready() -> void:
+# func _ready() -> void:
+# 	self.__setup_card_places()
+# 	self.__setup_combo_places()
+
+
+func setup(card_place_count: int) -> void:
+	self.card_place_count = card_place_count
 	self.__setup_card_places()
 	self.__setup_combo_places()
 

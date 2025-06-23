@@ -9,6 +9,11 @@ var health: int = -1 :
 	set = set_health
 var enemy_name: String = 'Nobody' :
 	set = set_enemy_name
+var image: Texture2D :
+	set(val):
+		self.texture_rect.texture = val
+	get():
+		return self.texture_rect.texture
 var constraints: String = 'Empty':
 	set = set_constraints
 var max_round_count: int
