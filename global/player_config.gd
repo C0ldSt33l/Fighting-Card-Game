@@ -8,6 +8,7 @@ var total_time_in_secs : int = 0
 
 var upgrade_money: int
 var hand_money: int
+var battle_money: int
 
 var player_available_combos: Array
 var player_available_cards: Array

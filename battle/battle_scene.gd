@@ -504,6 +504,7 @@ func on_effect_activated(e: Effect) -> void: pass
 func on_battle_ended() -> void:
 	print('BATTLE IS ENDED')
 	self.earned_money += 6 + self.rest_round_count
+	PlayerConfig.battle_money = self.earned_money
 	PlayerConfig.hand_money += self.earned_money
 	PlayerConfig.upgrade_money += 1
 	PlayerConfig.enemy_data = null
