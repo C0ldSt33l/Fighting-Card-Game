@@ -5,6 +5,10 @@
 [node name="BattleRevard" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+offset_left = 415.0
+offset_top = 79.0
+offset_right = 415.0
+offset_bottom = 79.0
 script = ExtResource("1_h77rn")
 
 [node name="Panel" type="Panel" parent="."]

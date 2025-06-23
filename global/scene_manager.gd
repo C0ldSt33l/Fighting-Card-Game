@@ -30,9 +30,7 @@ var __all_scenes := [
 	
 	preload("res://choose enemy/choose_enemy.tscn").instantiate(),
 	preload("res://battle/battle_scene.tscn").instantiate(),
-	#TODO: replace battle reward scene
-	preload("res://assets/tmp enemy/enemy.jpg"),
-
+	preload("res://Control_nodes/battle reward/battle_revard.tscn").instantiate(),
 
 	preload("res://shop/shop.tscn").instantiate(),
 	preload("res://shop/powerUpShop/PowerUpShop.tscn").instantiate(),
