@@ -5,7 +5,7 @@ extends Node
 @export var mode: String = "load"
 
 const SAVE_PATH = "user://saves/"
-
+const SAVE_PATH_META = "user://saves/meta.json"
 var cards = []
 var combos = []
 var totems = []
@@ -16,7 +16,10 @@ var data = {
 	"Cards":cards,
 	"Combo":combos,
 	"Totem":totems,
-	"Nodes":nodes,
+}
+
+var Meta_data = {
+	"Nodes":nodes
 }
 
 func _ready() -> void:
@@ -40,6 +43,35 @@ func save_game(name: String):
 	file.close()
 	print("Game saved successfully to ", file_path)
 
+func save_game_meta():
+	var file_path = SAVE_PATH_META
+	var json_string = JSON.stringify(Meta_data, "  ")  
+	var file = FileAccess.open(file_path, FileAccess.WRITE)
+	if not file:
+		push_error("Failed to save game: Could not open file for writing at %s" % file_path)
+		return
+	file.store_string(json_string)
+	file.close()
+	print("Game meta saved successfully to ", file_path)
+
+func load_game_meta():
+	var file_path = SAVE_PATH_META
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	if not file or not file.file_exists(file_path):
+		push_error("File does not exist: %s" % file_path)
+		return {}
+
+	var json_data = file.get_as_text()
+	var json_parser = JSON.new()
+	var parse_result = json_parser.parse(json_data)
+	file.close()
+	if !parse_result == OK:
+		push_error("Ошибка парсинга JSON: " + parse_result.error_string)
+		return {}
+	var result = json_parser.get_data() as Dictionary
+	nodes = result.get("Nodes",[])
+	
+	
 # Загрузить данные
 func load_game(name: String) -> Dictionary:
 	var file_path = SAVE_PATH + name + ".json"
@@ -62,7 +94,6 @@ func load_game(name: String) -> Dictionary:
 	PlayerConfig.hand_money = result.get("Money", PlayerConfig.hand_money)
 	PlayerConfig.player_available_cards = result.get("Cards", [])
 	PlayerConfig.player_available_combos = result.get("Combo", [])
-	PlayerConfig.player_available_totems = result.get("Totem", [])
 	Events.emit_signal("player_data_loaded") 
 	print("Game loaded successfully from ", file_path)
 	return result

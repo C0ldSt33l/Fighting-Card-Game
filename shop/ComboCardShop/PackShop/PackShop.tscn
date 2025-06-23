@@ -21,6 +21,7 @@ offset_bottom = 476.0
 text = "Обновить"
 
 [node name="Button2" type="Button" parent="Background"]
+layout_mode = 0
 offset_left = 823.0
 offset_top = 421.0
 offset_right = 920.0

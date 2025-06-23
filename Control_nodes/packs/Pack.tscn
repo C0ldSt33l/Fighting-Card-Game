@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8cbe1pkytka5"]
+[gd_scene load_steps=3 format=3 uid="uid://c8cbe1pkytka5"]
 
 [ext_resource type="Script" path="res://Control_nodes/packs/pack.gd" id="1_ywne2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxgfy"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="Pack" type="Control"]
 custom_minimum_size = Vector2(200, 300)
@@ -26,3 +29,9 @@ offset_top = 134.0
 offset_right = 197.0
 offset_bottom = 174.0
 metadata/_edit_lock_ = true
+
+[node name="full_screen_panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxgfy")

@@ -11,7 +11,7 @@ var can_open : bool = true
 var data := {}
 var basket : Array = []
 
-var full_screen_panel: Panel
+@onready var full_screen_panel: Panel =  $full_screen_panel
 
 var id: int:
 	set(val): self.set_tag_val('id', val)
@@ -148,10 +148,11 @@ func open_pack()-> void:
 	Background.visible = false
 	var random_objects = []
 	
-	full_screen_panel = Panel.new()
-	add_child(full_screen_panel)
+	full_screen_panel.show()
 	full_screen_panel.size = get_viewport_rect().size
-	full_screen_panel.modulate = Color(0.745098, 0.745098, 0.745098, 1)
+	
+	
+	
 	for i in range(0,15):
 		add_obj(objects[randi() % objects.size()])
 	if head:
@@ -195,6 +196,7 @@ func create_combo(ComboInfo: Dictionary)->_Combo_:
 
 func _ready() -> void:
 	add_objects()
+	full_screen_panel.hide()
 	var texture = load(self.Picture)
 	if texture and texture is Texture2D:
 		self.Texture_rect.texture = texture
