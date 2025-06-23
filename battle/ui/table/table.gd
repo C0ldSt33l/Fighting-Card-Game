@@ -23,6 +23,8 @@ var combos: Array[FullComboView] :
 var CARD_PLACE_TEMPLATE: CardPlace = preload("res://battle/ui/table/card place/card_place.tscn").instantiate() as CardPlace
 var COMBO_PLACE_TEMPLATE: ComboPlace = preload("res://battle/ui/table/combo place/combo_place.tscn").instantiate() as ComboPlace
 
+var first_place_idx: int = 0
+var last_place_idx: int 
 
 # func _ready() -> void:
 # 	self.__setup_card_places()
@@ -47,10 +49,11 @@ func __setup_card_places() -> void:
 
 func __setup_combo_places() -> void:
 	self.__setup_combo_place_container()
-	var combo_idxs: Array[float] = [0]
-	for i in range(1, self.card_place_count):
-		combo_idxs.append(i - 0.5)
+	var combo_idxs: Array[int]
+	for i in range(0, self.card_place_count * 2 - 1):
 		combo_idxs.append(i)
+	self.last_place_idx = combo_idxs[-1]
+	print('COMBO PLACE IDXS: ', combo_idxs)
 
 	for idx in combo_idxs:
 		Utils.Factory.create_with_binding(

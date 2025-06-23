@@ -33,15 +33,49 @@ enum ENERGY {
 
 var index: int = -1
 
-@export var card_name: String
-@export var description: String
+@export var card_name: String :
+	set(val):
+		card_name = val
+		self.set_tag_val('name', val)
+@export var description: String :
+	set(val):
+		description = val
+		self.set_tag_val('description', val)
+	# get(): return  self.get_tag_val('description')
 
-@export var point: int
-@export var factor: int
-@export var _material: M.MATERIAL
-@export var body_part: BODY_PART
-@export var direction: DIRECTION
-@export var rarity: RARITY
+@export var point: int :
+	set(val):
+		point = val
+		self.set_tag_val('point', val)
+	# get(): return  self.get_tag_val('point')
+@export var factor: int :
+	set(val):
+		factor = val
+		self.set_tag_val('factor', val)
+	# get(): return  self.get_tag_val('factor')
+
+@export var body_part: BODY_PART :
+	set(val):
+		body_part = val
+		self.set_tag_val('body part', val)
+	# get(): return  self.get_tag_val('body part')
+@export var direction: DIRECTION :
+	set(val):
+		direction = val
+		self.set_tag_val('description', val)
+	# get(): return  self.get_tag_val('description')
+
+@export var _material: M.MATERIAL :
+	set(val):
+		_material = val
+		self.set_tag_val('material', val)
+	# get(): return  self.get_tag_val('material')
+@export var rarity: RARITY :
+	set(val):
+		rarity = val
+		self.set_tag_val('rarity', val)
+	# get(): return  self.get_tag_val('rarity')
+
 
 #Tags:
 # - card_name
@@ -98,20 +132,21 @@ func play() -> void:
 
 
 func add_tags(new_tags: Dictionary) -> void:
-	self.tags.merge(new_tags, true)
+	for tag in new_tags:
+		self.set_tag_val(tag.to_lower(), new_tags[tag])
 
 
 func has_tag(tag: String) -> bool:
-	return self.tags.keys().has(tag)
+	return self.tags.keys().has(tag.to_lower())
 
 
 func get_tag_val(tag: String) -> Variant:
-	return self.tags[tag] if self.has_tag(tag) else null
+	return self.tags[tag.to_lower()] if self.has_tag(tag) else null
 
 
 func set_tag_val(tag: String, val: Variant) -> void:
 	Events.obj_prop_changed.emit(self, tag, self.get_tag_val(tag), val)
-	self.tags[tag] = val
+	self.tags[tag.to_lower()] = val
 
 
 func set_name_label_text(text: String) -> void:

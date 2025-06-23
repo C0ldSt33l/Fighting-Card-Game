@@ -31,6 +31,7 @@ var last_card: Card :
 
 
 var effects: Array[Effect]
+var tags: Array[Dictionary]
 
 
 func _init(
@@ -59,3 +60,22 @@ func _init(
 	self.effects = effectrs
 	
 	self.cards = cards
+
+func check_cards(cards: Array[Card]) -> bool:
+	print('COMBO PATTERN in data: ', self.pattern)
+	print('cards: ', cards.size())
+	print('lenght: ', self.length)
+	print('pattern size: ', self.pattern.size())
+	if cards.size() != self.length:
+		return false
+	
+	for i in len(cards):
+		var c := cards[i]
+		var t := self.pattern[i]
+		var tn: String = t.keys()[0]
+		var tv = t.values()[0]
+		print('TAG: ', t)
+		if not c.has_tag(tn) or c.get_tag_val(tn) != tv:
+			return false
+	
+	return true

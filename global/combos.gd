@@ -12,8 +12,8 @@ const COMBOS := {
 			'factor': 2,
 		},
 		'pattern': [
-			{ 'card_name': 'kick' },
-			{ 'body_part': Card.BODY_PART.LEG },
+			{ 'body part': Card.BODY_PART.LEG },
+			{ 'body part': Card.BODY_PART.HAND },
 		],
 		'effect': 'Multiplying'
 	},
@@ -26,9 +26,9 @@ const COMBOS := {
 			'factor': 2,
 		},
 		'pattern': [
-			{ 'card_name': 'fist' },
-			{ 'card_name': 'knee strike' },
-			{ 'card_name': 'elbow' },
+			{ 'name': 'fist' },
+			{ 'name': 'knee strike' },
+			{ 'name': 'elbow' },
 		],
 		'effect': 'Card enchancment'
 	},
@@ -41,7 +41,8 @@ const COMBOS := {
 			'factor': 1,
 		},
 		'pattern': [
-			{ 'body_part': Card.BODY_PART.HAND },
+			{ 'name': 'kick' },
+			# { 'body part': Card.BODY_PART.HAND },
 		],
 		'effect': 'First strike'
 	},
