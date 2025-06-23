@@ -381,7 +381,9 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 		match e.target_type:
 			TYPE.SELF_CARD, TYPE.SELF_COMBO:
 				effects.append(e.set_target(e.caster))
-
+			TYPE.CARD:
+				for c in self.table.cards:
+					effects.append(e.set_target(c))
 			TYPE.NEXT_CARD:
 				var i: int = e.caster.index + 1
 				if (i < self.cards_on_table.size()):

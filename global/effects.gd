@@ -47,7 +47,7 @@ var EFFECTS := {
 		'First strike',
 		'Multiply points and multiplier of first card by %i and %i respectively',
 		Effect.ACTIVATION_TIME.ROUND_START,
-		Effect.RESET_TIME.CARD, # maybe per round?
+		Effect.RESET_TIME.ROUND, # maybe per round?
 		card_mult_card_points_and_mult,
 		Effect.TYPE.BUFF,
 		Effect.TARGET_TYPE.FIRST_CARD,
