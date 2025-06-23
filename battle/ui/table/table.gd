@@ -80,7 +80,7 @@ func get_cards() -> Array[Card]:
 	var cards: Array[Card]
 	for p in self.card_places:
 		var c := p.card
-		if c:
+		if c != null:
 			cards.append(c)
 	return cards
 
