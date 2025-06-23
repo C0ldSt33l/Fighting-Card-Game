@@ -13,10 +13,15 @@ var nodes = []
 
 var data = {
 	"Money":PlayerConfig.hand_money,
+	"main_reroll_count" : PlayerConfig.main_reroll_count,
+	"extra_reroll_count" : PlayerConfig.extra_reroll_count,
+	"reroll_count" : PlayerConfig.reroll_count,
+	"pack_in_shop" : PlayerConfig.pack_in_shop,
 	"Cards":cards,
 	"Combo":combos,
 	"Totem":totems,
 }
+
 
 var Meta_data = {
 	"Nodes":nodes
@@ -92,6 +97,9 @@ func load_game(name: String) -> Dictionary:
 	var result = json_parser.get_data() as Dictionary
 
 	PlayerConfig.hand_money = result.get("Money", PlayerConfig.hand_money)
+	PlayerConfig.reroll_count = result.get("reroll_count",PlayerConfig.reroll_count)
+	PlayerConfig.pack_in_shop = result.get("pack_in_shop", PlayerConfig.pack_in_shop)
+	PlayerConfig.extra_reroll_count = result.get("extra_reroll_count", PlayerConfig.extra_reroll_count)
 	PlayerConfig.player_available_cards = result.get("Cards", [])
 	PlayerConfig.player_available_combos = result.get("Combo", [])
 	Events.emit_signal("player_data_loaded") 
