@@ -3,6 +3,7 @@ class_name Pack
 @onready var Background : Panel = $Background
 @onready var Texture_rect : TextureRect = $Background/TextureRect
 @onready var PackName : Label = $Background/TextureRect/PackName
+@onready var PriceLable : Label = $Background/TextureRect/Price
 const MAX_DISPLAYED_CARDS : int = 5
 var count_selected_obj : int = 5
 var objects : Array = []
@@ -198,6 +199,8 @@ func _ready() -> void:
 	add_objects()
 	full_screen_panel.hide()
 	var texture = load(self.Picture)
+	PriceLable.text = str(Price) + "💲"
+	PriceLable.hide()
 	if texture and texture is Texture2D:
 		self.Texture_rect.texture = texture
 		self.Texture_rect.ExpandMode.EXPAND_IGNORE_SIZE

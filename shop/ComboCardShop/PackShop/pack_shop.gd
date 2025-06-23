@@ -21,7 +21,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	Money.text = str(PlayerConfig.hand_money)
+	Money.text = str(PlayerConfig.hand_money) + "💲"
 	pass
 
 func _input(event: InputEvent) -> void:
@@ -73,6 +73,7 @@ func spawn_pack(PackInfo : Dictionary, pos: Vector2)-> void:
 			5, false
 	)
 	pack.position = pos
+	pack.PriceLable.show()
 	objects.append(pack)
 
 func arrange_objects(objects: Array, padding_min: int = 20, max_scale: float = 1):

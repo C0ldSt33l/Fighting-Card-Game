@@ -30,7 +30,7 @@ var total_price = 0
 
 func _ready() -> void:
 	LabelMoney = get_node("Panel/Label")
-	LabelMoney.text = str(money)
+	LabelMoney.text = "💲" + str(money)
 	Hide_price_timer = get_node("hide_price_timer")
 	PriceButton = get_node("Panel/Button2")	
 	Price = get_node("Panel/Button2/Price")
@@ -63,7 +63,7 @@ func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
-	LabelMoney.text = str(money)
+	LabelMoney.text ="💲" + str(money)
 	pass
 
 func _input(event: InputEvent) -> void:
@@ -160,7 +160,7 @@ func update_total_price():
 		total_price+=obj.Price
 	if total_price == 0:
 		Price.visible = false
-	Price.text = "Total price = %s" % str(total_price)
+	Price.text = "Total price = %s" % str(total_price)+"💲"
 
 func create_panel_with_text(card:BaseCard)->void:
 	if InfoPanel:

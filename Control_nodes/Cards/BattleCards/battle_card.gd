@@ -29,7 +29,7 @@ func _ready() -> void:
 	Events.drag_completed.connect(get_upgrade)
 	Background.check = func(data):return true
 	price.visible = false
-	price.text = str(Price)
+	price.text = "💲" +str(Price)
 	pass # Replace with function body.
 
 func get_upgrade(c: BaseCard,where:BattleCard) -> void:

@@ -24,12 +24,10 @@ enum SCENE {
 var __all_scenes := [
 	preload("res://main_menu/main_menu.tscn").instantiate(),
 	preload("res://main_menu/settings_menu.tscn").instantiate(),
-	preload("res://Meta/Meta.tscn"),
-	#TODO: replace meta-proggression scene
-	preload("res://assets/tmp enemy/enemy.jpg"),
+	preload("res://Meta/Meta.tscn").instantiate(),
 
 	preload("res://loading scene/loading_scene.tscn").instantiate(),
-
+	
 	preload("res://choose enemy/choose_enemy.tscn").instantiate(),
 	preload("res://battle/battle_scene.tscn").instantiate(),
 	#TODO: replace battle reward scene
