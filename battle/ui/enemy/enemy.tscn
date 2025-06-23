@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://p70ubt2ha7qf"]
+
+[ext_resource type="Texture2D" uid="uid://bp7138i04vljk" path="res://assets/tmp enemy/orc.png" id="1_gm50c"]
+[ext_resource type="Script" path="res://battle/ui/enemy/enemy.gd" id="1_j4fns"]
+[ext_resource type="PackedScene" uid="uid://fqvapcc1jshx" path="res://battle/ui/enemy/enemy info/enemy_info.tscn" id="1_ygxty"]
+[ext_resource type="PackedScene" uid="uid://ctc5bxe2fe7de" path="res://battle/ui/enemy/enemy health/enemy_health.tscn" id="3_mxhue"]
+
+[node name="Enemy" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_j4fns")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_gm50c")
+
+[node name="Enemy health" parent="." instance=ExtResource("3_mxhue")]
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 256.0
+offset_right = 496.0
+offset_bottom = 70.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="Enemy info" parent="." instance=ExtResource("1_ygxty")]
+offset_left = 256.0
+offset_top = 80.0
+offset_right = 496.0
+offset_bottom = 380.0

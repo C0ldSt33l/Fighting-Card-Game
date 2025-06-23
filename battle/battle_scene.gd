@@ -1,15 +1,21 @@
 class_name BattleScene
 extends Control
 
+@onready var player: TextureRect = $player
+@onready var score_counter: ScoreCounter = $"Score counter"
+
+@onready var totem_segment: TotemSegment = $"Totem segment"
 
 @onready var timer: Timer = $Timer as Timer
 @onready var start_button: Button = $"Start button" as Button
 
-@onready var counter: Counter = $Counter as Counter
-#TODO: add another enemy props and init it in `_ready()`
-@onready var required_score: int = 2
+@onready var enemy: Enemy = $Enemy
+@onready var enemy_hp: int :
+	set(val): self.enemy.health = val
+	get(): return self.enemy.health
 
-@onready var deck_dict: Array[Dictionary] = Sql.select_battle_cards()
+var deck: Array[Card]
+var discord_deck: Array[Card]
 @onready var hand: Hand = $Hand as Hand
 @onready var table: Table = $Table as Table
 
@@ -25,29 +31,34 @@ var first_card: Card :
 	get(): return self.cards_on_table[0] if self.cards_on_table.size() > 0 else null
 var last_card: Card :
 	get(): return self.cards_on_table[-1] if self.cards_on_table.size() > 0 else null
-var played_cards: Array[Card] = []
 
 var COMBO_TEMPLATE: SimpleComboView = preload("res://battle/combo/simple_view/simple_combo_view.tscn").instantiate()
 var available_combos: Dictionary = Combos.COMBOS
-var combos_on_table: Array[ComboData] :
+var combos_on_table: Array[FullComboView] :
 	get():
-		var a: Array[ComboData]
-		a.assign(self.table.combos.map(func (c: FullComboView): return c.get_combo_data()))
+		var a: Array[FullComboView]
+		a.assign(self.table.combos)
 		return a
 var combo_cursor: Cursor = Cursor.new(Cursor.TYPE.COMBOS)
-var cur_combo: ComboData :
+var cur_combo: FullComboView :
 	get(): return self.combos_on_table[self.combo_cursor.index] if self.combo_cursor.index < self.combos_on_table.size() else null
-var first_combo: ComboData :
+var first_combo: FullComboView :
 	get(): return self.combos_on_table[0] if self.combos_on_table.size() > 0 else null
-var last_combo: ComboData :
+var last_combo: FullComboView :
 	get(): return self.combos_on_table[-1] if self.combos_on_table.size() > 0 else null
 
-@onready var round_counter: Label = $"Round counter" as Label
 # TODO: move in player config
-@onready var round_count: int = 2 :
+@onready var max_round_count: int :
 	set(val):
-		round_count = val
-		self.round_counter.text = str(val)
+		self.enemy.max_round_count = val
+	get():
+		return self.enemy.max_round_count
+@onready var rest_round_count: int :
+	set(val):
+		self.enemy.rest_round_count = val
+	get():
+		return self.enemy.rest_round_count
+
 @onready var reroll_btn: Button = (self.hand as Hand).reroll_btn
 @onready var reroll_count: int = 4 :
 	set(val):
@@ -57,6 +68,7 @@ var last_combo: ComboData :
 			self.reroll_btn.disabled = true
 
 var earned_money: int = 0
+
 
 var effects: Array[Effect] = []
 var used_effects: Array[Effect]= []
@@ -69,6 +81,27 @@ signal next_card_key_pressed
 
 
 func _ready() -> void:
+
+
+	# Events.drag_completed.connect(
+	# 	func (f, s):
+	# 		print('-----------------')
+	# 		for p: CardPlace in self.table.card_places_container.get_children():
+	# 			print('c: ', p.card)
+	# 			print('d: ', p.panel.held_data)
+	# 			print()
+	# )
+	self._init_components()
+
+
+	print('EMEMY SCORE: ', self.enemy_hp)
+
+	Game.battle = self
+	Events.battle_started.emit()
+
+
+# TODO: init hand, table, totem segment and comsumable segment
+func _init_components() -> void:
 	Events.connect_events({
 		battle_started = self.start_round_preparation,
 		battle_ended = self.on_battle_ended,
@@ -85,30 +118,42 @@ func _ready() -> void:
 		combo_ended = self.on_combo_ended,
 		combo_exit = self.on_combo_exit,
 	})
+	self._init_enemy()
+	self._init_deck()
+	self._init_table()
+	self._init_hand()
+	self._init_totem_segment()
 
-	# Events.drag_completed.connect(
-	# 	func (f, s):
-	# 		print('-----------------')
-	# 		for p: CardPlace in self.table.card_places_container.get_children():
-	# 			print('c: ', p.card)
-	# 			print('d: ', p.panel.held_data)
-	# 			print()
-	# )
+func _init_enemy() -> void:
+	var ed := PlayerConfig.enemy_data
+	self.enemy.health = ed.required_score
+	self.enemy.enemy_name = ed.name
+	self.enemy.image = ed.image
+	self.max_round_count = PlayerConfig.round_count
+	self.rest_round_count = self.enemy.max_round_count
 
-	#TODO: move init seg in separate func
+func _init_deck() -> void:
+	var materials := M.MATERIAL.values()
+	self.deck.assign(Sql.select_battle_cards().map(
+		func (conf: Dictionary) -> Card:
+			return Utils.Factory.create(
+				CARD_TEMPLATE,
+				func (c: Card) -> void:
+					c.set_main_props(conf)
+					c._material = materials[randi_range(0, materials.size() - 1)]
+					# c.point = randi_range(1, 9)
+			)
+	)
+	)
+
+func _init_table() -> void:
+	self.table.setup(6)
+
+func _init_hand() -> void:
+	self.reroll_count = PlayerConfig.reroll_count
 	self.reroll_btn.pressed.connect(self.reroll)
-	# TODO: add this props in player config
-	self.reroll_count = 4
-	self.round_count = 2
 
-	print('EMEMY SCORE: ', self.required_score)
-
-	Game.battle = self
-	Events.battle_started.emit()
-
-
-# TODO: init hand, table, totem segment and comsumable segment
-func __init_components() -> void:
+func _init_totem_segment() -> void:
 	pass
 
 
@@ -122,22 +167,21 @@ func _on_inventory_button() -> void:
 
 
 func start_round_preparation() -> void:
-	print('ENEMY HP: ', self.required_score)
+	self.score_counter.reset()
+	print('ENEMY HP: ', self.enemy_hp)
 	self.start_button.disabled = false
-	self.counter.show_score_panel()
 	Events.round_preparation_started.emit()
 
 	var hand_size := PlayerConfig.hand_size - self.hand.card_count
-	var confs := self.get_hand_configs(hand_size)
-	for i in len(confs):
-		var c := confs[i]
+	var cards := self.get_hand_configs(hand_size)
+	for c in cards:
 		self.spawn_card(c)
 
-	var i := 0
 	for combo_name in self.available_combos:
-		#if i == 0: continue
+		if self.hand.combos.size() >= 3:
+			break
 		self.spawn_combo(combo_name, self.available_combos[combo_name])
-		i += 1
+		# TODO: add used combo array
 	var last_combo := self.hand.combos[-1]
 	
 	# var e := Effects.get_effect('Multiplying')
@@ -150,6 +194,7 @@ func process_round() -> void:
 		print('card index: ', self.cur_card.index)
 		print('cards on table: ', self.cards_on_table.size())
 
+		#TODO: remove manual card playing
 		await self.play_card(self.cur_card, self.cur_combo)
 
 		if card_cursor.index == self.cards_on_table.size():
@@ -164,7 +209,8 @@ func start_round() -> void:
 	self.start_button.disabled = true
 
 	Events.round_started.emit()
-	self.round_count -= 1
+	print('REST ROUND: ', self.rest_round_count)
+	self.rest_round_count -= 1
 	if self.cards_on_table.size() == 0: return
 
 	self.card_cursor.set_size(self.cards_on_table.size())
@@ -178,27 +224,31 @@ func start_round() -> void:
 
 func end_round() -> void:
 	Events.round_exit.emit()
-
-	self.round_counter.text = str(self.round_count)
+	
+	#self.
 	self.timer.stop()
-
-
-	await self.counter.update_round_score()
+	
+	
+	await self.score_counter.update_round_score()
+	self.enemy.health -= self.score_counter.round_score
 	await get_tree().create_timer(1).timeout
-
+	
 	#NOTE: maybe it will await so show reward screen takes time
-	print('POINTS SCORED: ', self.counter.total_score)
-	if self.counter.total_score >= self.required_score:
+	print('ENEMY HP: ', self.enemy.health)
+	if self.enemy.health <= 0:
 		Events.battle_ended.emit()
 		return
-
+	
 	self.combos_on_table.clear()
 
-	var card_names := self.cards_on_table.map(func (c: Card): return c.card_name)
-	self.deck_dict = self.deck_dict.filter(func (conf: Dictionary): return conf.Name not in card_names)
-	self.played_cards.append_array(self.cards_on_table)
+	self.discord_deck.append_array(self.cards_on_table)
 	self.cards_on_table.clear()
-	self.table.remove_cards()
+
+	print('TABLE CARDS: ', self.table.cards)
+	for p in self.table.card_places:
+		print('place has card: ', p.card)
+	self.table.remove_all_combos()
+	self.table.remove_all_cards()
 
 	self.card_cursor.reset()
 	self.combo_cursor.reset()
@@ -206,13 +256,13 @@ func end_round() -> void:
 	self.effects.clear()
 	self.used_effects.clear()
 
-	if self.round_count != 0:
+	if self.rest_round_count > 0:
 		self.start_round_preparation()
 	else:
 		Events.battle_ended.emit()
 		print('battle end')
 
-func play_card(card: Card, combo: ComboData) -> void:
+func play_card(card: Card, combo: FullComboView) -> void:
 	if combo and card == combo.first_card:
 		Events.combo_started.emit(combo)
 
@@ -233,17 +283,17 @@ func play_card(card: Card, combo: ComboData) -> void:
 
 
 
-func spawn_card(conf: Dictionary) -> void:
-	var materials := M.MATERIAL.values()
-	var card := Utils.Factory.create(
-		CARD_TEMPLATE,
-		func (c: Card) -> void:
-			c.set_main_props(conf)
-			c._material = materials[randi_range(0, materials.size() - 1)]
-			c.point = randi_range(1, 9)
-	)
-	self.hand.add_card(card)
-	self.cards_in_hand.append(card)
+func spawn_card(c: Card) -> void:
+	# var materials := M.MATERIAL.values()
+	# var card := Utils.Factory.create(
+	# 	CARD_TEMPLATE,
+	# 	func (c: Card) -> void:
+	# 		c.set_main_props(conf)
+	# 		c._material = materials[randi_range(0, materials.size() - 1)]
+	# 		c.point = randi_range(1, 9)
+	# )
+	self.hand.add_card(c)
+	self.cards_in_hand.append(c)
 
 func spawn_combo(name: String, conf: Dictionary) -> void:
 	var materials := M.MATERIAL.values()
@@ -271,15 +321,22 @@ func reroll() -> void:
 		self.spawn_card(c)
 
 
-func get_hand_configs(size: int) -> Array[Dictionary]:
-	var hand_confs: Array[Dictionary]
-	hand_confs.assign(
-		Utils.get_array_with_uniq_nums(
-			size, self.deck_dict.size() - 1
-		)
-		.map(func (el: int): return self.deck_dict[el])
-	)
-	return hand_confs
+func get_hand_configs(size: int) -> Array[Card]:
+	var cards: Array[Card]
+	cards.resize(size)
+
+	if size > self.deck.size():
+		var i := size - self.deck.size()
+		self.deck.append_array(self.discord_deck.slice(0, i))
+		for _i in i:
+			self.discord_deck.pop_front()
+
+	for i in size:
+		var c: Card = self.deck.pick_random()
+		cards[i] = c
+		self.deck.erase(c)
+
+	return cards
 
 
 func add_effect(e: Effect) -> void:
@@ -364,7 +421,7 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 				effects.append(e.set_target(self.combo_cursor))
 
 			TYPE.SCORE:
-				effects.append(e.set_target(self.counter))
+				effects.append(e.set_target(self.score_counter))
 
 			_:
 				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER: target type: %s' % [str(TYPE.keys()[e.target_type])])
@@ -382,7 +439,7 @@ func on_round_preparation_started() -> void: pass
 func on_round_started() -> void:
 	# TODO: move segment in round preparation segment
 	for c in self.combos_on_table:
-		self.counter.add(c.points, c.factor)
+		self.score_counter.add(c.point, c.factor)
 	
 	self.collect_all_effects()
 	self.activate_filtered_effects(
@@ -422,12 +479,12 @@ func on_card_exit(c: Card) -> void:
 		[c]
 	)
 
-func on_combo_started(c: ComboData) -> void:
+func on_combo_started(c: FullComboView) -> void:
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_ON_COMBO,
 		[Effect.ACTIVATION_TIME.COMBO_START, c]
 	)
-func on_combo_ended(c: ComboData) -> void:
+func on_combo_ended(c: FullComboView) -> void:
 	self.combo_cursor.move_foward()
 
 	self.activate_filtered_effects(
@@ -446,7 +503,10 @@ func on_effect_activated(e: Effect) -> void: pass
 
 func on_battle_ended() -> void:
 	print('BATTLE IS ENDED')
-	self.earned_money += self.round_count
+	self.earned_money += 6 + self.rest_round_count
+	PlayerConfig.battle_money = self.earned_money
+	PlayerConfig.hand_money += self.earned_money
+	PlayerConfig.upgrade_money += 1
 	PlayerConfig.enemy_data = null
 
 	SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c0irvgey5knic"
-path="res://.godot/imported/enemy.jpg-016adf40a2995d49b5416af6faf964f9.ctex"
+uid="uid://bqtiplx7d7p2l"
+path="res://.godot/imported/angel_red_fire.png-e4fc9b6b0f3d65c82d688e715a00daf0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tmp enemy/enemy.jpg"
-dest_files=["res://.godot/imported/enemy.jpg-016adf40a2995d49b5416af6faf964f9.ctex"]
+source_file="res://assets/ui/totem/angel_red_fire.png"
+dest_files=["res://.godot/imported/angel_red_fire.png-e4fc9b6b0f3d65c82d688e715a00daf0.ctex"]
 
 [params]
 
