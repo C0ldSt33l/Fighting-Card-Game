@@ -431,11 +431,12 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 
 
 func collect_all_effects() -> void:
-	for c in self.cards_on_table:
-		self.effects.append_array(self.get_effects_from(c))
+	# for t in self.totem_segment.totems:
+		# self.effects.append_array(self.get_effects_from(t))
 	for c in self.combos_on_table:
 		self.effects.append_array(self.get_effects_from(c))
-
+	for c in self.cards_on_table:
+		self.effects.append_array(self.get_effects_from(c))
 
 func on_round_preparation_started() -> void: pass
 func on_round_started() -> void:
