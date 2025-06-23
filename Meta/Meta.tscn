@@ -14,7 +14,7 @@ offset_bottom = 11.0
 name_text = "Стартовый узел"
 description = "Открывает магазин паков"
 Start_node = true
-price = 2
+price = 1
 child_nodes = [NodePath("../SkillNode2"), NodePath("../SkillNode3")]
 Meta_func_name = "pack_in_shop"
 
@@ -68,6 +68,12 @@ offset_top = 640.0
 offset_right = 203.0
 offset_bottom = 718.0
 text = "Выход в меню"
+
+[node name="Money" type="Label" parent="."]
+offset_left = 1139.0
+offset_top = 4.0
+offset_right = 1276.0
+offset_bottom = 63.0
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 

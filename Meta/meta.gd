@@ -1,5 +1,6 @@
 extends Node2D
 @onready var StartNode : SkillNode = $StartNode
+@onready var MoneyLabel : Label = $Money
 signal scene_is_open
 signal scene_is_close
 
@@ -8,9 +9,11 @@ signal scene_is_close
 func _ready() -> void:
 	Events.skill_tree_scene_opened.emit(StartNode)
 	print("signal is emit with Start node = ",StartNode.name_text)
+	MoneyLabel.text = str(PlayerConfig.upgrade_money) + "💎"
 	pass # Replace with function body.
 
 func _process(delta: float) -> void:
+	MoneyLabel.text = str(PlayerConfig.upgrade_money) + "💎"
 	pass
 	
 func _exit_tree() -> void:

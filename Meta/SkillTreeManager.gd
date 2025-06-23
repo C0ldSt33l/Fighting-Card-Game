@@ -1,7 +1,7 @@
 extends Control
 
 @export var nodes: Array[SkillNode] = []
-var money: int = 1000
+
 
 func _ready():
 	Events.skill_tree_scene_opened.connect(try_take_tree)
@@ -24,14 +24,14 @@ func try_upgrade_node(node: SkillNode):
 		try_unlock_node(node)
 
 func try_unlock_node(node: SkillNode):
-	if money >= node.price and (node.has_unlocked_parent() or node.is_start_node):
-		money -= node.price
+	if PlayerConfig.upgrade_money >= node.price and (node.has_unlocked_parent() or node.is_start_node):
+		PlayerConfig.upgrade_money -= node.price
 		unlock_node(node)
 		node.on_unlocked()
-		print("Узел разблокирован! Осталось денег: ", money)
+		print("Узел разблокирован! Осталось денег: ", PlayerConfig.upgrade_money)
 			
 func try_to_lock(node: SkillNode):
-		money += node.price
+		PlayerConfig.upgrade_money += node.price
 		lock_node(node)
 		node.on_locked()
 
