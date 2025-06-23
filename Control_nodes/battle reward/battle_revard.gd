@@ -4,12 +4,15 @@ extends Control
 func _ready() -> void:
 	var packinfo = Sql.select_pack_by_id(1)
 	spawn_pack(packinfo[0],Vector2(100,133))
-	MoneyLabel.text = "За бой получено "
+	MoneyLabel.text = "За бой получено " + str(PlayerConfig.battle_money)
 	
 func _process(delta: float) -> void:
 	if !self.has_node("Pack"):
+		PlayerConfig.hand_money += PlayerConfig.battle_money
+		PlayerConfig.battle_money = 0
 		SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE_REWARD
 		SceneManager.close_current_scene()
+		
 	pass
 
 func spawn_pack(PackInfo : Dictionary, pos: Vector2)-> void: 
