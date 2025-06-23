@@ -37,5 +37,11 @@ var enemy_data: EnemyData = null
 
 var can_upgrade : bool 
 
+
+var defeated_monster_count: int = 0
+var max_defedated_monster_count: int = 2
+
+var player_won: bool = true 
+
 func _ready() -> void:
 	pass
