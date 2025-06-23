@@ -39,7 +39,7 @@ var __all_scenes := [
 	preload("res://Inventory/Inventory.tscn").instantiate(),
 
 	#TODO: replace run result scene
-	preload("res://assets/tmp enemy/enemy.jpg"),
+	preload("res://Inventory/Inventory.tscn").instantiate()
 ]
 
 var __tree_root: Node = null
