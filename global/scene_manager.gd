@@ -16,31 +16,34 @@ enum SCENE {
 	SHOP_POWER_UPS,
 	SHOP_ITEMS,
 	SHOP_PACK,
+
 	INVENTORY,
 
 	RUN_RESULT,
 }
 
-var __all_scenes := [
-	preload("res://main_menu/main_menu.tscn").instantiate(),
-	preload("res://main_menu/settings_menu.tscn").instantiate(),
-	preload("res://Meta/Meta.tscn").instantiate(),
+var __all_scenes := {
+		SCENE.MAIN_MENU:        preload("res://main_menu/main_menu.tscn").instantiate(),
+		SCENE.SETTINGS_MENU:    preload("res://main_menu/settings_menu.tscn").instantiate(),
+		SCENE.META_PROGGRESSION:preload("res://Meta/Meta.tscn").instantiate(),
+ 
+		SCENE.LOADING:          preload("res://loading scene/loading_scene.tscn").instantiate(),
 
-	preload("res://loading scene/loading_scene.tscn").instantiate(),
+		SCENE.CHOOSE_ENEMY:     preload("res://choose enemy/choose_enemy.tscn").instantiate(),
+		SCENE.BATTLE:           preload("res://battle/battle_scene.tscn").instantiate(),
+		SCENE.BATTLE_REWARD:    preload("res://Control_nodes/battle reward/battle_revard.tscn").instantiate(),
+
+		SCENE.SHOP_MAIN:        preload("res://shop/shop.tscn").instantiate(),
+		SCENE.SHOP_POWER_UPS:   preload("res://shop/powerUpShop/PowerUpShop.tscn").instantiate(),
+		SCENE.SHOP_ITEMS:       preload("res://shop/ComboCardShop/ComboCardShop.tscn").instantiate(),
+		SCENE.SHOP_PACK:        preload("res://shop/ComboCardShop/PackShop/PackShop.tscn").instantiate(),
+
+		SCENE.INVENTORY:        preload("res://Inventory/Inventory.tscn").instantiate(),
+
+		#TODO: replace run result scene
+		# SCENE.RUN_RESULT: preload(""),
 	
-	preload("res://choose enemy/choose_enemy.tscn").instantiate(),
-	preload("res://battle/battle_scene.tscn").instantiate(),
-	preload("res://Control_nodes/battle reward/battle_revard.tscn").instantiate(),
-
-	preload("res://shop/shop.tscn").instantiate(),
-	preload("res://shop/powerUpShop/PowerUpShop.tscn").instantiate(),
-	preload("res://shop/ComboCardShop/ComboCardShop.tscn").instantiate(),
-	preload("res://shop/ComboCardShop/PackShop/PackShop.tscn").instantiate(),
-	preload("res://Inventory/Inventory.tscn").instantiate(),
-
-	#TODO: replace run result scene
-	preload("res://assets/tmp enemy/enemy.jpg"),
-]
+}
 
 var __tree_root: Node = null
 var __scene_stack: Array[Node] = []

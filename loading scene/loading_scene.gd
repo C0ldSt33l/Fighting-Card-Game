@@ -18,24 +18,19 @@ func switch_to_next_scene(scene_type: SceneManager.SCENE) -> void:
 		S.CHOOSE_ENEMY:
 			next_scene = S.BATTLE
 		S.BATTLE:
-			# next_scene = S.BATTLE_REWARD
-			next_scene = S.SHOP_ITEMS
+			var pc := PlayerConfig
+			if !pc.player_won or pc.defeated_monster_count == pc.max_defedated_monster_count:
+				next_scene = S.RUN_RESULT
+			else:
+				next_scene = S.BATTLE_REWARD
 		S.BATTLE_REWARD:
-			pass
+			next_scene = S.SHOP_ITEMS
 
-		S.SHOP_MAIN:
-			pass
-		S.SHOP_POWER_UPS:
-			pass
 		S.SHOP_ITEMS:
 			next_scene = S.CHOOSE_ENEMY
-			pass
-
-		S.INVENTORY:
-			pass	
 
 		S.RUN_RESULT:
-			pass
+			SceneManager.close_current_scene()
 		_:
 			push_error('Wrong scene type with id#%s-%s' % [scene_type, SceneManager.SCENE.keys()[scene_type]])
 
