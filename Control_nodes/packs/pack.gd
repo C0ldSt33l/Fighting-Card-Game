@@ -233,7 +233,6 @@ func _input(event: InputEvent) -> void:
 						print(basket.size())
 						update_confirm_button_text()
 						break
-
 func confirm_button_pressed():
 	if basket.size() < count_selected_obj:
 		return

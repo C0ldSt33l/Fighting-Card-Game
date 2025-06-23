@@ -8,7 +8,6 @@ func _ready() -> void:
 	
 func _process(delta: float) -> void:
 	if !self.has_node("Pack"):
-		PlayerConfig.hand_money += PlayerConfig.battle_money
 		PlayerConfig.battle_money = 0
 		SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE_REWARD
 		SceneManager.close_current_scene()

@@ -30,7 +30,7 @@ var total_price = 0
 
 func _ready() -> void:
 	LabelMoney = get_node("Panel/Label")
-	LabelMoney.text = "💲" + str(money)
+	LabelMoney.text = "💲" + str(PlayerConfig.hand_money)
 	Hide_price_timer = get_node("hide_price_timer")
 	PriceButton = get_node("Panel/Button2")	
 	Price = get_node("Panel/Button2/Price")
@@ -63,7 +63,7 @@ func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
-	LabelMoney.text ="💲" + str(money)
+	LabelMoney.text ="💲" + str(PlayerConfig.hand_money)
 	pass
 
 func _input(event: InputEvent) -> void:
@@ -81,7 +81,6 @@ func _input(event: InputEvent) -> void:
 					basket.erase(obj)
 					update_total_price()
 					return
-
 
 func spawn_card(CardInfo: Dictionary, pos:Vector2)-> void:
 	var card := CardCreator.create_with_binding(
@@ -114,7 +113,7 @@ func spawn_combo(ComboInfo: Dictionary, pos:Vector2)->void:
 	)
 	self.objects.append(combo)
 
-func _on_button_pressed() -> void: #reroll button
+func _on_button_pressed() -> void:
 	if(money>0):
 		for object in objects:
 			object.queue_free()
@@ -202,7 +201,6 @@ func remove_panel():
 func _on_exit_button() -> void:
 	SceneManager.__last_scene_type = SceneManager.SCENE.SHOP_ITEMS
 	SceneManager.close_current_scene()
-
 
 func _on_inventory_button() -> void:
 	SceneManager.__last_scene_type = SceneManager.SCENE.SHOP_ITEMS
