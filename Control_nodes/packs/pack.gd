@@ -63,7 +63,7 @@ var head: DoublyLinkedListNode = null
 var tail: DoublyLinkedListNode = null
 var current: DoublyLinkedListNode = null
 var displayed_cards = []
-
+var confirm_button
 
 var current_x_pos: float = 50
 
@@ -152,18 +152,18 @@ func open_pack()-> void:
 	full_screen_panel.show()
 	full_screen_panel.size = get_viewport_rect().size
 	
-	
-	
 	for i in range(0,15):
 		add_obj(objects[randi() % objects.size()])
 	self.position = Vector2.ZERO
+	full_screen_panel.position = Vector2.ZERO
 	if head:
 		current = head
 		update_displayed_cards()
 		
-	var confirm_button = Button.new()
+	confirm_button = Button.new()
 	full_screen_panel.add_child(confirm_button)
-	confirm_button.text = "Выбрать"
+	confirm_button.name = "confirm_button"
+	confirm_button.text = "Выбрано 0/" + str(count_selected_obj)
 	confirm_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	confirm_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	confirm_button.modulate = Color.CRIMSON
@@ -231,8 +231,8 @@ func _input(event: InputEvent) -> void:
 							basket.erase(card_data)
 							obj.Background.modulate = Color.GRAY
 						print(basket.size())
+						update_confirm_button_text()
 						break
-
 func confirm_button_pressed():
 	if basket.size() < count_selected_obj:
 		return
@@ -287,3 +287,7 @@ func debug_print_all_objects():
 			print(" - Неизвестный тип объекта")
 
 		print("-----------------------")
+
+func update_confirm_button_text():
+	if confirm_button:
+		confirm_button.text = "Выбрано %d/%d" % [basket.size(), count_selected_obj]
