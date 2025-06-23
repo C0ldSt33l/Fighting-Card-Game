@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://daonlbpte4603"]
+
+[ext_resource type="Script" path="res://battle/totem/totem.gd" id="1_m7wnj"]
+[ext_resource type="Texture2D" uid="uid://bpryimv0skgyi" path="res://assets/ui/totem/angel_blue_fire.png" id="1_mdy76"]
+
+[node name="Totem" type="Control"]
+custom_minimum_size = Vector2(80, 130)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1200.0
+offset_bottom = -590.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m7wnj")
+metadata/_edit_group_ = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_mdy76")

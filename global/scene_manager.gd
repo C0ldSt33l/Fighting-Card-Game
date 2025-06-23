@@ -16,33 +16,33 @@ enum SCENE {
 	SHOP_POWER_UPS,
 	SHOP_ITEMS,
 	SHOP_PACK,
+  
 	INVENTORY,
 
 	RUN_RESULT,
 }
 
-var __all_scenes := [
-	preload("res://main_menu/main_menu.tscn").instantiate(),
-	preload("res://main_menu/settings_menu.tscn").instantiate(),
-	preload("res://Meta/Meta.tscn").instantiate(),
+var __all_scenes: Dictionary = {
+	SCENE.MAIN_MENU: preload("res://main_menu/main_menu.tscn").instantiate(),
+	SCENE.SETTINGS_MENU: preload("res://main_menu/settings_menu.tscn").instantiate(),
+	SCENE.META_PROGGRESSION: preload("res://Meta/Meta.tscn"),
 
-	preload("res://loading scene/loading_scene.tscn").instantiate(),
-	
-	preload("res://choose enemy/choose_enemy.tscn").instantiate(),
-	preload("res://battle/battle_scene.tscn").instantiate(),
-	#TODO: replace battle reward scene
-	preload("res://assets/tmp enemy/enemy.jpg"),
+	SCENE.LOADING: preload("res://loading scene/loading_scene.tscn").instantiate(),
 
+	SCENE.CHOOSE_ENEMY: preload("res://choose enemy/choose_enemy.tscn").instantiate(),
+	SCENE.BATTLE: preload("res://battle/battle_scene.tscn").instantiate(),
+	SCENE.BATTLE_REWARD: preload("res://assets/tmp enemy/orc.png"),
 
-	preload("res://shop/shop.tscn").instantiate(),
-	preload("res://shop/powerUpShop/PowerUpShop.tscn").instantiate(),
-	preload("res://shop/ComboCardShop/ComboCardShop.tscn").instantiate(),
-	preload("res://shop/ComboCardShop/PackShop/PackShop.tscn").instantiate(),
-	preload("res://Inventory/Inventory.tscn").instantiate(),
+	SCENE.SHOP_MAIN: preload("res://shop/shop.tscn").instantiate(),
+	SCENE.SHOP_POWER_UPS: preload("res://shop/powerUpShop/PowerUpShop.tscn").instantiate(),
+	SCENE.SHOP_ITEMS: preload("res://shop/ComboCardShop/ComboCardShop.tscn").instantiate(),
+	SCENE.SHOP_PACK: preload("res://shop/ComboCardShop/PackShop/PackShop.tscn").instantiate(),
+  
+	SCENE.INVENTORY: preload("res://Inventory/Inventory.tscn").instantiate(),
 
 	#TODO: replace run result scene
-	preload("res://assets/tmp enemy/enemy.jpg"),
-]
+	SCENE.RUN_RESULT: preload("res://assets/tmp enemy/orc.png"),
+}
 
 var __tree_root: Node = null
 var __scene_stack: Array[Node] = []
@@ -52,6 +52,7 @@ func _ready() -> void:
 	__tree_root = get_tree().root
 	var nodes: Array[Node] = __tree_root.get_children()
 	__scene_stack.push_back(nodes.back())
+	await nodes.back().ready
 	print_debug('Scene stack at game run:\n', self.__scene_stack)
 	
 func _exit_tree() -> void:
