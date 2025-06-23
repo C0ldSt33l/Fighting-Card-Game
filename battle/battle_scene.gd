@@ -509,5 +509,7 @@ func on_battle_ended() -> void:
 	PlayerConfig.upgrade_money += 1
 	PlayerConfig.enemy_data = null
 
+	PlayerConfig.defeated_monster_count += 1
+
 	SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE
 	SceneManager.close_current_scene()
