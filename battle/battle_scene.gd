@@ -94,14 +94,15 @@ func _ready() -> void:
 	# )
 	self._init_components()
 
-	match PlayerConfig.enemy_data.constraints:
-		'Без сбросов':
+	print('CONSTR: ', PlayerConfig.enemy_data.constraints)
+	Game.battle = self
+	match PlayerConfig.enemy_data.constraints.to_lower():
+		'без сбросов':
 			Constrains.without_rerell()
-		'Один раунд':
+		'один раунд':
 			Constrains.one_round()
 
 
-	Game.battle = self
 	Events.battle_started.emit()
 
 
@@ -138,6 +139,7 @@ func _init_enemy() -> void:
 	var ed := PlayerConfig.enemy_data
 	self.enemy.health = ed.required_score
 	self.enemy.enemy_name = ed.name
+	self.enemy.constraints = PlayerConfig.enemy_data.constraints
 	self.enemy.image = ed.image
 	self.max_round_count = PlayerConfig.round_count
 	self.rest_round_count = self.enemy.max_round_count
