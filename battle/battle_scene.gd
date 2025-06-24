@@ -565,12 +565,14 @@ func on_battle_ended() -> void:
 	self.earned_money += 6 + self.rest_round_count
 	PlayerConfig.battle_money = self.earned_money
 	PlayerConfig.hand_money += self.earned_money
-	PlayerConfig.upgrade_money += 1
 	PlayerConfig.enemy_data = null
 
 	PlayerConfig.player_won = self.enemy_hp <= 0
 
-	PlayerConfig.defeated_monster_count += 1
+	if PlayerConfig.player_won:
+		PlayerConfig.defeated_monster_count += 1
+		PlayerConfig.upgrade_money += 1
+		PlayerConfig.upgrade_money_in_battle += 1
 
 	SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE
 	SceneManager.close_current_scene()

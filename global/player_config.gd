@@ -4,6 +4,7 @@ extends Node
 
 var total_time_in_secs : int = 0
 
+var upgrade_money_in_battle: int 
 var upgrade_money: int
 var hand_money: int 
 var battle_money: int

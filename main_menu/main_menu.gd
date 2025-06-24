@@ -11,7 +11,8 @@ class_name MainMenu
 
 func _on_start_pressed() -> void:
 	PlayerConfig.player_exit = false
-	PlayerConfig.hand_money = 0
+	#PlayerConfig.hand_money = 0
+	PlayerConfig.upgrade_money_in_battle = 0
 	SceneManager.__last_scene_type = SceneManager.SCENE.MAIN_MENU
 	SceneManager.call_deferred('open_new_scene_by_name', SceneManager.SCENE.LOADING)
 	

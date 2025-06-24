@@ -19,21 +19,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
+[node name="meta lbl" type="Label" parent="Panel"]
+offset_left = 16.0
+offset_top = 280.0
+offset_right = 594.0
+offset_bottom = 411.0
+theme_override_font_sizes/font_size = 50
+text = "Очки мета-прогрессии: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="victory lbl" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 28.0
+offset_right = 865.0
+offset_bottom = 165.0
 theme_override_font_sizes/font_size = 100
-text = "YOU LOSER :("
+text = "ПОБЕДА"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="monster lbl" type="Label" parent="Panel"]
+offset_left = 112.0
+offset_top = 164.0
+offset_right = 613.0
+offset_bottom = 295.0
+theme_override_font_sizes/font_size = 50
+text = "Врагов побеждено: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
