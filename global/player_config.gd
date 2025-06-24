@@ -41,6 +41,10 @@ var can_upgrade : bool
 var defeated_monster_count: int = 0
 var max_defedated_monster_count: int = 3
 
+var min_enemy_hp: int = 200
+var max_enemy_hp: int = 400
+
+
 var player_won: bool = true 
 var player_exit: bool = false
 

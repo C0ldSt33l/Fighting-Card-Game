@@ -1,6 +1,10 @@
 extends Control
 class_name ChooseEnemyScene
 
+
+var min_enemy_hp: int = PlayerConfig.min_enemy_hp + 200 * PlayerConfig.defeated_monster_count
+var max_enemy_hp: int = PlayerConfig.max_enemy_hp + 200 * PlayerConfig.defeated_monster_count
+
 #TODO: fill test configs
 const ENEMY_CONFIGS: Array[Dictionary] = [
 	{
@@ -92,7 +96,7 @@ func _ready() -> void:
 		ec.setup(
 			d.enemy_name,
 			d.image,
-			randi_range(2, 10),
+			randi_range(self.min_enemy_hp, self.max_enemy_hp),
 			CONSTRAINTS.pick_random(),
 			REWARDS.pick_random(),
 		)
@@ -137,7 +141,7 @@ func reroll_enemy() -> void:
 		ec.setup(
 			d.enemy_name,
 			d.image,
-			randi_range(2, 1000),
+			randi_range(self.min_enemy_hp, self.max_enemy_hp),
 			CONSTRAINTS.pick_random(),
 			REWARDS.pick_random(),
 		)
