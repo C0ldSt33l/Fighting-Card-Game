@@ -94,6 +94,11 @@ func _ready() -> void:
 	# )
 	self._init_components()
 
+	match PlayerConfig.enemy_data.constraints:
+		'Без сбросов':
+			Constrains.without_rerell()
+		'Один раунд':
+			Constrains.one_round()
 
 
 	Game.battle = self
@@ -150,6 +155,11 @@ func _init_deck() -> void:
 			)
 	)
 	)
+	var a: Array[Card] = []
+	for c in self.deck:
+		a.append(c.duplicate())
+		a.append(c.duplicate())
+	self.deck.append_array(a)
 
 func _init_table() -> void:
 	self.table.setup(6)
@@ -317,6 +327,7 @@ func spawn_combo(name: String, conf: Dictionary) -> void:
 func reroll() -> void:
 	self.reroll_count -= 1
 
+	self.discord_deck.append_array(self.hand.cards)
 	var size := self.hand.card_count
 	var configs := self.get_hand_configs(size)
 	self.hand.remove_all_cards()

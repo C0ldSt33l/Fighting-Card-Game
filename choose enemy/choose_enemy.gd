@@ -42,15 +42,16 @@ const ENEMY_CONFIGS: Array[Dictionary] = [
 	},
 ]
 const CONSTRAINTS: Array[String] = [
-	'Слабость', # decrease card point
+	#'Слабость', # decrease card point
+	'-',
 	'Один раунд', # player has only one round in battle
 	'Без сбросов', # player has no rerolls
-	'Расточительность', # for each combo player money decrease
-
-	'Слабость', # decrease card point
-	'Один раунд', # player has only one round in battle
-	'Без сбросов', # player has no rerolls
-	'Расточительность', # for each combo player money decrease
+	#'Расточительность', # for each combo player money decrease
+#
+	#'Слабость', # decrease card point
+	#'Один раунд', # player has only one round in battle
+	#'Без сбросов', # player has no rerolls
+	#'Расточительность', # for each combo player money decrease
 ]
 const REWARDS: Array[String] = [
 	'Доли Духов',

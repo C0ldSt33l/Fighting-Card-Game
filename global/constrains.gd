@@ -5,7 +5,8 @@ static func without_rerell() -> void:
 
 
 static func one_round() -> void:
-    Game.battle.round_count = 1
+    Game.battle.rest_round_count = 1
+    Game.battle.max_round_count = 1
 
 
 # WARNING: damage decrease may stacks between battles

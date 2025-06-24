@@ -104,7 +104,7 @@ func get_enemy_data() -> EnemyData:
 		self.enemy_name,
 		self.image,
 		self.required_score,
-		[],
+		self.constraints,
 		self.reward,
 	)
 
