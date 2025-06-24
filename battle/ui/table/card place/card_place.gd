@@ -32,7 +32,7 @@ func remove_card() -> void:
 func _get_drag_data(at_position: Vector2) -> Variant:
 	if self.card == null:
 		return null
-	Events.drag_started.emit(self.card, self)
+	#Events.drag_started.emit(self.card, self)
 	set_drag_preview(self.card.get_drag_preview())
 	return DragData.new(self, self.card)
 
@@ -49,7 +49,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	else:
 		from.remove_card()
 	self.add_card(card)
-	Events.drag_completed.emit(card, self)
+	#Events.drag_completed.emit(card, self)
 
 
 func on_drag_completed(data: Variant, where: Variant) -> void:

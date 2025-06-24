@@ -19,6 +19,9 @@ func switch_to_next_scene(scene_type: SceneManager.SCENE) -> void:
 			next_scene = S.BATTLE
 		S.BATTLE:
 			var pc := PlayerConfig
+			print('PLAYER WON: ', pc.player_won)
+			print('DEF MONSTER: ', pc.defeated_monster_count)
+			print('MAX DEF MONSTER: ', pc.max_defedated_monster_count)
 			if !pc.player_won or pc.defeated_monster_count == pc.max_defedated_monster_count:
 				next_scene = S.RUN_RESULT
 			else:
@@ -31,6 +34,7 @@ func switch_to_next_scene(scene_type: SceneManager.SCENE) -> void:
 
 		S.RUN_RESULT:
 			SceneManager.close_current_scene()
+			return
 		_:
 			push_error('Wrong scene type with id#%s-%s' % [scene_type, SceneManager.SCENE.keys()[scene_type]])
 

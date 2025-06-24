@@ -39,7 +39,7 @@ var can_upgrade : bool
 
 
 var defeated_monster_count: int = 0
-var max_defedated_monster_count: int = 2
+var max_defedated_monster_count: int = 3
 
 var player_won: bool = true 
 

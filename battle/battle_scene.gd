@@ -94,7 +94,6 @@ func _ready() -> void:
 	self._init_components()
 
 
-	print('EMEMY SCORE: ', self.enemy_hp)
 
 	Game.battle = self
 	Events.battle_started.emit()
@@ -168,7 +167,6 @@ func _on_inventory_button() -> void:
 
 func start_round_preparation() -> void:
 	self.score_counter.reset()
-	print('ENEMY HP: ', self.enemy_hp)
 	self.start_button.disabled = false
 	Events.round_preparation_started.emit()
 
@@ -191,13 +189,12 @@ func start_round_preparation() -> void:
 func process_round() -> void:
 	self.start_round()
 	while self.card_cursor.index < self.cards_on_table.size():
-		print('card index: ', self.cur_card.index)
-		print('cards on table: ', self.cards_on_table.size())
-
 		#TODO: remove manual card playing
 		await self.play_card(self.cur_card, self.cur_combo)
+		
+		print('CARD CURSOR: ', self.card_cursor.index)
 
-		if card_cursor.index == self.cards_on_table.size():
+		if self.card_cursor.index == self.cards_on_table.size():
 			Events.round_ended.emit()
 	self.end_round()
 
@@ -209,7 +206,6 @@ func start_round() -> void:
 	self.start_button.disabled = true
 
 	Events.round_started.emit()
-	print('REST ROUND: ', self.rest_round_count)
 	self.rest_round_count -= 1
 	if self.cards_on_table.size() == 0: return
 
@@ -244,9 +240,6 @@ func end_round() -> void:
 	self.discord_deck.append_array(self.cards_on_table)
 	self.cards_on_table.clear()
 
-	print('TABLE CARDS: ', self.table.cards)
-	for p in self.table.card_places:
-		print('place has card: ', p.card)
 	self.table.remove_all_combos()
 	self.table.remove_all_cards()
 
@@ -513,7 +506,7 @@ func on_battle_ended() -> void:
 	PlayerConfig.upgrade_money += 1
 	PlayerConfig.enemy_data = null
 
-	PlayerConfig.player_won = !(self.enemy_hp > 0)
+	PlayerConfig.player_won = self.enemy_hp <= 0
 
 	PlayerConfig.defeated_monster_count += 1
 

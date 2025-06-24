@@ -41,7 +41,7 @@ var __all_scenes := {
 		SCENE.INVENTORY:        preload("res://Inventory/Inventory.tscn").instantiate(),
 
 		#TODO: replace run result scene
-		# SCENE.RUN_RESULT: preload(""),
+		 SCENE.RUN_RESULT:      preload("res://run result/run_result.tscn").instantiate(),
 	
 }
 
@@ -49,11 +49,15 @@ var __tree_root: Node = null
 var __scene_stack: Array[Node] = []
 var __last_scene_type: SCENE
 
+
+func get_scene_name(s: SCENE) -> String:
+	return SCENE.keys()[s]
+
 func _ready() -> void:
 	__tree_root = get_tree().root
 	var nodes: Array[Node] = __tree_root.get_children()
 	__scene_stack.push_back(nodes.back())
-	print_debug('Scene stack at game run:\n', self.__scene_stack)
+	print('Scene stack at game run:\n', self.__scene_stack)
 	
 func _exit_tree() -> void:
 	for scene in __all_scenes:
@@ -73,16 +77,16 @@ func open_new_scene_by_name(scene_name: SCENE) -> void:
 	__scene_stack.push_back(new_scene)
 	__tree_root.add_child(new_scene)
 
-	print_debug('Scene stack after adding new scene:\n', self.__scene_stack)
+	print('Scene stack after adding new scene: ', self.get_scene_name(scene_name))
+	print(self.__scene_stack)
 	
 func close_current_scene() -> void:
-	print_debug("Scene Manager got order to close current scene")
-	print_debug(__scene_stack)
 	call_deferred("__real_closing_scene")
 	
 func __real_closing_scene() -> void:
 	var current_scene = __scene_stack.pop_back() as Node
 	__tree_root.remove_child(current_scene)
-	#current_scene.queue_free()
+	current_scene.queue_free()
 	__tree_root.add_child(__scene_stack.back())
-	print_debug('Scene stack after closing cur scene:\n', __scene_stack)
+	print("Scene Manager after deleting cur scene: ", self.get_scene_name(self.__last_scene_type))
+	print(__scene_stack)

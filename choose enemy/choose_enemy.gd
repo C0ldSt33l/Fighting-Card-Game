@@ -92,7 +92,7 @@ func _ready() -> void:
 		ec.setup(
 			d.enemy_name,
 			d.image,
-			randi_range(2, 1000),
+			randi_range(2, 10),
 			CONSTRAINTS.pick_random(),
 			REWARDS.pick_random(),
 		)

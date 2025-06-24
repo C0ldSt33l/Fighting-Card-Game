@@ -1,5 +1,5 @@
 extends Control
-class_name Totem
+class_name _Totem
 
 var pos_idx: int
 

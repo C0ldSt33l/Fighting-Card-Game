@@ -49,7 +49,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	if self.combo == null:
 		return null
 		#get_viewport().drag
-	Events.drag_started.emit(self.combo, self)
+	#Events.drag_started.emit(self.combo, self)
 	set_drag_preview(self.combo.get_drag_preview())
 	return DragData.new(self, self.combo)
 
@@ -103,7 +103,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	else:
 		from.remove_combo()
 	self.add_combo(combo)
-	Events.drag_completed.emit(combo, self)
+	#Events.drag_completed.emit(combo, self)
 
 
 #func on_drag_completed(data: Variant, where: Variant) -> void:
