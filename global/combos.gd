@@ -10,6 +10,7 @@ const COMBOS := {
 			'price': 15,
 			'point': 10,
 			'factor': 2,
+			'material': M.MATERIAL.WOOD
 		},
 		'pattern': [
 			{ 'body part': Card.BODY_PART.LEG },
@@ -24,11 +25,12 @@ const COMBOS := {
 			'price': 25,
 			'point': 10,
 			'factor': 2,
+			'material': M.MATERIAL.METAL
 		},
 		'pattern': [
-			{ 'name': 'fist' },
-			{ 'name': 'knee strike' },
-			{ 'name': 'elbow' },
+			{ 'body part': Card.BODY_PART.LEG,  },
+			{ 'body part': Card.BODY_PART.HAND,  },
+			{ 'body part': Card.BODY_PART.LEG,  },
 		],
 		'effect': 'Card enchancment'
 	},
@@ -39,10 +41,11 @@ const COMBOS := {
 			'price': 5,
 			'point': 5,
 			'factor': 1,
+			'material': M.MATERIAL.STONE
 		},
 		'pattern': [
-			{ 'name': 'kick' },
-			# { 'body part': Card.BODY_PART.HAND },
+			{ 'body part': Card.BODY_PART.HAND,  },
+			{ 'body part': Card.BODY_PART.LEG,  },
 		],
 		'effect': 'First strike'
 	},

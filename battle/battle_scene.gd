@@ -243,6 +243,8 @@ func end_round() -> void:
 	
 	self.combos_on_table.clear()
 
+	for c in self.cards_on_table:
+		c.effects.clear()
 	self.discord_deck.append_array(self.cards_on_table)
 	self.cards_on_table.clear()
 
@@ -303,8 +305,10 @@ func spawn_combo(name: String, conf: Dictionary) -> void:
 			c.pattern.assign(conf.pattern)
 			c.effects.append(Effects.get_effect(conf.effect))
 			for p in conf.props:
-				c[p] = conf.props[p]
-			c._material = materials[randi_range(0, materials.size() - 1)]
+				if p == 'material':
+					c._material = conf.props.material
+				else:
+					c[p] = conf.props[p]
 	)
 	self.hand.add_combo(combo)
 	# combo.make_little_view()
@@ -376,7 +380,8 @@ func is_all_effects_activated_on(target: Variant) -> bool:
 func get_effects_from(obj: Variant) -> Array[Effect]:
 	const TYPE := Effect.TARGET_TYPE
 	var effects: Array[Effect] = []
-	for e: Effect in obj.effects:
+	if obj is _Totem:
+		var e = obj.effect
 		match e.target_type:
 			TYPE.SELF_CARD, TYPE.SELF_COMBO:
 				effects.append(e.set_target(e.caster))
@@ -426,12 +431,63 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 
 			_:
 				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER: target type: %s' % [str(TYPE.keys()[e.target_type])])
+	else:		
+		for e: Effect in obj.effects: 
+			match e.target_type:
+				TYPE.SELF_CARD, TYPE.SELF_COMBO:
+					effects.append(e.set_target(e.caster))
+				TYPE.CARD:
+					for c in self.table.cards:
+						effects.append(e.set_target(c))
+				TYPE.NEXT_CARD:
+					var i: int = e.caster.index + 1
+					if (i < self.cards_on_table.size()):
+						effects.append(e.set_target(self.cards_on_table[i]))
+				TYPE.PREV_CARD:
+					var i: int = e.caster.index - 1
+					if (i > -1):
+						effects.append(e.set_target(self.cards_on_table[i]))
+				TYPE.FIRST_CARD:
+					effects.append(e.set_target(self.first_card))
+				TYPE.LAST_CARD:
+					effects.append(e.set_target(self.last_card))
+				TYPE.CARD_IN_COMBO:
+					for c: Card in e.caster.cards:
+						effects.append(e.set_target(c))
+				TYPE.FIRST_CARD_IN_COMBO:
+					effects.append(e.set_target(e.caster.first_card))
+				TYPE.LAST_CARD_IN_COMBO:
+					effects.append(e.set_target(e.caster.last_card))
+
+				TYPE.NEXT_COMBO:
+					var i: int = e.caster.index + 1
+					if (i < self.combos_on_table.size()):
+						effects.append(e.set_target(self.combos_on_table[i]))
+				TYPE.PREV_COMBO:
+					var i: int = e.caster.index - 1
+					if (i > -1):
+						effects.append(e.set_target(self.combos_on_table[i]))
+				TYPE.FIRST_COMBO:
+					self.effects.append(e.set_target(self.first_combo))
+				TYPE.LAST_COMBO:
+					effects.append(e.set_target(self.last_combo))
+
+				TYPE.CARD_CURSOR:
+					effects.append(e.set_target(self.card_cursor))
+				TYPE.COMBO_CURSOR:
+					effects.append(e.set_target(self.combo_cursor))
+
+				TYPE.SCORE:
+					effects.append(e.set_target(self.score_counter))
+
+				_:
+					Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER: target type: %s' % [str(TYPE.keys()[e.target_type])])
 	return effects
 
 
 func collect_all_effects() -> void:
-	# for t in self.totem_segment.totems:
-		# self.effects.append_array(self.get_effects_from(t))
+	for t in self.totem_segment.totems:
+		self.effects.append_array(self.get_effects_from(t))
 	for c in self.combos_on_table:
 		self.effects.append_array(self.get_effects_from(c))
 	for c in self.cards_on_table:

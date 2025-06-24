@@ -82,7 +82,7 @@ var EFFECTS := {
 		Effect.RESET_TIME.NONE,
 		card_play_again,
 		Effect.TYPE.BUFF,
-		Effect.TARGET_TYPE.SELF_CARD,
+		Effect.TARGET_TYPE.CARD_CURSOR,
 		1
 	),
 	'Card power': Effect.new(

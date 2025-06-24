@@ -164,6 +164,14 @@ func bind_effect_arr(effs: Array[Effect]) -> void:
 
 func get_drag_preview() -> DragNDropPreview:
 	return DragNDropPreview.new(self.duplicate())
+	
+
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	return self.effects.size() == 0 and data.data is Consumable
+	
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	self.bind_effect(data.data.effect)
+	data.data.get_parent().remove_child(data.data)
 
 
 func _exit_tree() -> void:

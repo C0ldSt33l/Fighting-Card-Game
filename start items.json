@@ -165,11 +165,6 @@
         "Name": "Воин",
         "Picture": "res://assets/ui/totem/warrior.png",
         "Effect": "First strike"
-    },
-    {
-        "Name": "Ангел голубого огня",
-        "Picture": "res://assets/ui/totem/hourglass.png",
-        "Effect": "Second breath"
     }
   ]
 }

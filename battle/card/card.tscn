@@ -10,7 +10,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 100.0
 offset_bottom = 120.0
-mouse_filter = 2
+mouse_filter = 1
 script = ExtResource("1_174wl")
 
 [node name="Background" type="TextureRect" parent="."]
@@ -51,4 +51,5 @@ vertical_alignment = 1
 
 [node name="body part icon" type="TextureRect" parent="Background/MarginContainer/VBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_humot")
