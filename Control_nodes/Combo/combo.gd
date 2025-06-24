@@ -47,7 +47,7 @@ func _ready() -> void:
 		self.Texture_rect.texture = texture
 		self.Texture_rect.ExpandMode.EXPAND_IGNORE_SIZE
 	pass 
-	#price.visible = false
+	price.visible = false
 	price.text = "💲" + str(self.Price)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

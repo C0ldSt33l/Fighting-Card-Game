@@ -112,6 +112,7 @@ func spawn_combo(ComboInfo: Dictionary, pos:Vector2)->void:
 			c.position = pos
 	)
 	self.objects.append(combo)
+	combo.price.show()
 
 func _on_button_pressed() -> void:
 	if(money>0):

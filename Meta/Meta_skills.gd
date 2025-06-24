@@ -18,3 +18,4 @@ static func add_more_points_to_combo(n : int = 11):
 
 static func pack_in_shop():
 	PlayerConfig.pack_in_shop = true
+	print("open pack shop")
