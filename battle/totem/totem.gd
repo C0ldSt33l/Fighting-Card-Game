@@ -23,3 +23,15 @@ func setup(name: String, desc: String, image: Texture2D, effect: Effect = null) 
 	self.image = image
 	self.effect = effect
 	
+
+func _get_drag_data(at_position: Vector2) -> Variant:
+	set_drag_preview(self.get_drag_preview())
+	return self
+
+
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	return data is _Totem
+
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	Game.battle.totem_segment.swap_totems(self, data)

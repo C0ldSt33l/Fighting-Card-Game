@@ -32,7 +32,14 @@ func _ready() -> void:
 	
 	
 func swap_totems(f: _Totem, s: _Totem) -> void:
-	pass
+	var f_idx := f.pos_idx
+	var s_idx := s.pos_idx
+
+	self.totem_container.move_child(f, s_idx)
+	self.totem_container.move_child(s, f_idx)
+
+	f.pos_idx = s_idx
+	s.pos_idx = f_idx
 
 func add_totem(t: _Totem) -> void:
 	t.pos_idx = self.totem_container.get_child_count()
