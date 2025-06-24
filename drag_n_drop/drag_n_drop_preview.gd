@@ -6,6 +6,7 @@ var data: Variant = null
 var delta: float = 0.5
 
 func _init(data: Control) -> void:
+	self.z_index = 10
 	self.data = data
 	self.add_child(self.data)
 	data.modulate.a = 0.5

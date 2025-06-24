@@ -28,8 +28,6 @@ func _ready() -> void:
 		)
 		self.add_totem(totem)
 		totem.image = load(d.Picture)
-		
-	
 	
 func swap_totems(f: _Totem, s: _Totem) -> void:
 	var f_idx := f.pos_idx

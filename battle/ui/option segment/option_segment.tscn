@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dq57c0glcriey"]
+[gd_scene load_steps=2 format=3 uid="uid://dq57c0glcriey"]
+
+[ext_resource type="Script" path="res://battle/ui/option segment/option_segment.gd" id="1_ddadg"]
 
 [node name="Option segment" type="Control"]
 custom_minimum_size = Vector2(190, 130)
@@ -6,6 +8,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 190.0
 offset_bottom = 135.0
+script = ExtResource("1_ddadg")
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1

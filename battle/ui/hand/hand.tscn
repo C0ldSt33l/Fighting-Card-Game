@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cp47xxnw14oip"]
+[gd_scene load_steps=5 format=3 uid="uid://cp47xxnw14oip"]
 
 [ext_resource type="Script" path="res://battle/ui/hand/hand.gd" id="1_bvbxc"]
 [ext_resource type="PackedScene" uid="uid://7rw0lvvk3h3e" path="res://battle/ui/hand/combo segment/combo_seqment.tscn" id="2_uoeha"]
 [ext_resource type="PackedScene" uid="uid://7o5shtggpkck" path="res://battle/ui/hand/card segment/card segment.tscn" id="3_31fhb"]
-[ext_resource type="Texture2D" uid="uid://dyn05jlv1jk3m" path="res://assets/ui/consumable/fast.png" id="4_5rrbl"]
-[ext_resource type="Texture2D" uid="uid://dldnp1dbggalw" path="res://assets/ui/consumable/power_up.png" id="5_dkahr"]
-[ext_resource type="Texture2D" uid="uid://dcuge68qj5u5q" path="res://assets/ui/consumable/triple_hit.png" id="6_f2tbg"]
+[ext_resource type="PackedScene" uid="uid://cu70fv6bf8612" path="res://battle/ui/hand/consumable segment/consumable_segment.tscn" id="4_eha10"]
 
 [node name="Hand" type="Control"]
 custom_minimum_size = Vector2(1080, 230)
@@ -32,67 +30,5 @@ layout_mode = 2
 [node name="Card Segment" parent="HBoxContainer" instance=ExtResource("3_31fhb")]
 layout_mode = 2
 
-[node name="Consumable placeholder" type="Panel" parent="HBoxContainer"]
-custom_minimum_size = Vector2(200, 230)
+[node name="Consumable segment" parent="HBoxContainer" instance=ExtResource("4_eha10")]
 layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Consumable placeholder"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="GridContainer" type="GridContainer" parent="HBoxContainer/Consumable placeholder/MarginContainer"]
-layout_mode = 2
-columns = 3
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Consumable placeholder/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(60, 70)
-layout_mode = 2
-texture = ExtResource("4_5rrbl")
-
-[node name="TextureRect2" type="TextureRect" parent="HBoxContainer/Consumable placeholder/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(60, 70)
-layout_mode = 2
-texture = ExtResource("5_dkahr")
-
-[node name="TextureRect3" type="TextureRect" parent="HBoxContainer/Consumable placeholder/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(60, 70)
-layout_mode = 2
-texture = ExtResource("6_f2tbg")
-
-[node name="TextureRect4" type="TextureRect" parent="HBoxContainer/Consumable placeholder/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(60, 70)
-layout_mode = 2
-texture = ExtResource("5_dkahr")
-
-[node name="TextureRect5" type="TextureRect" parent="HBoxContainer/Consumable placeholder/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(60, 70)
-layout_mode = 2
-texture = ExtResource("6_f2tbg")
-
-[node name="TextureRect6" type="TextureRect" parent="HBoxContainer/Consumable placeholder/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(60, 70)
-layout_mode = 2
-texture = ExtResource("4_5rrbl")
-
-[node name="TextureRect7" type="TextureRect" parent="HBoxContainer/Consumable placeholder/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(60, 70)
-layout_mode = 2
-texture = ExtResource("6_f2tbg")
-
-[node name="TextureRect8" type="TextureRect" parent="HBoxContainer/Consumable placeholder/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(60, 70)
-layout_mode = 2
-texture = ExtResource("4_5rrbl")
-
-[node name="TextureRect9" type="TextureRect" parent="HBoxContainer/Consumable placeholder/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(60, 70)
-layout_mode = 2
-texture = ExtResource("5_dkahr")

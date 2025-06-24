@@ -42,6 +42,7 @@ var defeated_monster_count: int = 0
 var max_defedated_monster_count: int = 3
 
 var player_won: bool = true 
+var player_exit: bool = false
 
 func _ready() -> void:
 	pass

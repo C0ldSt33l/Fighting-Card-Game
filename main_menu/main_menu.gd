@@ -10,6 +10,7 @@ class_name MainMenu
 
 
 func _on_start_pressed() -> void:
+	PlayerConfig.player_exit = false
 	SceneManager.__last_scene_type = SceneManager.SCENE.MAIN_MENU
 	SceneManager.call_deferred('open_new_scene_by_name', SceneManager.SCENE.LOADING)
 	

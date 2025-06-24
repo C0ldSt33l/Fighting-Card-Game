@@ -1,5 +1,6 @@
 class_name BattleScene
 extends Control
+@onready var option_segment: OptionSegment = $"Option segment"
 
 @onready var player: TextureRect = $player
 @onready var score_counter: ScoreCounter = $"Score counter"
@@ -122,6 +123,11 @@ func _init_components() -> void:
 	self._init_table()
 	self._init_hand()
 	self._init_totem_segment()
+	
+	self.option_segment.menu_btn.pressed.connect(func():
+		PlayerConfig.player_exit = true
+		Events.battle_ended.emit())
+	
 
 func _init_enemy() -> void:
 	var ed := PlayerConfig.enemy_data

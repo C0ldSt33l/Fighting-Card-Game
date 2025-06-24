@@ -74,7 +74,39 @@ var EFFECTS := {
 		Effect.TARGET_TYPE.SCORE,
 		1,
 		[2, 2]
-	)
+	),
+	'Again': Effect.new(
+		'Again',
+		'Play card again',
+		Effect.ACTIVATION_TIME.CARD_END,
+		Effect.RESET_TIME.NONE,
+		card_play_again,
+		Effect.TYPE.BUFF,
+		Effect.TARGET_TYPE.SELF_CARD,
+		1
+	),
+	'Card power': Effect.new(
+		'Card enchancment',
+		'Enchance card points and multiplier by %i and %i respectively',
+		Effect.ACTIVATION_TIME.CARD_START,
+		Effect.RESET_TIME.NONE,
+		card_add_points_and_mulitplier,
+		Effect.TYPE.BUFF,
+		Effect.TARGET_TYPE.SELF_CARD,
+		1,
+		[1, 0],
+	),
+	'Card power+': Effect.new(
+		'Card enchancment',
+		'Enchance card points and multiplier by %i and %i respectively',
+		Effect.ACTIVATION_TIME.CARD_START,
+		Effect.RESET_TIME.NONE,
+		card_add_points_and_mulitplier,
+		Effect.TYPE.BUFF,
+		Effect.TARGET_TYPE.SELF_CARD,
+		1,
+		[2, 0],
+	),
 }
 
 # EFFECT FUNCS
@@ -101,8 +133,8 @@ static func card_add_points_and_mulitplier(
 	points: int,
 	mult: int
 ) -> void:
-	c.points += points
-	c.multiplier += mult
+	c.point += points
+	c.factor += mult
 
 static func card_play_prev_card(c: Cursor) -> void:
 	if c.index < 2: return
@@ -116,8 +148,8 @@ static func card_mult_card_points_and_mult(
 	p_mult: int,
 	m_mult: int
 ) -> void:
-	c.points *= p_mult
-	c.multiplier *= m_mult
+	c.point *= p_mult
+	c.factor *= m_mult
 
 static func combo_play_again(c: FullComboView) -> void:
 	Game.battle.combo_cursor.move_back()
