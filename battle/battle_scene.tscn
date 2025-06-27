@@ -104,4 +104,14 @@ offset_top = 102.0
 offset_right = 544.0
 offset_bottom = 262.0
 
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 544.0
+offset_top = 17.0
+offset_right = 749.0
+offset_bottom = 98.0
+theme_override_font_sizes/font_size = 30
+text = "ИНВЕТАРЬ"
+
 [connection signal="pressed" from="Start button" to="." method="process_round" flags=3]
+[connection signal="pressed" from="Button" to="." method="on_invent"]

@@ -53,3 +53,6 @@ vertical_alignment = 1
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("2_humot")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

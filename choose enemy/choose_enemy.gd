@@ -147,3 +147,8 @@ func reroll_enemy() -> void:
 			REWARDS.pick_random(),
 		)
 		ec.change_color(COLORS.pick_random())
+
+
+func _on_button_pressed() -> void:
+	SceneManager.__last_scene_type = SceneManager.SCENE.CHOOSE_ENEMY
+	SceneManager.open_new_scene_by_name(SceneManager.SCENE.INVENTORY)

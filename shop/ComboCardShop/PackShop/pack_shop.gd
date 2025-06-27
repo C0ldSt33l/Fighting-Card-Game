@@ -70,7 +70,7 @@ func spawn_pack(PackInfo : Dictionary, pos: Vector2)-> void:
 			for i in PackInfo:
 				p[i] = PackInfo[i]
 			,
-			5, false
+			3, false
 	)
 	pack.position = pos
 	pack.PriceLable.show()

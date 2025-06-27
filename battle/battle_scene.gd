@@ -589,3 +589,7 @@ func on_battle_ended() -> void:
 
 	SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE
 	SceneManager.close_current_scene()
+	
+func on_invent() -> void:
+	SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE
+	SceneManager.open_new_scene_by_name(SceneManager.SCENE.INVENTORY)

@@ -31,6 +31,7 @@ enum ENERGY {
 	KI,
 }
 
+var is_layed_on_table: bool = false
 var index: int = -1
 
 @export var card_name: String :
@@ -100,6 +101,7 @@ func _ready() -> void:
 	self.body_part_icon.texture = load('%s/%s.png' % [PATH_TO_ICONS, BODY_PART.keys()[self.body_part].to_lower()])
 	self.background.texture = load('%s/%s.png' % [M.PATH_TO_MATERIALS, M.MATERIAL.keys()[self._material]])
 	self.point_lbl.text = str(self.point)
+	self.pivot_offset = self.size / 2
 
 	Events.obj_created.emit(self)
 
@@ -176,3 +178,14 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 func _exit_tree() -> void:
 	Events.obj_destroyed.emit(self)
+
+
+func _on_mouse_entered() -> void:
+	if self.is_layed_on_table: return
+	self.z_index += 1
+	create_tween().tween_property(self, "scale", Vector2(1.1, 1.1), 0.2).set_ease(Tween.EASE_OUT)
+
+func _on_mouse_exited() -> void:
+	if self.is_layed_on_table: return
+	self.z_index -= 1
+	create_tween().tween_property(self, "scale", Vector2(1, 1), 0.2).set_ease(Tween.EASE_OUT)
