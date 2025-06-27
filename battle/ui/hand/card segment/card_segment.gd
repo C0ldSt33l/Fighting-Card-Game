@@ -14,27 +14,38 @@ class_name CardSegment
 	get(): return self.card_sorter.sort_mode_btns
 
 
-func add_card(c: Card) -> void:
+func add_card(c: Card) -> DraggableWrap:
+	c.is_layed_on_table = false
 	var wrapper := DraggableWrap.new(c, Game.battle.hand)
 	self.card_container.add_child(wrapper)
+	return wrapper
 
 
-func add_card_at_pos(c: Card, pos: int) -> void:
-	var wrapper := DraggableWrap.new(c, Game.battle.hand)
-	self.card_container.add_child(wrapper)
+func add_card_at_pos(c: Card, pos: int) -> DraggableWrap:
+	var wrapper := self.add_card(c)
 	self.card_container.move_child(wrapper, pos)
+	return wrapper
 
 
-func remove_card(c: Card) -> void:
+## Return pos of card otherwise return `-1`
+func remove_card(c: Card) -> int:
+	var i := 0
 	for w in self.card_container.get_children():
 		if w.get_child(0) == c:
 			w.remove_child(c)
 			self.card_container.remove_child(w)
+			return i
+		i += 1
+	return -1
 
 
-func remove_card_at_pos(pos: int) -> void:
-	var w := self.card_container.get_child(pos)
+# NOTE: mayby return array of cards
+func remove_card_at_pos(pos: int) -> Card:
+	if pos >= self.combo_container.get_child_count(): return null
+
+	var w: DraggableWrap = self.card_container.get_child(pos)
 	self.card_container.remove_child(w)
+	return w.obj_to_drag
 
 
 func remove_all_cards() -> void:

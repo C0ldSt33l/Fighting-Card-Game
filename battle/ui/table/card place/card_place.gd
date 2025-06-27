@@ -8,9 +8,7 @@ var card: Card = null
 
 
 func _ready() -> void:
-	#Events.drag_completed.connect(self.on_drag_completed)
 	pass
-
 
 
 func add_card(c: Card) -> void:
@@ -20,7 +18,6 @@ func add_card(c: Card) -> void:
 
 	self.card = c
 	c.index = self.index
-
 
 func remove_card() -> void:
 	if self.card == null: return
@@ -43,7 +40,9 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var from = data.from
-	var card = data.data
+	var card: Card = data.data
+	card.is_layed_on_table = true
+
 	if from.remove_card.get_argument_count() > 0:
 		from.remove_card(card)
 	else:

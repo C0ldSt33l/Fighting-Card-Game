@@ -13,37 +13,38 @@ var combos: Array[SimpleComboView] :
 
 #TODO: handle drag n drop
 func _ready() -> void:
-	#self.combo_container.remove_child(
-		#self.combo_container.get_child(0)
-	#)
-	
 	pass
 
-func add_combo(c: SimpleComboView) -> void:
+
+func add_combo(c: SimpleComboView) -> DraggableWrap:
 	var wrapper := DraggableWrap.new(c, Game.battle.hand)
 	self.combo_container.add_child(wrapper)
+	return wrapper
 
-
-func add_combo_at_pos(c: SimpleComboView, pos: int) -> void:
-	var wrapper := DraggableWrap.new(c, Game.battle.hand)
-	self.combo_container.add_child(wrapper)
+func add_combo_at_pos(c: SimpleComboView, pos: int) -> DraggableWrap:
+	var wrapper := self.add_combo(c)
 	self.combo_container.move_child(wrapper, pos)
+	return wrapper
 
-
-func remove_combo(c: SimpleComboView) -> void:
+## Return pos of combo otherwise return `-1`
+func remove_combo(c: SimpleComboView) -> int:
+	var i := 0
 	for w: DraggableWrap in self.combo_container.get_children():
 		if w.obj_to_drag == c:
 			w.remove_child(c)
 			self.combo_container.remove_child(w)
+			return i
+		i += 1
+	return -1
 
+func remove_combo_at_pos(pos: int) -> SimpleComboView:
+	if pos >= self.combo_container.get_child_count(): return null
 
-func remove_combo_at_pos(pos: int) -> void:
-	if pos >= self.combo_container.get_child_count(): return
 	var w: DraggableWrap = self.combo_container.get_child(pos)
-	w.remove_child(w.get_child(0))
 	self.combo_container.remove_child(w)
+	return w.obj_to_drag
 
-
+# NOTE: mayby return array of combos
 func remove_all_combos() -> void:
 	for c in self.combo_container.get_children():
 		self.combo_container.remove_child(c)
