@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://d0nxnu8j5ugyi"]
 
 [ext_resource type="PackedScene" uid="uid://2e0t0a56p7hr" path="res://Control_nodes/Cards/BaseCards/BaseCard.tscn" id="1_q2w1j"]
-[ext_resource type="Script" path="res://Control_nodes/Cards/BattleCards/battle_card.gd" id="2_jpugs"]
-[ext_resource type="Script" path="res://drag_n_drop/object_dropable.gd" id="3_uh6h5"]
+[ext_resource type="Script" uid="uid://hda8r2a0lqsh" path="res://Control_nodes/Cards/BattleCards/battle_card.gd" id="2_jpugs"]
+[ext_resource type="Script" uid="uid://110jmn8nra55" path="res://drag_n_drop/object_dropable.gd" id="3_uh6h5"]
 
 [node name="BattleCard" instance=ExtResource("1_q2w1j")]
 script = ExtResource("2_jpugs")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://65yhjco7stmb"]
 
-[ext_resource type="Script" path="res://Control_nodes/SaveLoadScreen/SaveLoadUI.gd" id="1_vpejr"]
+[ext_resource type="Script" uid="uid://cmibqn2fq4jqw" path="res://Control_nodes/SaveLoadScreen/SaveLoadUI.gd" id="1_vpejr"]
 
 [node name="SaveLoadScreen" type="Control"]
 layout_mode = 3

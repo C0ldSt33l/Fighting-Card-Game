@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://7rw0lvvk3h3e"]
 
-[ext_resource type="Script" path="res://battle/ui/hand/combo segment/combo_seqment.gd" id="1_ec8t0"]
+[ext_resource type="Script" uid="uid://jmq7qi741pmm" path="res://battle/ui/hand/combo segment/combo_seqment.gd" id="1_ec8t0"]
 
 [node name="Combo seqment" type="Control"]
 custom_minimum_size = Vector2(260, 230)

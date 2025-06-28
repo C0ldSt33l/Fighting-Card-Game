@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://l5f66xsw08i0"]
 
-[ext_resource type="Script" path="res://Control_nodes/Combo/combo.gd" id="1_ur2ij"]
+[ext_resource type="Script" uid="uid://c20rsg5akq5f0" path="res://Control_nodes/Combo/combo.gd" id="1_ur2ij"]
 
 [node name="Combo" type="Control"]
 custom_minimum_size = Vector2(400, 200)

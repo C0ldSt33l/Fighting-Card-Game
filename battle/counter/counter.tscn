@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bnv0hy2jwwtgd"]
 
-[ext_resource type="Script" path="res://battle/counter/counter.gd" id="1_lwp5x"]
+[ext_resource type="Script" uid="uid://b735ruja54yne" path="res://battle/counter/counter.gd" id="1_lwp5x"]
 
 [node name="Node2D" type="Control"]
 layout_mode = 3

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dq57c0glcriey"]
 
-[ext_resource type="Script" path="res://battle/ui/option segment/option_segment.gd" id="1_ddadg"]
+[ext_resource type="Script" uid="uid://dvn104v3kiy2y" path="res://battle/ui/option segment/option_segment.gd" id="1_ddadg"]
 
 [node name="Option segment" type="Control"]
 custom_minimum_size = Vector2(190, 130)

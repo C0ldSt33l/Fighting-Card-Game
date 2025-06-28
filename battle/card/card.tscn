@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c7wnxs3jd7ek"]
 
-[ext_resource type="Script" path="res://battle/card/card.gd" id="1_174wl"]
+[ext_resource type="Script" uid="uid://bdgldq43kqcw8" path="res://battle/card/card.gd" id="1_174wl"]
 [ext_resource type="Texture2D" uid="uid://cd5h373qvrocd" path="res://assets/ui/materials/wood.png" id="2_htulr"]
 [ext_resource type="Texture2D" uid="uid://s6h4tgtseil7" path="res://assets/ui/card/icons/hand.png" id="2_humot"]
 

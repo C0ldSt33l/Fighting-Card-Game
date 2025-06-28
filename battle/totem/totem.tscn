@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://daonlbpte4603"]
 
-[ext_resource type="Script" path="res://battle/totem/totem.gd" id="1_m7wnj"]
+[ext_resource type="Script" uid="uid://e84qddlve8r1" path="res://battle/totem/totem.gd" id="1_m7wnj"]
 [ext_resource type="Texture2D" uid="uid://bpryimv0skgyi" path="res://assets/ui/totem/angel_blue_fire.png" id="1_mdy76"]
 
 [node name="Totem" type="Control"]

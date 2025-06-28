@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://837nd7u85rqg"]
 
-[ext_resource type="Script" path="res://Meta/meta.gd" id="1_64yuo"]
+[ext_resource type="Script" uid="uid://4jsiba5l5d0i" path="res://Meta/meta.gd" id="1_64yuo"]
 [ext_resource type="PackedScene" uid="uid://bqvr63654t2v2" path="res://Meta/SkillNode/SkillNode.tscn" id="1_plmxj"]
 
 [node name="Meta" type="Node2D"]

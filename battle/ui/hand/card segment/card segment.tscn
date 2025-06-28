@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://7o5shtggpkck"]
 
-[ext_resource type="Script" path="res://battle/ui/hand/card segment/card_segment.gd" id="1_2eh7u"]
+[ext_resource type="Script" uid="uid://d2rk2wn6givi2" path="res://battle/ui/hand/card segment/card_segment.gd" id="1_2eh7u"]
 [ext_resource type="PackedScene" uid="uid://frgofpu2jt4a" path="res://battle/ui/hand/card sotrer/card sorter.tscn" id="1_mcmwu"]
 
 [node name="Card segment" type="Control"]

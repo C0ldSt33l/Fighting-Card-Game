@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://5xl7p4fse6ad"]
 
-[ext_resource type="Script" path="res://battle/ui/table/table.gd" id="1_w1ibo"]
+[ext_resource type="Script" uid="uid://ccu0fyn4ob00" path="res://battle/ui/table/table.gd" id="1_w1ibo"]
 
 [node name="Table" type="Control"]
 layout_mode = 3

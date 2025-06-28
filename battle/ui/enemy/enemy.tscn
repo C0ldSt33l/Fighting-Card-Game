@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://p70ubt2ha7qf"]
 
 [ext_resource type="Texture2D" uid="uid://bp7138i04vljk" path="res://assets/tmp enemy/orc.png" id="1_gm50c"]
-[ext_resource type="Script" path="res://battle/ui/enemy/enemy.gd" id="1_j4fns"]
+[ext_resource type="Script" uid="uid://cvkjuucf6fvdq" path="res://battle/ui/enemy/enemy.gd" id="1_j4fns"]
 [ext_resource type="PackedScene" uid="uid://fqvapcc1jshx" path="res://battle/ui/enemy/enemy info/enemy_info.tscn" id="1_ygxty"]
 [ext_resource type="PackedScene" uid="uid://ctc5bxe2fe7de" path="res://battle/ui/enemy/enemy health/enemy_health.tscn" id="3_mxhue"]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bjspbliksyfqt"]
 
-[ext_resource type="Script" path="res://Meta/Port/port.gd" id="1_rle6b"]
+[ext_resource type="Script" uid="uid://bo77yp2trdcof" path="res://Meta/Port/port.gd" id="1_rle6b"]
 
 [node name="Port" type="Button"]
 script = ExtResource("1_rle6b")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cyenoxachdlxt"]
 
-[ext_resource type="Script" path="res://Control_nodes/CardHolder/card_holder.gd" id="1_snb1h"]
+[ext_resource type="Script" uid="uid://42x8gd000r4d" path="res://Control_nodes/CardHolder/card_holder.gd" id="1_snb1h"]
 
 [node name="CardHolder" type="Control"]
 layout_mode = 3

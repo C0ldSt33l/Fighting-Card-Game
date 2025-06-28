@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bqvr63654t2v2"]
 
-[ext_resource type="Script" path="res://Meta/SkillNode/skill_node.gd" id="1_egip5"]
+[ext_resource type="Script" uid="uid://3dp42g0vcp62" path="res://Meta/SkillNode/skill_node.gd" id="1_egip5"]
 
 [node name="SkillNode" type="Control"]
 layout_mode = 3

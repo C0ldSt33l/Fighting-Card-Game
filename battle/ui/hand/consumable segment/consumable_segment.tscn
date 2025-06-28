@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cu70fv6bf8612"]
 
-[ext_resource type="Script" path="res://battle/ui/hand/consumable segment/consumable_segment.gd" id="1_e4eow"]
+[ext_resource type="Script" uid="uid://c6wyn660cet83" path="res://battle/ui/hand/consumable segment/consumable_segment.gd" id="1_e4eow"]
 
 [node name="Consumable segment" type="Control"]
 custom_minimum_size = Vector2(200, 230)

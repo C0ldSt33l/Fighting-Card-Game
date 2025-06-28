@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://fqvapcc1jshx"]
 
-[ext_resource type="Script" path="res://battle/ui/enemy/enemy info/enemy_info.gd" id="1_stld3"]
+[ext_resource type="Script" uid="uid://cjqww7lacjxnh" path="res://battle/ui/enemy/enemy info/enemy_info.gd" id="1_stld3"]
 
 [node name="Enemy info" type="Control"]
 custom_minimum_size = Vector2(240, 300)

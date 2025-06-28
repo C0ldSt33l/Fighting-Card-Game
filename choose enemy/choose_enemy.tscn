@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://mnm6d0m2u0hx"]
 
-[ext_resource type="Script" path="res://choose enemy/choose_enemy.gd" id="1_0fm2j"]
+[ext_resource type="Script" uid="uid://deawlpb0b58ov" path="res://choose enemy/choose_enemy.gd" id="1_0fm2j"]
 [ext_resource type="PackedScene" uid="uid://bnahkya0rw85b" path="res://choose enemy/enemy card/enemy_card.tscn" id="2_neokh"]
 
 [node name="Choose enemy" type="Control"]

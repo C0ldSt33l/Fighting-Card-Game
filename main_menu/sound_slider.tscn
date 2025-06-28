@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dndrc5eqw8jdu"]
 
-[ext_resource type="Script" path="res://main_menu/sound_slider.gd" id="1_d54pg"]
+[ext_resource type="Script" uid="uid://c1mb25c62l742" path="res://main_menu/sound_slider.gd" id="1_d54pg"]
 
 [node name="SoundSlider" type="Control"]
 layout_mode = 3

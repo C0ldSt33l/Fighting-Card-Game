@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://b2v6uo0ntlf76"]
 
-[ext_resource type="Script" path="res://main_menu/settings_menu.gd" id="1_igocu"]
+[ext_resource type="Script" uid="uid://lu3r2rj32gae" path="res://main_menu/settings_menu.gd" id="1_igocu"]
 [ext_resource type="PackedScene" uid="uid://dndrc5eqw8jdu" path="res://main_menu/sound_slider.tscn" id="2_u1mmi"]
 
 [sub_resource type="Theme" id="Theme_ehowp"]

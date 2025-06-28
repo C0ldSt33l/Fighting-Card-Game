@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://oloaocbsreqn"]
 
-[ext_resource type="Script" path="res://logger/logger.gd" id="1_tklhb"]
+[ext_resource type="Script" uid="uid://crejg7w78vdyy" path="res://logger/logger.gd" id="1_tklhb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irpl0"]
 bg_color = Color(0, 0, 0, 1)

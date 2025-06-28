@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://frgofpu2jt4a"]
 
-[ext_resource type="Script" path="res://battle/ui/hand/card sotrer/card sorter.gd" id="1_f335x"]
+[ext_resource type="Script" uid="uid://b3f3c2d4rc86p" path="res://battle/ui/hand/card sotrer/card sorter.gd" id="1_f335x"]
 
 [node name="Card sorter" type="Control"]
 layout_mode = 3

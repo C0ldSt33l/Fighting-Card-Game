@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://kwxi04rypri4"]
 
-[ext_resource type="Script" path="res://Control_nodes/Totems/Totem.gd" id="1_rlqx4"]
+[ext_resource type="Script" uid="uid://cdgcd07wnsvuv" path="res://Control_nodes/Totems/Totem.gd" id="1_rlqx4"]
 
 [node name="Totem" type="Control"]
 layout_mode = 3

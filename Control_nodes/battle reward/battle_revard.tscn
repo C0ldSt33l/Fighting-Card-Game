@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b0f5ujp1m01ix"]
 
-[ext_resource type="Script" path="res://Control_nodes/battle reward/battle_revard.gd" id="1_h77rn"]
+[ext_resource type="Script" uid="uid://lwnwfwjpe8nq" path="res://Control_nodes/battle reward/battle_revard.gd" id="1_h77rn"]
 
 [node name="BattleRevard" type="Control"]
 layout_mode = 3

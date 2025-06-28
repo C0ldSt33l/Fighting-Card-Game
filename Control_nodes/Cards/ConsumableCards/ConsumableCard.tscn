@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d04aw4r1xnnix"]
 
 [ext_resource type="PackedScene" uid="uid://2e0t0a56p7hr" path="res://Control_nodes/Cards/BaseCards/BaseCard.tscn" id="1_1emnh"]
-[ext_resource type="Script" path="res://Control_nodes/Cards/ConsumableCards/consumable_card.gd" id="2_8gpgr"]
+[ext_resource type="Script" uid="uid://kd3l0rbecc8t" path="res://Control_nodes/Cards/ConsumableCards/consumable_card.gd" id="2_8gpgr"]
 
 [node name="ConsumableCard" instance=ExtResource("1_1emnh")]
 script = ExtResource("2_8gpgr")

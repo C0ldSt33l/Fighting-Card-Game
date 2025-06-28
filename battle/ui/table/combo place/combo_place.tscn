@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b3fho4jdnmy7a"]
 
-[ext_resource type="Script" path="res://battle/ui/table/combo place/combo_place.gd" id="1_7uyh2"]
+[ext_resource type="Script" uid="uid://bauf7iepo2628" path="res://battle/ui/table/combo place/combo_place.gd" id="1_7uyh2"]
 
 [node name="Combo place" type="Control"]
 custom_minimum_size = Vector2(20, 20)

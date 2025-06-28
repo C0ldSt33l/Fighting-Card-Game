@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bm1la1g05stsh"]
 
-[ext_resource type="Script" path="res://shop/ComboCardShop/combo_card_shop.gd" id="1_1tmp3"]
+[ext_resource type="Script" uid="uid://fyp57h86dgt5" path="res://shop/ComboCardShop/combo_card_shop.gd" id="1_1tmp3"]
 
 [node name="ComboCardShop" type="Node2D"]
 script = ExtResource("1_1tmp3")

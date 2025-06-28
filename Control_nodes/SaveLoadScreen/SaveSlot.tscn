@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://br7l744ccowbm"]
 
-[ext_resource type="Script" path="res://Control_nodes/SaveLoadScreen/save_slot.gd" id="1_iskxi"]
+[ext_resource type="Script" uid="uid://cfldtd5cjiaf3" path="res://Control_nodes/SaveLoadScreen/save_slot.gd" id="1_iskxi"]
 
 [node name="SaveSlot" type="Control"]
 custom_minimum_size = Vector2(441, 84)

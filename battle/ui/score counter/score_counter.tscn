@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://764axciuvhns"]
 
-[ext_resource type="Script" path="res://battle/ui/score counter/score_counter.gd" id="1_rev4j"]
+[ext_resource type="Script" uid="uid://bwkdl3ed3m8kl" path="res://battle/ui/score counter/score_counter.gd" id="1_rev4j"]
 
 [node name="Score counter" type="Control"]
 layout_mode = 3

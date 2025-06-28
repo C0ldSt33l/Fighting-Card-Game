@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ccpgo2dkvqeg8"]
 
-[ext_resource type="Script" path="res://battle/ui/totem segment/totem_segment.gd" id="1_7h2kg"]
+[ext_resource type="Script" uid="uid://c046t5cewn5vq" path="res://battle/ui/totem segment/totem_segment.gd" id="1_7h2kg"]
 
 [node name="Totem segment" type="Control"]
 custom_minimum_size = Vector2(190, 585)

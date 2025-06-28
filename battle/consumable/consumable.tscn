@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://8h7qh0b4apa6"]
 
-[ext_resource type="Script" path="res://battle/consumable/consumable.gd" id="1_adaxr"]
+[ext_resource type="Script" uid="uid://1iaxmgwdwfat" path="res://battle/consumable/consumable.gd" id="1_adaxr"]
 [ext_resource type="Texture2D" uid="uid://dyn05jlv1jk3m" path="res://assets/ui/consumable/fast.png" id="2_6hmeb"]
 
 [node name="Consumable" type="Control"]

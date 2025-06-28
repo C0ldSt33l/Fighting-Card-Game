@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://br7h2srkehddb"]
 
-[ext_resource type="Script" path="res://shop/ComboCardShop/PackShop/pack_shop.gd" id="1_w4r05"]
+[ext_resource type="Script" uid="uid://cdtyhf44e1otr" path="res://shop/ComboCardShop/PackShop/pack_shop.gd" id="1_w4r05"]
 
 [node name="PackShop" type="Node2D"]
 script = ExtResource("1_w4r05")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ctc5bxe2fe7de"]
 
-[ext_resource type="Script" path="res://battle/ui/enemy/enemy health/enemy_health.gd" id="1_4774v"]
+[ext_resource type="Script" uid="uid://dnxp2jd42vllc" path="res://battle/ui/enemy/enemy health/enemy_health.gd" id="1_4774v"]
 
 [node name="Enemy health" type="Control"]
 custom_minimum_size = Vector2(240, 70)

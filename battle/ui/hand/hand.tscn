@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cp47xxnw14oip"]
 
-[ext_resource type="Script" path="res://battle/ui/hand/hand.gd" id="1_bvbxc"]
+[ext_resource type="Script" uid="uid://becnju0hug8we" path="res://battle/ui/hand/hand.gd" id="1_bvbxc"]
 [ext_resource type="PackedScene" uid="uid://7rw0lvvk3h3e" path="res://battle/ui/hand/combo segment/combo_seqment.tscn" id="2_uoeha"]
 [ext_resource type="PackedScene" uid="uid://7o5shtggpkck" path="res://battle/ui/hand/card segment/card segment.tscn" id="3_31fhb"]
 [ext_resource type="PackedScene" uid="uid://cu70fv6bf8612" path="res://battle/ui/hand/consumable segment/consumable_segment.tscn" id="4_eha10"]

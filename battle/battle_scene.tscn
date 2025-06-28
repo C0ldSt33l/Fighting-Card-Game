@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://dmwiv3j3x3x3d"]
 
-[ext_resource type="Script" path="res://battle/battle_scene.gd" id="1_437rl"]
+[ext_resource type="Script" uid="uid://bpgnrtx1krgmn" path="res://battle/battle_scene.gd" id="1_437rl"]
 [ext_resource type="PackedScene" uid="uid://5xl7p4fse6ad" path="res://battle/ui/table/table.tscn" id="3_aygk4"]
 [ext_resource type="PackedScene" uid="uid://cp47xxnw14oip" path="res://battle/ui/hand/hand.tscn" id="4_va1qn"]
 [ext_resource type="Texture2D" uid="uid://dq3rq6xm3u636" path="res://assets/ui/player_char/mc_idle.png" id="6_u42g7"]
