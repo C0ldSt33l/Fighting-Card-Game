@@ -87,8 +87,6 @@ var enemy_cards: Array[EnemyCard] :
 @onready var reroll_btn: Button = $"Reroll btn"
 
 
-
-
 func _ready() -> void:
 	self.reroll_count = 2
 	for i in len(self.enemy_cards):

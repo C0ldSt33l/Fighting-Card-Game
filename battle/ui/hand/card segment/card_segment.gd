@@ -53,9 +53,9 @@ func remove_all_cards() -> void:
 		self.card_container.remove_child(w)
 
 
+# DRAG N DROP FUNCS
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	return data.data is Card and data.data not in self.cards
-
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var from = data.from

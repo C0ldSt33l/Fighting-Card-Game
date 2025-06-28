@@ -26,6 +26,7 @@ func remove_card() -> void:
 	self.card = null
 
 
+# DRAG N DROP FUNCS
 func _get_drag_data(at_position: Vector2) -> Variant:
 	if self.card == null:
 		return null

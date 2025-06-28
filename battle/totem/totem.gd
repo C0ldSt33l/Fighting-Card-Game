@@ -14,9 +14,6 @@ var pos_idx: int
 var effect: Effect = null
 
 
-func get_drag_preview() -> DragNDropPreview:
-	return DragNDropPreview.new(self.texture_rect.duplicate())
-
 func setup(name: String, desc: String, image: Texture2D, effect: Effect = null) -> void:
 	self.totem_name = name
 	self.description = desc
@@ -24,14 +21,16 @@ func setup(name: String, desc: String, image: Texture2D, effect: Effect = null) 
 	self.effect = effect
 	
 
+# DRAG N DROP FUNCS
+func get_drag_preview() -> DragNDropPreview:
+	return DragNDropPreview.new(self.texture_rect.duplicate())
+
 func _get_drag_data(at_position: Vector2) -> Variant:
 	set_drag_preview(self.get_drag_preview())
 	return DragData.new(self, self)
 
-
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	return data.data is _Totem
-
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	Game.battle.totem_segment.swap_totems(self, data.data)

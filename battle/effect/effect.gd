@@ -98,12 +98,6 @@ func _init(
 	self.args = args
 	self.caster = caster 
 	self.target = target
-	#self.target = (
-		#Game.battle.counter
-		#if target_type == Effect.TARGET_TYPE.SCORE
-		#else target
-	#)
-
 
 
 func bind_to(caster: Variant):

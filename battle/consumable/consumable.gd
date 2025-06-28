@@ -12,9 +12,9 @@ var description: String = 'do nothing'
 var effect: Effect = null
 
 
+# DRAG N DROP FUNCS
 func get_drag_preview() -> DragNDropPreview:
 	return DragNDropPreview.new(self.texture_rect.duplicate())
-
 
 func _get_drag_data(at_position: Vector2) -> Variant:
 	set_drag_preview(self.get_drag_preview())

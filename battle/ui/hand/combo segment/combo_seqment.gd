@@ -50,9 +50,9 @@ func remove_all_combos() -> void:
 		self.combo_container.remove_child(c)
 
 
+# DRAG N DROP FUNCS
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	return (data.data is SimpleComboView and data.data not in self.combos) or data.data is FullComboView
-
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var simple_view: SimpleComboView = Utils.Factory.create(

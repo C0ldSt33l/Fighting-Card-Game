@@ -45,14 +45,12 @@ func remove_combo() -> void:
 	self.combo = null
 
 
+# DRAG N DROP FUNCS
 func _get_drag_data(at_position: Vector2) -> Variant:
 	if self.combo == null:
 		return null
-		#get_viewport().drag
-	#Events.drag_started.emit(self.combo, self)
 	set_drag_preview(self.combo.get_drag_preview())
 	return DragData.new(self, self.combo)
-
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	var c = data.data
@@ -80,15 +78,9 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 		return false
 
 	# check cards is valid
-	# var cards := t.cards.slice(first_place_idx / 2, (last_place_idx / 2) + 1)
-	# print('CARDS: ', cards)
-	# print('COMBO PATTERN in combo: ', c.pattern)
-	# var cd: ComboData = c.get_combo_data()
-
-	# return cd.check_cards(cards)
-
-	return true
-
+	var cards := t.cards.slice(first_place_idx / 2, (last_place_idx / 2) + 1)
+	var cd: ComboData = c.get_combo_data()
+	return cd.check_cards(cards)
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var from = data.from
@@ -103,9 +95,3 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	else:
 		from.remove_combo()
 	self.add_combo(combo)
-	#Events.drag_completed.emit(combo, self)
-
-
-#func on_drag_completed(data: Variant, where: Variant) -> void:
-	#if data == self.combo and where != self:
-		#self.remove_combo()

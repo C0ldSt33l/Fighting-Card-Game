@@ -82,20 +82,10 @@ signal next_card_key_pressed
 
 
 func _ready() -> void:
-
-
-	# Events.drag_completed.connect(
-	# 	func (f, s):
-	# 		print('-----------------')
-	# 		for p: CardPlace in self.table.card_places_container.get_children():
-	# 			print('c: ', p.card)
-	# 			print('d: ', p.panel.held_data)
-	# 			print()
-	# )
 	self._init_components()
 
-	print('CONSTR: ', PlayerConfig.enemy_data.constraints)
 	Game.battle = self
+	# Apply constraints
 	match PlayerConfig.enemy_data.constraints.to_lower():
 		'без сбросов':
 			Constrains.without_rerell()
@@ -106,7 +96,7 @@ func _ready() -> void:
 	Events.battle_started.emit()
 
 
-# TODO: init hand, table, totem segment and comsumable segment
+## Init main scene components
 func _init_components() -> void:
 	Events.connect_events({
 		battle_started = self.start_round_preparation,
@@ -129,12 +119,8 @@ func _init_components() -> void:
 	self._init_table()
 	self._init_hand()
 	self._init_totem_segment()
-	
-	self.option_segment.menu_btn.pressed.connect(func():
-		PlayerConfig.player_exit = true
-		Events.battle_ended.emit())
-	
 
+## Init enemy based on `enemy_data` from `PlayerConfig`
 func _init_enemy() -> void:
 	var ed := PlayerConfig.enemy_data
 	self.enemy.health = ed.required_score
@@ -144,6 +130,7 @@ func _init_enemy() -> void:
 	self.max_round_count = PlayerConfig.round_count
 	self.rest_round_count = self.enemy.max_round_count
 
+## Fill deck with cards
 func _init_deck() -> void:
 	var materials := M.MATERIAL.values()
 	self.deck.assign(Sql.select_battle_cards().map(
@@ -153,19 +140,20 @@ func _init_deck() -> void:
 				func (c: Card) -> void:
 					c.set_main_props(conf)
 					c._material = materials[randi_range(0, materials.size() - 1)]
-					# c.point = randi_range(1, 9)
 			)
-	)
-	)
+	))
+	## BODGE: without it deck reroll wont work
 	var a: Array[Card] = []
 	for c in self.deck:
 		a.append(c.duplicate())
 		a.append(c.duplicate())
 	self.deck.append_array(a)
 
+## Set card place count
 func _init_table() -> void:
 	self.table.setup(6)
 
+## Set reroll count
 func _init_hand() -> void:
 	self.reroll_count = PlayerConfig.reroll_count
 	self.reroll_btn.pressed.connect(self.reroll)
@@ -173,7 +161,14 @@ func _init_hand() -> void:
 func _init_totem_segment() -> void:
 	pass
 
+## Init option segment
+func _init_option_segment() -> void:
+	self.option_segment.menu_btn.pressed.connect(func():
+		PlayerConfig.player_exit = true
+		Events.battle_ended.emit())
+	
 
+## Handle key input to play cards
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed('ui_accept'):
 		self.next_card_key_pressed.emit()
@@ -182,7 +177,7 @@ func _on_inventory_button() -> void:
 	SceneManager.__last_scene_type = SceneManager.SCENE.BATTLE
 	SceneManager.open_new_scene_by_name(SceneManager.SCENE.INVENTORY)
 
-
+## Activate round preparation stage
 func start_round_preparation() -> void:
 	self.score_counter.reset()
 	self.start_button.disabled = false
@@ -200,14 +195,36 @@ func start_round_preparation() -> void:
 		# TODO: add used combo array
 	var last_combo := self.hand.combos[-1]
 	
-	# var e := Effects.get_effect('Multiplying')
-	# self.cards_in_hand[0].bind_effect(e)
+## Add card in hand
+func spawn_card(c: Card) -> void:
+	self.hand.add_card(c)
+	self.cards_in_hand.append(c)
 
-# TODO: test with effect that run rount again
+## Add combo in hand
+func spawn_combo(name: String, conf: Dictionary) -> void:
+	var materials := M.MATERIAL.values()
+	var combo: SimpleComboView = Utils.Factory.create(
+		self.COMBO_TEMPLATE,
+		func (c: SimpleComboView):
+			c.combo_name = name
+			c.pattern.assign(conf.pattern)
+			c.effects.append(Effects.get_effect(conf.effect))
+			for p in conf.props:
+				if p == 'material':
+					c._material = conf.props.material
+				else:
+					c[p] = conf.props[p]
+	)
+	self.hand.add_combo(combo)
+
+
+
+# TODO: test with effect that run round again
+## Main game loop
 func process_round() -> void:
 	self.start_round()
 	while self.card_cursor.index < self.cards_on_table.size():
-		#TODO: remove manual card playing
+		# TODO: remove manual card playing
 		await self.play_card(self.cur_card, self.cur_combo)
 		
 		print('CARD CURSOR: ', self.card_cursor.index)
@@ -217,31 +234,30 @@ func process_round() -> void:
 	self.end_round()
 
 # TODO: move `check_combos()` in round preparation stage
+## Collect all effects and reset cursors
 func start_round() -> void:
 	self.cards_on_table = self.table.get_cards()
 	if self.cards_on_table.size() == 0: return 
 
 	self.start_button.disabled = true
 
-	Events.round_started.emit()
 	self.rest_round_count -= 1
 	if self.cards_on_table.size() == 0: return
 
 	self.card_cursor.set_size(self.cards_on_table.size())
 	self.combo_cursor.set_size(self.combos_on_table.size())
+	# TODO: move segment in round preparation segment
+	for c in self.combos_on_table:
+		self.score_counter.add(c.point, c.factor)
 	
-	# if self.is_turn_based_mode:
-	# 	self.process_round()
-	# else:
-	# 	self.timer.start()
+	self.collect_all_effects()
+	Events.round_started.emit()
 
-
+## Shop round points, claear table and effects and activate next round
 func end_round() -> void:
 	Events.round_exit.emit()
 	
-	#self.
 	self.timer.stop()
-	
 	
 	await self.score_counter.update_round_score()
 	self.enemy.health -= self.score_counter.round_score
@@ -275,6 +291,7 @@ func end_round() -> void:
 		Events.battle_ended.emit()
 		print('battle end')
 
+## Activate cur card and combo
 func play_card(card: Card, combo: FullComboView) -> void:
 	if combo and card == combo.first_card:
 		Events.combo_started.emit(combo)
@@ -283,6 +300,7 @@ func play_card(card: Card, combo: FullComboView) -> void:
 		card.play();\
 		if (self.is_turn_based_mode):
 			await self.next_card_key_pressed
+	#TODO: add check effect activations like for combo
 	Events.card_ended.emit(card)
 
 	if self.is_all_effects_activated_on(card):
@@ -295,37 +313,7 @@ func play_card(card: Card, combo: FullComboView) -> void:
 
 
 
-
-func spawn_card(c: Card) -> void:
-	# var materials := M.MATERIAL.values()
-	# var card := Utils.Factory.create(
-	# 	CARD_TEMPLATE,
-	# 	func (c: Card) -> void:
-	# 		c.set_main_props(conf)
-	# 		c._material = materials[randi_range(0, materials.size() - 1)]
-	# 		c.point = randi_range(1, 9)
-	# )
-	self.hand.add_card(c)
-	self.cards_in_hand.append(c)
-
-func spawn_combo(name: String, conf: Dictionary) -> void:
-	var materials := M.MATERIAL.values()
-	var combo: SimpleComboView = Utils.Factory.create(
-		self.COMBO_TEMPLATE,
-		func (c: SimpleComboView):
-			c.combo_name = name
-			c.pattern.assign(conf.pattern)
-			c.effects.append(Effects.get_effect(conf.effect))
-			for p in conf.props:
-				if p == 'material':
-					c._material = conf.props.material
-				else:
-					c[p] = conf.props[p]
-	)
-	self.hand.add_combo(combo)
-	# combo.make_little_view()
-
-
+## Reroll cards in hand
 func reroll() -> void:
 	self.reroll_count -= 1
 
@@ -337,6 +325,7 @@ func reroll() -> void:
 		self.spawn_card(c)
 
 
+## Return cards from deck
 func get_hand_configs(size: int) -> Array[Card]:
 	var cards: Array[Card]
 	cards.resize(size)
@@ -355,46 +344,54 @@ func get_hand_configs(size: int) -> Array[Card]:
 	return cards
 
 
+## Add effect in global array
 func add_effect(e: Effect) -> void:
 	self.effects.append(e)
 
 
+## Apply effect to item and add effect in global array
 func apply_effect(e: Effect, to: Variant) -> void:
 	e.set_target(to)
 	to.add_effect(e)
 	self.add_effect(e)
 
 
+## Filter effect array with filter func from `Utils.Filter`
 func _get_filtered_effects(effects: Array[Effect], filter: Callable, args: Array) -> Array[Effect]:
 	return filter.bindv(args).call(effects)
 
+## Activate effects
 func activate_effects(effects: Array[Effect]) -> void:
 	for e in effects:
 		print('activated')
 		e.activate()
 
+## Activate effects from filtered array of effects
 func activate_filtered_effects(filter: Callable, args: Array) -> void:
 	var effects := self._get_filtered_effects(self.effects, filter, args)
 	self.activate_effects(effects)
 
+## Reset activation time of effects
 func reset_effects(effects: Array[Effect]) -> void:
-	for e in effects:
-		e.reset()
+	for e in effects: e.reset()
 
+## Reset activation time of filtered effects
 func reset_filtered_effects(filter: Callable, args: Array) -> void:
 	var effects := self._get_filtered_effects(self.used_effects, filter, args)
 	for e in effects:
 		e.reset()
 
+## Check if all effects binded to target are activated
 func is_all_effects_activated_on(target: Variant) -> bool:
 	return Utils.Filter.BY_TARGET(self.effects, target).size() == 0
 
-
-func get_effects_from(obj: Variant) -> Array[Effect]:
+## Get all effects from caster
+func get_effects_from(caster: Variant) -> Array[Effect]:
 	const TYPE := Effect.TARGET_TYPE
 	var effects: Array[Effect] = []
-	if obj is _Totem:
-		var e = obj.effect
+	# Totem case
+	if caster is _Totem:
+		var e = caster.effect
 		match e.target_type:
 			TYPE.SELF_CARD, TYPE.SELF_COMBO:
 				effects.append(e.set_target(e.caster))
@@ -445,7 +442,8 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 			_:
 				Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER: target type: %s' % [str(TYPE.keys()[e.target_type])])
 	else:		
-		for e: Effect in obj.effects: 
+		# Other types case
+		for e: Effect in caster.effects: 
 			match e.target_type:
 				TYPE.SELF_CARD, TYPE.SELF_COMBO:
 					effects.append(e.set_target(e.caster))
@@ -497,7 +495,7 @@ func get_effects_from(obj: Variant) -> Array[Effect]:
 					Utils.panic('NO SUCH TYPE IN EFFECT OR NOT IMPLEMENT HANDLER: target type: %s' % [str(TYPE.keys()[e.target_type])])
 	return effects
 
-
+## Collect effects from totems, combos and cards
 func collect_all_effects() -> void:
 	for t in self.totem_segment.totems:
 		self.effects.append_array(self.get_effects_from(t))
@@ -506,13 +504,11 @@ func collect_all_effects() -> void:
 	for c in self.cards_on_table:
 		self.effects.append_array(self.get_effects_from(c))
 
+
+# EVENT SEGMENT
 func on_round_preparation_started() -> void: pass
 func on_round_started() -> void:
-	# TODO: move segment in round preparation segment
-	for c in self.combos_on_table:
-		self.score_counter.add(c.point, c.factor)
-	
-	self.collect_all_effects()
+
 	self.activate_filtered_effects(
 		Utils.Filter.BY_ACTIVATION_TIME,
 		[Effect.ACTIVATION_TIME.ROUND_START]

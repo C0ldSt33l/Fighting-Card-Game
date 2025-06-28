@@ -81,6 +81,7 @@ class Filter:
 				return e.reset_time == Effect.RESET_TIME.COMBO and (e.caster == c if e.target is not FullComboView else e.target == c)
 		)
 
+## Namespace that cantains builer funcs
 class Factory:
 	static func create(scene: Node, modifier: Callable = func (o): return o) -> Node:
 		var obj := scene.duplicate()
@@ -93,13 +94,13 @@ class Factory:
 		return obj
 
 
+## OTHER USEFULL FUNCS
 static func exlude_array(from: Array, what: Array) -> Array:
 	var res := from.filter(
 		func (el) -> bool:
 			return what.find(el) == -1
 	)
 	return res
-
 
 static func get_array_with_uniq_nums(size: int, max: int) -> Array[int]:
 	var arr: Array[int] = []
@@ -111,7 +112,6 @@ static func get_array_with_uniq_nums(size: int, max: int) -> Array[int]:
 
 static func colorful(text: String, c: Color) -> String:
 	return '[color=#%s]%s[/color]' % [c.to_html(), text]
-
 
 static func panic(err_text: String) -> void:
 	var nil = null
